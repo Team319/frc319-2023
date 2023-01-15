@@ -18,6 +18,7 @@ public class BobDrive extends CommandBase {
 
 	BobDriveHelper helper;
 	private double quickTurnThreshold = 0.2;
+	private double deadband = 0.1;
 
 	private RobotContainer robotContainer = new RobotContainer();
 	//private PIDController limelightRotatePID = new PIDController(0.25, 0.01, 0.0);
@@ -39,6 +40,9 @@ public class BobDrive extends CommandBase {
 
 		double rotateValue = robotContainer.getRightStick().getFirst();
 		double moveValue = robotContainer.getLeftStick().getSecond();
+
+		moveValue = Math.abs(moveValue) > deadband ? moveValue : 0.0;
+		rotateValue = Math.abs(rotateValue) > deadband ? rotateValue : 0.0;
 
 		boolean quickTurn = (moveValue < quickTurnThreshold && moveValue > -quickTurnThreshold);	
 		DriveSignal driveSignal = helper.cheesyDrive(moveValue, rotateValue, quickTurn, false);
