@@ -64,13 +64,13 @@ public class RobotContainer {
 
   public Pair<Double, Double> getLeftStick() {
     double leftX = m_driverController.getLeftX();
-    double leftY = m_driverController.getLeftY();
+    double leftY = -1.0 * m_driverController.getLeftY();
     return new Pair<>(leftX, leftY);
   }
 
   public Pair<Double, Double> getRightStick() {
     double rightX = m_driverController.getRightX();
-    double rightY = m_driverController.getRightY();
+    double rightY = -1.0 * m_driverController.getRightY();
     return new Pair<>(rightX, rightY);
   }
 }

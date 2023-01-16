@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -24,17 +25,15 @@ public class Drivetrain extends SubsystemBase {
   public TalonFX rightFollow1 = new TalonFX(4);
   public TalonFX rightFollow2 = new TalonFX(6);
 
+  private static final double rampRate = 0.25;
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
 
-    leftLead.setInverted(true);
-    leftFollow1.setInverted(true);
-    leftFollow2.setInverted(true);
-
-    rightLead.setInverted(false);
-    rightFollow1.setInverted(false);
-    rightFollow2.setInverted(false);
+    setMotorConfigsToDefault();
+    setMotorInversions();
+    setMotorNeutralModes();
+    setMotorRampRates();
 
   }
 
@@ -52,7 +51,7 @@ public class Drivetrain extends SubsystemBase {
 
   public void drive(ControlMode controlMode, double left, double right) {
     //Left control mode is set to left
-    this.leftLead.set(controlMode, right);
+    this.leftLead.set(controlMode, left);
 
     //Right control mode is set to right
     this.rightLead.set(controlMode, right);
@@ -69,5 +68,50 @@ public class Drivetrain extends SubsystemBase {
     rightFollow1.follow(rightLead);
     rightFollow2.follow(rightLead);
   }
+
+  private void setMotorConfigsToDefault() {
+    
+    leftLead.configFactoryDefault();
+    leftFollow1.configFactoryDefault();
+    leftFollow2.configFactoryDefault();
+    
+    rightLead.configFactoryDefault();
+    rightFollow1.configFactoryDefault();
+    rightFollow2.configFactoryDefault();
+  }
+
+  private void setMotorInversions() {
+    
+    leftLead.setInverted(false);
+    leftFollow1.setInverted(false);
+    leftFollow2.setInverted(false);
+
+    rightLead.setInverted(true);
+    rightFollow1.setInverted(true);
+    rightFollow2.setInverted(true);
+  }
+
+  private void setMotorNeutralModes() {
+    
+    leftLead.setNeutralMode(NeutralMode.Coast);
+    leftFollow1.setNeutralMode(NeutralMode.Coast);
+    leftFollow2.setNeutralMode(NeutralMode.Coast);
+
+    rightLead.setNeutralMode(NeutralMode.Coast);
+    rightFollow1.setNeutralMode(NeutralMode.Coast);
+    rightFollow2.setNeutralMode(NeutralMode.Coast);
+  }
+
+  private void setMotorRampRates() {
+
+    leftLead.configOpenloopRamp(rampRate);
+    leftFollow1.configOpenloopRamp(rampRate);
+    leftFollow2.configOpenloopRamp(rampRate);
+
+    rightLead.configOpenloopRamp(rampRate);
+    rightFollow1.configOpenloopRamp(rampRate);
+    rightFollow2.configOpenloopRamp(rampRate);
+  }
+
 }
 
