@@ -18,7 +18,7 @@ public class BobDrive extends CommandBase {
 
 	BobDriveHelper helper;
 	private double quickTurnThreshold = 0.2;
-	private double deadband = 0.1;
+	private double deadband = 0.05; //DEBUG was 0.1
 
 	private RobotContainer robotContainer = new RobotContainer();
 	//private PIDController limelightRotatePID = new PIDController(0.25, 0.01, 0.0);
@@ -39,7 +39,7 @@ public class BobDrive extends CommandBase {
 	public void execute() {
 
 		double rotateValue = robotContainer.getRightStick().getFirst() * 0.50;
-		double moveValue = robotContainer.getLeftStick().getSecond() * 1.00;
+		double moveValue = robotContainer.getLeftStick().getSecond() * 0.10;
 
 		moveValue = Math.abs(moveValue) > deadband ? moveValue : 0.0;
 		rotateValue = Math.abs(rotateValue) > deadband ? rotateValue : 0.0;
@@ -56,6 +56,4 @@ public class BobDrive extends CommandBase {
 	public void end() {
 	}
 
-	public void interrupted() {
-	}
 }

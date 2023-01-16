@@ -5,9 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.BobDrive;
+import frc.robot.commands.autos.TestPath;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -19,7 +21,7 @@ import frc.robot.subsystems.Drivetrain;
 public class Robot extends TimedRobot {
 
 
-  private Command m_autonomousCommand;
+  private Command m_autonomousCommand = new TestPath();
 
   private Command m_teleopCommand = new BobDrive();
   public static Drivetrain drivetrain = new Drivetrain();
@@ -35,6 +37,9 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    drivetrain.resetEncoders(); //DEBUG EKM - might have to remove
+
   }
 
   /**
@@ -50,6 +55,14 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+    SmartDashboard.putNumber("Left Distance", drivetrain.getLeftLeadDriveDistanceMeters());
+    SmartDashboard.putNumber("Right Distance", drivetrain.getRightLeadDriveDistanceMeters());
+    SmartDashboard.putNumber("Left Ticks", drivetrain.getLeftLeadDriveDistanceTicks());
+    SmartDashboard.putNumber("Right Ticks", drivetrain.getRightLeadDriveDistanceTicks());
+
+    SmartDashboard.putNumber("Pose X", drivetrain.getPose().getX());
+    SmartDashboard.putNumber("Pose Y", drivetrain.getPose().getY());
+    SmartDashboard.putNumber("Fused Heading", drivetrain.getHeading().getDegrees());
 
     drivetrain.setFollowers();
 
@@ -66,7 +79,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
