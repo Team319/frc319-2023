@@ -58,10 +58,10 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return new TestPath();
-  }
+  //public Command getAutonomousCommand() {
+   // // An example command will be run in autonomous
+   // return new Command();
+  //}
 
   public Pair<Double, Double> getLeftStick() {
     double leftX = m_driverController.getLeftX();

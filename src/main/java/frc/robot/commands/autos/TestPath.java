@@ -2,6 +2,8 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+// Example of a path, kind of like a base for creating a trajectory path. - L.S
+
 package frc.robot.commands.autos;
 
 import java.util.List;
@@ -27,7 +29,7 @@ import frc.robot.Constants.DriveConstants;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TestPath extends SequentialCommandGroup {
 
-  public Command getAutoCommand() {
+  public Command getAutoCommand(Trajectory trajectory) {
     var autoVoltageConstraint = 
     new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(
       DriveConstants.ksVolts, 
@@ -46,13 +48,14 @@ public class TestPath extends SequentialCommandGroup {
         Trajectory testTrajectory =
           TrajectoryGenerator.generateTrajectory(
             new Pose2d(0,0, new Rotation2d(0)), 
-            List.of(new Translation2d(1,0), new Translation2d(2, 0)), 
+            List.of(new Translation2d(1,1), new Translation2d(2, -1)), 
             new Pose2d(3,0, new Rotation2d(0)), 
             config);
+            
 
           RamseteCommand ramseteCommand =
             new RamseteCommand(
-              testTrajectory, 
+              trajectory, 
               Robot.drivetrain::getPose, 
               new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
               new SimpleMotorFeedforward(
@@ -66,16 +69,16 @@ public class TestPath extends SequentialCommandGroup {
               Robot.drivetrain::tankDriveVolts, 
               Robot.drivetrain);
 
-            Robot.drivetrain.resetOdometry(testTrajectory.getInitialPose());
+            Robot.drivetrain.resetOdometry(trajectory.getInitialPose());
             return ramseteCommand.andThen(() -> Robot.drivetrain.tankDriveVolts(0, 0));
   }
 
 
   /** Creates a new TestPath. */
-  public TestPath() {
+  public TestPath(Trajectory trajectory) {
 
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands( this.getAutoCommand() );
+    addCommands( this.getAutoCommand(trajectory) );
   }
 }

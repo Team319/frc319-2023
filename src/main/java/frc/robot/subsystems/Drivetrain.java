@@ -9,7 +9,9 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -33,7 +35,7 @@ public class Drivetrain extends SubsystemBase {
   public TalonFX rightFollow1 = new TalonFX(4);
   public TalonFX rightFollow2 = new TalonFX(6);
 
-  public PigeonIMU pigeon = new PigeonIMU(7);
+  public WPI_PigeonIMU pigeon = new WPI_PigeonIMU(7);
 
   private DifferentialDriveOdometry odometry;
   Rotation2d heading = new Rotation2d(Units.degreesToRadians(pigeon.getFusedHeading()));
@@ -144,8 +146,12 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public Rotation2d getHeading() {
-    heading = new Rotation2d(Units.degreesToRadians(pigeon.getFusedHeading()));
+    heading = Rotation2d.fromDegrees(MathUtil.inputModulus(pigeon.getRotation2d().getDegrees(), -180, 180));
     return heading;
+  }
+
+  public double getHeadingDegrees() {
+    return MathUtil.inputModulus(pigeon.getRotation2d().getDegrees(), -180, 180);
   }
 
   public void resetHeading() {
@@ -157,8 +163,18 @@ public class Drivetrain extends SubsystemBase {
     return odometry.getPoseMeters();
   }
 
+  public double getLeftMotorSpeed() {
+    double leftmotorspeed = leftLead.getSelectedSensorVelocity() * Constants.DriveConstants.metersPerEncoderTick;
+    return leftmotorspeed;
+  }
+
+  public double getRightMotorSpeed() {
+    double rightmotorspeed = rightLead.getSelectedSensorVelocity() * Constants.DriveConstants.metersPerEncoderTick;
+    return rightmotorspeed;
+  }
+
   public DifferentialDriveWheelSpeeds getWheelSpeeds() { // TODO : These should be scaled with the distance travelled per 'pulse'
-    	return new DifferentialDriveWheelSpeeds(leftLead.getSelectedSensorVelocity(), rightLead.getSelectedSensorVelocity());
+    	return new DifferentialDriveWheelSpeeds(getLeftMotorSpeed(), getRightMotorSpeed());
   }
 
   public void zeroOdometry() {
