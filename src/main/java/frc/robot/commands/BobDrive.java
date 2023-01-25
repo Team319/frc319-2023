@@ -39,8 +39,7 @@ public class BobDrive extends CommandBase {
 	public void execute() {
 
 		double rotateValue = robotContainer.getRightStick().getFirst() * 0.50;
-		double moveValue = robotContainer.getLeftStick().getSecond() * 1.00;
-
+		double moveValue = robotContainer.getLeftStick().getSecond() * 1.0;
 		moveValue = Math.abs(moveValue) > deadband ? moveValue : 0.0;
 		rotateValue = Math.abs(rotateValue) > deadband ? rotateValue : 0.0;
 
@@ -56,6 +55,4 @@ public class BobDrive extends CommandBase {
 	public void end() {
 	}
 
-	public void interrupted() {
-	}
 }
