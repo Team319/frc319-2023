@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    String trajectoryJSON = "PathWeaver//output//2metersforward.wpilib.json";
+    String trajectoryJSON = "PathWeaverMain//PathWeaver//output//Blueleft.wpilib.json";
  
     try {
       Path testPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
