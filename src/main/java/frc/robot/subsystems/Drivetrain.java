@@ -2,6 +2,8 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+// Acceleration value is 33% faster than our velocity value
+
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -41,6 +43,8 @@ public class Drivetrain extends SubsystemBase {
   Rotation2d heading = new Rotation2d(Units.degreesToRadians(pigeon.getFusedHeading()));
 
   private static final double rampRate = 0.25;
+  private static double previousPitch = 0.0;
+  private static double deltaPitch = 0.0;
 
   //DifferentialDrive differentialDrive = new DifferentialDrive(leftLead, rightLead);
 
@@ -63,6 +67,7 @@ public class Drivetrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     odometry.update(getHeading(), getLeftLeadDriveDistanceMeters(), getRightLeadDriveDistanceMeters());
+    deltaPitch();
   }
 
   public void drive(ControlMode controlMode, double left, double right) {
@@ -154,6 +159,14 @@ public class Drivetrain extends SubsystemBase {
     return MathUtil.inputModulus(pigeon.getRotation2d().getDegrees(), -180, 180);
   }
 
+  public double getPitch() {
+    return pigeon.getPitch();
+  }
+
+  public double getDeltaPitch() {
+    return deltaPitch;
+  }
+
   public void resetHeading() {
     pigeon.setFusedHeading(0);
     this.getHeading();
@@ -203,6 +216,13 @@ public class Drivetrain extends SubsystemBase {
   public void tankDriveVolts(double leftVoltage, double rightVoltage) {
     leftLead.set(TalonFXControlMode.PercentOutput, leftVoltage);
     rightLead.set(TalonFXControlMode.PercentOutput, rightVoltage);
+  }
+
+  public void deltaPitch() {
+    double currentPitch = getPitch();
+    double changeOfPitch = previousPitch - currentPitch;
+    previousPitch = currentPitch;
+    deltaPitch = Math.abs(changeOfPitch);
   }
 
 }

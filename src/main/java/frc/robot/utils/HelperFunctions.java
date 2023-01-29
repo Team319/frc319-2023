@@ -92,4 +92,11 @@ public final class HelperFunctions {
             return input * input;
         }
     }
+
+    public static double deadband(double signal, double deadband) {
+        if (Math.abs(signal) > Math.abs(deadband)) {
+            return signal;
+        }
+        return 0.0;
+    }
 }
