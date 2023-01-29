@@ -52,6 +52,38 @@ public final class Constants {
         new DifferentialDriveKinematics(kTrackWithMeters);
 
     }
+
+    public static class ElevatorConstants {  //Gear Ratio: 5/1(?)
+      public static class PID {
+        public static final double kPUp = 0;
+        public static final double kIUp = 0;
+        public static final double kDUp = 0;
+
+        public static final double kPDown = 0;
+        public static final double kIDown = 0;
+        public static final double kDDown = 0;
+
+        public static final int iZone = 0;
+        
+        public static final double fGainUp = 0;
+        public static final double fGainDown = 0;
+      }
+
+      public static class SetPoints {
+        public static final double home = 0;
+      }
+    }
+
+    public static class WristConstants {
+      public static class PID {
+        public static final double kP = 0;
+        public static final double kI = 0;
+        public static final double kD = 0;
+
+        public static final int iZone = 0;
+        public static final double fGain = 0;
+      }
+    }
   
   
     public static class OperatorConstants {
