@@ -38,7 +38,7 @@ public class BobDrive extends CommandBase {
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
 
-		double rotateValue = robotContainer.getRightStick().getFirst() * 0.50;
+		double rotateValue = robotContainer.getRightStick().getFirst() * 0.40;
 		double moveValue = robotContainer.getLeftStick().getSecond() * 1.0;
 		moveValue = Math.abs(moveValue) > deadband ? moveValue : 0.0;
 		rotateValue = Math.abs(rotateValue) > deadband ? rotateValue : 0.0;

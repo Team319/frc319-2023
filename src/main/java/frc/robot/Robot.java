@@ -16,7 +16,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.BobDrive;
+import frc.robot.commands.autos.AutoDriveForwardAndEngage;
 import frc.robot.commands.autos.TestPath;
+import frc.robot.commands.drivetrain.DriveToPitch;
+import frc.robot.commands.drivetrain.EngageInAuto;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -46,7 +49,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    String trajectoryJSON = "frc319-2023//PathWeaver//output//blueleft.wpilib.json";
+    String trajectoryJSON = "paths//blueleft.wpilib.json";
  
     try {
       Path testPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
@@ -82,8 +85,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Pose X", drivetrain.getPose().getX());
     SmartDashboard.putNumber("Pose Y", drivetrain.getPose().getY());
     SmartDashboard.putNumber("Fused Heading", drivetrain.getHeadingDegrees());
+    
     SmartDashboard.putNumber("Left Wheel Speed", drivetrain.getLeftMotorSpeed());
     SmartDashboard.putNumber("Right Wheel Speed", drivetrain.getRightMotorSpeed());
+    //SmartDashboard.putNumber("Left Accel", drivetrain.pigeon.getAcc);
+
+    SmartDashboard.putNumber("Pitch", drivetrain.getPitch());
+    SmartDashboard.putNumber("Delta Pitch", drivetrain.getDeltaPitch());
 
     drivetrain.setFollowers();
 
@@ -100,9 +108,11 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = new TestPath(autoTrajectory);
+    //m_autonomousCommand = new TestPath(autoTrajectory);
     //drivetrain.zeroOdometry(); //remove
     // schedule the autonomous command (example)
+    //m_autonomousCommand = new DriveToPitch(10);
+    m_autonomousCommand = new EngageInAuto();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
