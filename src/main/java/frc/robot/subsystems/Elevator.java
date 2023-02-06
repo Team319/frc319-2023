@@ -19,8 +19,9 @@ public class Elevator extends SubsystemBase {
   public CANSparkMax elevatorLead = new CANSparkMax(8, MotorType.kBrushless);
   public CANSparkMax elevatorFollow = new CANSparkMax(9, MotorType.kBrushless);
   
-  public RelativeEncoder elevatorEncoder = elevatorLead.getEncoder();
+  // Getting PID Controller and Encoder for elevator
   private SparkMaxPIDController pidController = elevatorLead.getPIDController();
+  public RelativeEncoder elevatorEncoder = elevatorLead.getEncoder();
 
   /** Creates a new Elevator. */
   public Elevator() {
@@ -30,15 +31,6 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  }
-
-  public double getCurrentPosition() {
-    return this.elevatorEncoder.getPosition();
-  }
-
-  public void setPosition(double targetPosition) {
-    manageMotion(targetPosition);
-    pidController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
   }
 
   private void pidUp() {
@@ -63,4 +55,14 @@ public class Elevator extends SubsystemBase {
         pidDown();
       }
   }
+
+  public double getCurrentPosition() {
+    return this.elevatorEncoder.getPosition();
+  }
+
+  public void setPosition(double targetPosition) {
+    manageMotion(targetPosition);
+    pidController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
+  }
+
 }

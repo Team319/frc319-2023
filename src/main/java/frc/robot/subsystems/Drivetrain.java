@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 // Acceleration value is 33% faster than our velocity value
+// TODO: Create "pigeon" to "pigeon2"
 
 package frc.robot.subsystems;
 
@@ -11,7 +12,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
-import com.ctre.phoenix.sensors.WPI_PigeonIMU;
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -23,10 +24,13 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.commands.BobDrive;
 import frc.robot.utils.DriveSignal;
 
 public class Drivetrain extends SubsystemBase {
+
+  private DriveMode drivemode = Constants.DriveConstants.DriveMode.Normal;
 
   // Motors
   public TalonFX leftLead = new TalonFX(2);
@@ -37,10 +41,11 @@ public class Drivetrain extends SubsystemBase {
   public TalonFX rightFollow1 = new TalonFX(4);
   public TalonFX rightFollow2 = new TalonFX(6);
 
-  public WPI_PigeonIMU pigeon = new WPI_PigeonIMU(7);
+  public WPI_Pigeon2 pigeon = new WPI_Pigeon2(7);
 
   private DifferentialDriveOdometry odometry;
-  Rotation2d heading = new Rotation2d(Units.degreesToRadians(pigeon.getFusedHeading()));
+  Rotation2d heading = new Rotation2d(Units.degreesToRadians(pigeon.getAngle()));
+  // TODO: Check polarity
 
   private static final double rampRate = 0.25;
   private static double previousPitch = 0.0;
@@ -53,7 +58,7 @@ public class Drivetrain extends SubsystemBase {
 
     setMotorConfigsToDefault();
     setMotorInversions();
-    setMotorNeutralModes();
+    setDefaultMotorNeutralModes();
     setMotorRampRates();
     
 
@@ -62,34 +67,18 @@ public class Drivetrain extends SubsystemBase {
 
   }
 
+  public void initDefaultCommand() {
+    setDefaultCommand(new BobDrive());
+  }
+
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     odometry.update(getHeading(), getLeftLeadDriveDistanceMeters(), getRightLeadDriveDistanceMeters());
-    deltaPitch();
-  }
-
-  public void drive(ControlMode controlMode, double left, double right) {
-    //Left control mode is set to left
-    this.leftLead.set(controlMode, left);
-
-    //Right control mode is set to right
-    this.rightLead.set(controlMode, right);
+    updateDeltaPitch();
   }
   
-  public void drive(ControlMode controlMode, DriveSignal driveSignal) {
-    this.drive(controlMode, driveSignal.getLeft(), driveSignal.getRight());
-  }
-
-  public void setFollowers() {
-    leftFollow1.follow(leftLead);
-    leftFollow2.follow(leftLead);
-
-    rightFollow1.follow(rightLead);
-    rightFollow2.follow(rightLead);
-  }
-
   private void setMotorConfigsToDefault() {
     
     leftLead.configFactoryDefault();
@@ -112,7 +101,8 @@ public class Drivetrain extends SubsystemBase {
     rightFollow2.setInverted(true);
   }
 
-  private void setMotorNeutralModes() {
+  // Unsure if we should remove this. - L.S
+  private void setDefaultMotorNeutralModes() {
     
     leftLead.setNeutralMode(NeutralMode.Coast);
     leftFollow1.setNeutralMode(NeutralMode.Coast);
@@ -122,6 +112,12 @@ public class Drivetrain extends SubsystemBase {
     rightFollow1.setNeutralMode(NeutralMode.Coast);
     rightFollow2.setNeutralMode(NeutralMode.Coast);
   }
+
+  public void setNeutralMode(NeutralMode neutralMode) {
+		this.leftLead.setNeutralMode(neutralMode);
+		this.rightLead.setNeutralMode(neutralMode);
+	}
+
 
   private void setMotorRampRates() {
 
@@ -134,6 +130,43 @@ public class Drivetrain extends SubsystemBase {
     rightFollow2.configOpenloopRamp(rampRate);
   }
 
+  // Sets left and right controlmodes to left and right
+  public void drive(ControlMode controlMode, double left, double right) {
+    this.leftLead.set(controlMode, left);
+    this.rightLead.set(controlMode, right);
+  }
+  
+  // Getting the drive signals to get the left and right signals
+  public void drive(ControlMode controlMode, DriveSignal driveSignal) {
+    this.drive(controlMode, driveSignal.getLeft(), driveSignal.getRight());
+  }
+
+  public void tankDriveVolts(double leftVoltage, double rightVoltage) {
+    leftLead.set(TalonFXControlMode.PercentOutput, leftVoltage);
+    rightLead.set(TalonFXControlMode.PercentOutput, rightVoltage);
+  }
+
+  // Sets followers to lead
+  public void setFollowers() {
+    leftFollow1.follow(leftLead);
+    leftFollow2.follow(leftLead);
+
+    rightFollow1.follow(rightLead);
+    rightFollow2.follow(rightLead);
+  }
+
+  // Gets left and right lead motorspeeds
+  public double getLeftMotorSpeed() {
+    double leftmotorspeed = leftLead.getSelectedSensorVelocity() * Constants.DriveConstants.metersPerEncoderTick;
+    return leftmotorspeed;
+  }
+
+  public double getRightMotorSpeed() {
+    double rightmotorspeed = rightLead.getSelectedSensorVelocity() * Constants.DriveConstants.metersPerEncoderTick;
+    return rightmotorspeed;
+  }
+
+  // Get left and right lead driving distance in meters
   public double getLeftLeadDriveDistanceMeters() {
     return this.leftLead.getSelectedSensorPosition() * Constants.DriveConstants.metersPerEncoderTick;
   }
@@ -142,6 +175,7 @@ public class Drivetrain extends SubsystemBase {
     return this.rightLead.getSelectedSensorPosition() * Constants.DriveConstants.metersPerEncoderTick;
   }
 
+  // Get left lead and right lead driving distance in tick
   public double getLeftLeadDriveDistanceTicks() {
     return this.leftLead.getSelectedSensorPosition();
   }
@@ -159,6 +193,11 @@ public class Drivetrain extends SubsystemBase {
     return MathUtil.inputModulus(pigeon.getRotation2d().getDegrees(), -180, 180);
   }
 
+  public void resetHeading() {
+    pigeon.reset();
+    this.getHeading();
+  }
+
   public double getPitch() {
     return pigeon.getPitch();
   }
@@ -167,27 +206,27 @@ public class Drivetrain extends SubsystemBase {
     return deltaPitch;
   }
 
-  public void resetHeading() {
-    pigeon.setFusedHeading(0);
-    this.getHeading();
+  public void updateDeltaPitch() {
+    double currentPitch = getPitch();
+    double changeOfPitch = previousPitch - currentPitch;
+    previousPitch = currentPitch;
+    deltaPitch = Math.abs(changeOfPitch);
   }
 
   public Pose2d getPose() {
     return odometry.getPoseMeters();
   }
 
-  public double getLeftMotorSpeed() {
-    double leftmotorspeed = leftLead.getSelectedSensorVelocity() * Constants.DriveConstants.metersPerEncoderTick;
-    return leftmotorspeed;
-  }
-
-  public double getRightMotorSpeed() {
-    double rightmotorspeed = rightLead.getSelectedSensorVelocity() * Constants.DriveConstants.metersPerEncoderTick;
-    return rightmotorspeed;
-  }
-
   public DifferentialDriveWheelSpeeds getWheelSpeeds() { // TODO : These should be scaled with the distance travelled per 'pulse'
     	return new DifferentialDriveWheelSpeeds(getLeftMotorSpeed(), getRightMotorSpeed());
+  }
+
+  public DriveMode getDriveMode() {
+    return this.drivemode;
+  }
+
+  public void setDriveMode(DriveMode d) {
+    this.drivemode = d;
   }
 
   public void zeroOdometry() {
@@ -202,6 +241,7 @@ public class Drivetrain extends SubsystemBase {
     odometry.resetPosition(getHeading(), getLeftLeadDriveDistanceMeters(), getRightLeadDriveDistanceMeters(), pose);
   }
 
+  // Resets the encoders
   public void resetEncoders() {
     
     leftLead.setSelectedSensorPosition(0);
@@ -211,18 +251,6 @@ public class Drivetrain extends SubsystemBase {
     rightLead.setSelectedSensorPosition(0);
     rightFollow1.setSelectedSensorPosition(0);
     rightFollow2.setSelectedSensorPosition(0);
-  }
-
-  public void tankDriveVolts(double leftVoltage, double rightVoltage) {
-    leftLead.set(TalonFXControlMode.PercentOutput, leftVoltage);
-    rightLead.set(TalonFXControlMode.PercentOutput, rightVoltage);
-  }
-
-  public void deltaPitch() {
-    double currentPitch = getPitch();
-    double changeOfPitch = previousPitch - currentPitch;
-    previousPitch = currentPitch;
-    deltaPitch = Math.abs(changeOfPitch);
   }
 
 }

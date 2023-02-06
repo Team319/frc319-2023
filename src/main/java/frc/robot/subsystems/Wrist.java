@@ -14,11 +14,12 @@ import frc.robot.Constants;
 
 public class Wrist extends SubsystemBase {
 
-  //Motors
+  // Motors
   public CANSparkMax wristPivot = new CANSparkMax(10, MotorType.kBrushless);
   
-  public RelativeEncoder wristEncoder = wristPivot.getEncoder();
+  // Gets PID Controller and Encoder for wrist
   private SparkMaxPIDController pidController = wristPivot.getPIDController();
+  public RelativeEncoder wristEncoder = wristPivot.getEncoder();
 
   // Creates a new Wrist.
   public Wrist() {
@@ -30,6 +31,14 @@ public class Wrist extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+  private void setPid() {
+    pidController.setIZone(Constants.WristConstants.PID.iZone);
+    pidController.setP(Constants.WristConstants.PID.kP);
+    pidController.setI(Constants.WristConstants.PID.kI);
+    pidController.setD(Constants.WristConstants.PID.kD);
+    pidController.setFF(Constants.WristConstants.PID.fGain);
+  }
+
   public double getCurrentPosition() {
     return this.wristEncoder.getPosition();
   }
@@ -38,11 +47,4 @@ public class Wrist extends SubsystemBase {
     pidController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
   }
 
-  private void setPid() {
-    pidController.setIZone(Constants.WristConstants.PID.iZone);
-    pidController.setP(Constants.WristConstants.PID.kP);
-    pidController.setI(Constants.WristConstants.PID.kI);
-    pidController.setD(Constants.WristConstants.PID.kD);
-    pidController.setFF(Constants.WristConstants.PID.fGain);
-  }
 }

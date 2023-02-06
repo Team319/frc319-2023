@@ -7,6 +7,8 @@ package frc.robot;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -21,6 +23,7 @@ import frc.robot.commands.autos.TestPath;
 import frc.robot.commands.drivetrain.DriveToPitch;
 import frc.robot.commands.drivetrain.EngageInAuto;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Limelight;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -35,6 +38,7 @@ public class Robot extends TimedRobot {
 
   private Command m_teleopCommand = new BobDrive();
   public static Drivetrain drivetrain = new Drivetrain();
+  public static Limelight limelight = new Limelight();
 
   private RobotContainer m_robotContainer;
   public static Trajectory autoTrajectory = new Trajectory();
@@ -45,6 +49,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    Robot.drivetrain.setNeutralMode(NeutralMode.Coast);
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
@@ -93,6 +98,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Pitch", drivetrain.getPitch());
     SmartDashboard.putNumber("Delta Pitch", drivetrain.getDeltaPitch());
 
+    SmartDashboard.putNumber("Pipeline ID", limelight.p);
+    SmartDashboard.putNumber("Target X", limelight.x);
+    SmartDashboard.putNumber("Target Y", limelight.y);
+    SmartDashboard.putNumber("Target V", limelight.v);
+    SmartDashboard.putNumber("LED Mode", limelight.led);
+
+    SmartDashboard.putNumber("Drive Mode", Robot.drivetrain.getDriveMode().ordinal());
+
     drivetrain.setFollowers();
 
     CommandScheduler.getInstance().run();
@@ -100,7 +113,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    Robot.drivetrain.setNeutralMode(NeutralMode.Coast);
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -108,6 +123,9 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+
+    Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
+
     //m_autonomousCommand = new TestPath(autoTrajectory);
     //drivetrain.zeroOdometry(); //remove
     // schedule the autonomous command (example)
@@ -124,6 +142,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+
+    Robot.drivetrain.setNeutralMode(NeutralMode.Coast);
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

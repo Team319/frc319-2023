@@ -23,6 +23,10 @@ public final class Constants {
       The Robot Characterization Toolsuite provides a convenient tool for obtaining these
       These characterization values MUST be determined either experimentally or theoretically
       values for your robot.*/
+      public enum DriveMode {
+        Normal, Limelight,
+    }
+    
 
       public static final double ksVolts = 0.080151; 
       public static final double kvVoltSecondsPerMeter = 3.895;
@@ -53,7 +57,7 @@ public final class Constants {
 
     }
 
-    public static class ElevatorConstants {  //Gear Ratio: 5/1(?)
+    public static class ElevatorConstants {  // Gear Ratio: 5/1(?)
       public static class PID {
         public static final double kPUp = 0;
         public static final double kIUp = 0;
@@ -70,7 +74,15 @@ public final class Constants {
       }
 
       public static class SetPoints {
+        public static final double scoreHighCone = 0;
+        public static final double scoreMiddleCone = 0;
+        public static final double scoreFloor = 0;
+
+        public static final double scoreHighCube = 0;
+        public static final double scoreMiddleCube = 0;
+        
         public static final double home = 0;
+        public static final double top = 0;
       }
     }
 
@@ -83,6 +95,23 @@ public final class Constants {
         public static final int iZone = 0;
         public static final double fGain = 0;
       }
+
+      public static class SetPoints {
+        public static final double home = 0;
+        public static final double top = 0;
+        public static final double bottom = 0;
+      }
+    }
+
+    public static class LimelightConstants {
+      public static class Modes {
+        public static final int APRIL_TAG_MODE = 0;
+        public static final int LIMELIGHT_BOTTOM = 1;
+        public static final int LIMELIGHT_TOP = 2;
+      }
+      
+      public static final int LED_ON = 3;
+      public static final int LED_OFF = 1;
     }
   
   

@@ -6,9 +6,10 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.drivetrain.ResetOdometryAndHeading;
-import frc.robot.commands.autos.Autos;
+import frc.robot.commands.drivetrain.SetDriveMode;
+import frc.robot.commands.limelight.SwitchingPipelineTest;
+import frc.robot.subsystems.Limelight;
 import frc.robot.commands.autos.TestPath;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -50,7 +51,15 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(new ResetOdometryAndHeading());
+    m_driverController.a().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.APRIL_TAG_MODE));
+    m_driverController.b().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_BOTTOM));
+    m_driverController.x().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_TOP));
+    m_driverController.y().whileTrue(null);
+
+    m_driverController.leftTrigger().whileTrue(new SetDriveMode());
+    m_driverController.rightTrigger().whileTrue(null);
+    m_driverController.leftBumper().whileTrue(null);
+    m_driverController.rightBumper().whileTrue(null);
   }
 
   /**
