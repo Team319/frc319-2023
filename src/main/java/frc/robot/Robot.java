@@ -23,6 +23,7 @@ import frc.robot.commands.autos.TestPath;
 import frc.robot.commands.drivetrain.DriveToPitch;
 import frc.robot.commands.drivetrain.EngageInAuto;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Limelight;
 
 /**
@@ -39,6 +40,7 @@ public class Robot extends TimedRobot {
   private Command m_teleopCommand = new BobDrive();
   public static Drivetrain drivetrain = new Drivetrain();
   public static Limelight limelight = new Limelight();
+  public static Elevator elevator = new Elevator();
 
   private RobotContainer m_robotContainer;
   public static Trajectory autoTrajectory = new Trajectory();
@@ -50,6 +52,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     Robot.drivetrain.setNeutralMode(NeutralMode.Coast);
+    Robot.drivetrain.setDefaultCommand(new BobDrive());
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
@@ -104,7 +107,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Target V", limelight.v);
     SmartDashboard.putNumber("LED Mode", limelight.led);
 
-    SmartDashboard.putNumber("Drive Mode", Robot.drivetrain.getDriveMode().ordinal());
+    SmartDashboard.putNumber("Drive Mode", drivetrain.getDriveMode().ordinal());
+
+    SmartDashboard.putNumber("Elevator Position", elevator.getCurrentPosition());
+    SmartDashboard.putNumber("Elevator Velocity", elevator.getVelocity());
 
     drivetrain.setFollowers();
 

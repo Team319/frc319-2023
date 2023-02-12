@@ -33,12 +33,12 @@ public class Drivetrain extends SubsystemBase {
   private DriveMode drivemode = Constants.DriveConstants.DriveMode.Normal;
 
   // Motors
-  public TalonFX leftLead = new TalonFX(2);
-  public TalonFX leftFollow1 = new TalonFX(1);
+  public TalonFX leftLead = new TalonFX(1);
+  public TalonFX leftFollow1 = new TalonFX(2);
   public TalonFX leftFollow2 = new TalonFX(3);
 
-  public TalonFX rightLead = new TalonFX(5);
-  public TalonFX rightFollow1 = new TalonFX(4);
+  public TalonFX rightLead = new TalonFX(4);
+  public TalonFX rightFollow1 = new TalonFX(5);
   public TalonFX rightFollow2 = new TalonFX(6);
 
   public WPI_Pigeon2 pigeon = new WPI_Pigeon2(7);
