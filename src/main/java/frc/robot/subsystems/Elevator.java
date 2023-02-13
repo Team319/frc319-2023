@@ -6,25 +6,28 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxRelativeEncoder.Type;
 
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
 
   //Motors
-  public CANSparkMax elevatorLead = new CANSparkMax(8, MotorType.kBrushless);
-  public CANSparkMax elevatorFollow = new CANSparkMax(9, MotorType.kBrushless);
+  public CANSparkMax elevatorLead = new CANSparkMax(9, MotorType.kBrushless);
+  public CANSparkMax elevatorFollow = new CANSparkMax(8, MotorType.kBrushless);
   
   // Getting PID Controller and Encoder for elevator
   private SparkMaxPIDController pidController = elevatorLead.getPIDController();
   public RelativeEncoder elevatorEncoder = elevatorLead.getEncoder();
-
   /** Creates a new Elevator. */
   public Elevator() {
+
+    setUp();
     pidController.setIZone(Constants.ElevatorConstants.PID.iZone);
   }
 
@@ -63,6 +66,34 @@ public class Elevator extends SubsystemBase {
   public void setPosition(double targetPosition) {
     manageMotion(targetPosition);
     pidController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
+  }
+
+  public void setUp() {
+    elevatorLead.restoreFactoryDefaults();
+    elevatorFollow.restoreFactoryDefaults();
+
+    elevatorLead.clearFaults();
+    elevatorFollow.clearFaults();
+
+    elevatorLead.enableSoftLimit(SoftLimitDirection.kForward, true);
+    elevatorLead.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+    elevatorLead.setSoftLimit(SoftLimitDirection.kForward, (float)70.0);
+    elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)0.25);
+
+    elevatorLead.setInverted(true);
+
+    elevatorFollow.follow(elevatorLead, true);
+
+    pidController.setFeedbackDevice(elevatorEncoder);
+  }
+
+  public void elevatorVoltage(double voltage) {
+    elevatorLead.set(voltage);
+  }
+
+  public double getVelocity() {
+    return elevatorLead.getEncoder().getVelocity();
   }
 
 }
