@@ -42,7 +42,7 @@ public class BobDrive extends CommandBase {
 	// Called repeatedly when this Command is scheduled to run
 	public void execute() {
 		if (Robot.drivetrain.getDriveMode() == DriveMode.Limelight) {
-			rotateValue = limelightRotatePID.calculate(Robot.limelight.getXProportional());
+			rotateValue = -limelightRotatePID.calculate(Robot.limelight.getXProportional());
 		}
 		else {
 			rotateValue = robotContainer.getRightStick().getFirst() * 0.40;

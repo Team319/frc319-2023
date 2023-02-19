@@ -5,13 +5,19 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.commands.drivetrain.ResetOdometryAndHeading;
 import frc.robot.commands.drivetrain.SetDriveMode;
+import frc.robot.commands.elbow.ElbowGoToPosition;
+import frc.robot.commands.elbow.SetElbowVoltage;
 import frc.robot.commands.limelight.SwitchingPipelineTest;
+import frc.robot.commands.wrist.SetWristVoltage;
+import frc.robot.commands.wrist.WristGoToPosition;
 import frc.robot.subsystems.Limelight;
 import frc.robot.commands.autos.TestPath;
-import frc.robot.commands.autos.elevator.SetElevatorPosition;
-import frc.robot.commands.autos.elevator.SetElevatorVoltage;
+import frc.robot.commands.collector.SetCollectorVoltage;
+import frc.robot.commands.elevator.SetElevatorPosition;
+import frc.robot.commands.elevator.SetElevatorVoltage;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -58,14 +64,19 @@ public class RobotContainer {
     m_driverController.x().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_TOP));
     //m_driverController.y().whileTrue(null);
 
-    m_driverController.povUp().whileTrue(new SetElevatorPosition(70.0));
-    m_driverController.povLeft().whileTrue(new SetElevatorPosition(35.0));
-    m_driverController.povDown().whileTrue(new SetElevatorPosition(0.25));
+    m_driverController.povUp().whileTrue(new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.top));
+    m_driverController.povLeft().whileTrue(new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.middle));
+    m_driverController.povDown().whileTrue(new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.home));
 
-    m_driverController.leftTrigger().whileTrue(new SetDriveMode());
+    /*m_driverController.povUp().whileTrue(new SetElevatorVoltage(0.4));
+    m_driverController.povLeft().whileTrue(new SetElevatorVoltage(0.0));
+    m_driverController.povDown().whileTrue(new SetElevatorVoltage(-0.4));*/
+
+    m_driverController.leftTrigger().whileTrue(new SetDriveMode(DriveMode.Limelight));
+    m_driverController.leftTrigger().whileFalse(new SetDriveMode(DriveMode.Normal));
     //m_driverController.rightTrigger().whileTrue(null);
-    //m_driverController.leftBumper().whileTrue(null);
-    //m_driverController.rightBumper().whileTrue(null);
+    //m_driverController.leftBumper().whileTrue(new WristGoToPosition(-10.0));
+    //m_driverController.rightBumper().whileTrue(new WristGoToPosition(-90.0));
   }
 
   /**

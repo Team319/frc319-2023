@@ -22,9 +22,12 @@ import frc.robot.commands.autos.AutoDriveForwardAndEngage;
 import frc.robot.commands.autos.TestPath;
 import frc.robot.commands.drivetrain.DriveToPitch;
 import frc.robot.commands.drivetrain.EngageInAuto;
+import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elbow;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Wrist;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -41,6 +44,9 @@ public class Robot extends TimedRobot {
   public static Drivetrain drivetrain = new Drivetrain();
   public static Limelight limelight = new Limelight();
   public static Elevator elevator = new Elevator();
+  public static Wrist wrist = new Wrist();
+  public static Elbow elbow = new Elbow();
+  public static Collector collector = new Collector();
 
   private RobotContainer m_robotContainer;
   public static Trajectory autoTrajectory = new Trajectory();
@@ -85,32 +91,44 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    SmartDashboard.putNumber("Left Distance", drivetrain.getLeftLeadDriveDistanceMeters());
-    SmartDashboard.putNumber("Right Distance", drivetrain.getRightLeadDriveDistanceMeters());
-    SmartDashboard.putNumber("Left Ticks", drivetrain.getLeftLeadDriveDistanceTicks());
-    SmartDashboard.putNumber("Right Ticks", drivetrain.getRightLeadDriveDistanceTicks());
-
-    SmartDashboard.putNumber("Pose X", drivetrain.getPose().getX());
-    SmartDashboard.putNumber("Pose Y", drivetrain.getPose().getY());
-    SmartDashboard.putNumber("Fused Heading", drivetrain.getHeadingDegrees());
     
-    SmartDashboard.putNumber("Left Wheel Speed", drivetrain.getLeftMotorSpeed());
-    SmartDashboard.putNumber("Right Wheel Speed", drivetrain.getRightMotorSpeed());
+    //SmartDashboard.putNumber("Left Distance", drivetrain.getLeftLeadDriveDistanceMeters());
+    //SmartDashboard.putNumber("Right Distance", drivetrain.getRightLeadDriveDistanceMeters());
+    //SmartDashboard.putNumber("Left Ticks", drivetrain.getLeftLeadDriveDistanceTicks());
+    //SmartDashboard.putNumber("Right Ticks", drivetrain.getRightLeadDriveDistanceTicks());
+
+    //SmartDashboard.putNumber("Pose X", drivetrain.getPose().getX());
+    //SmartDashboard.putNumber("Pose Y", drivetrain.getPose().getY());
+    //SmartDashboard.putNumber("Fused Heading", drivetrain.getHeadingDegrees());
+    
+    //SmartDashboard.putNumber("Left Wheel Speed", drivetrain.getLeftMotorSpeed());
+    //SmartDashboard.putNumber("Right Wheel Speed", drivetrain.getRightMotorSpeed());
     //SmartDashboard.putNumber("Left Accel", drivetrain.pigeon.getAcc);
 
-    SmartDashboard.putNumber("Pitch", drivetrain.getPitch());
-    SmartDashboard.putNumber("Delta Pitch", drivetrain.getDeltaPitch());
+    //SmartDashboard.putNumber("Pitch", drivetrain.getPitch());
+    //SmartDashboard.putNumber("Delta Pitch", drivetrain.getDeltaPitch());
 
-    SmartDashboard.putNumber("Pipeline ID", limelight.p);
+    /*
+     *   
+     *   SmartDashboard.putNumber("Pipeline ID", limelight.p);
     SmartDashboard.putNumber("Target X", limelight.x);
     SmartDashboard.putNumber("Target Y", limelight.y);
     SmartDashboard.putNumber("Target V", limelight.v);
     SmartDashboard.putNumber("LED Mode", limelight.led);
+     */
+
 
     SmartDashboard.putNumber("Drive Mode", drivetrain.getDriveMode().ordinal());
 
     SmartDashboard.putNumber("Elevator Position", elevator.getCurrentPosition());
     SmartDashboard.putNumber("Elevator Velocity", elevator.getVelocity());
+    SmartDashboard.putNumber("Elbow Position", elbow.getCurrentPosition());
+    SmartDashboard.putNumber("Elbow Current", elbow.getElbowCurrent());
+    SmartDashboard.putNumber("Elbow Velocity", elbow.getElbowMotorVelocity());
+    SmartDashboard.putNumber("Wrist Position", wrist.getCurrentPosition());
+    SmartDashboard.putNumber("Wrist Current", wrist.getWristCurrent());
+    SmartDashboard.putNumber("Wrist Velocity", wrist.getWristMotorVelocity());
+    SmartDashboard.putNumber("Collector Current", collector.getCollectorCurrent());
 
     drivetrain.setFollowers();
 
@@ -124,7 +142,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    Robot.elevator.setPosition(Robot.elevator.getCurrentPosition());
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -155,6 +175,8 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     drivetrain.zeroOdometry(); //remove later
+    Robot.elbow.setPosition(Robot.elbow.getCurrentPosition());
+    Robot.wrist.setPosition(Robot.wrist.getCurrentPosition());
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

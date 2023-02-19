@@ -63,7 +63,7 @@ public final class Constants {
         public static final double kIUp = 0;
         public static final double kDUp = 0;
 
-        public static final double kPDown = 0.9;
+        public static final double kPDown = 0.1;
         public static final double kIDown = 0;
         public static final double kDDown = 0;
 
@@ -76,30 +76,90 @@ public final class Constants {
       public static class SetPoints {
         public static final double scoreHighCone = 0;
         public static final double scoreMiddleCone = 0;
-        public static final double scoreFloor = 0;
 
         public static final double scoreHighCube = 0;
         public static final double scoreMiddleCube = 0;
         
+        public static final double scoreFloor = 0;
+        
+        public static final double home = 0.75;
+        public static final double top = 65.0;
+        public static final double middle = 35.0;
+
+        public static final double deadband = 1.5;
+      }
+
+      public static class SoftLimits {
+        public static final double forwardSoftLimit = 65.0;
+        public static final double reverseSoftLimit = 0.75;
+      }
+    }
+
+    public static class ElbowConstants {
+      public static class PID {
+        public static final double kUpP = 0.106155;
+        public static final double kUpI = 0.00106155;
+        public static final double kUpD = 0;
+
+        public static final double kDownP = 0.038462;
+        public static final double kDownI = 0;
+        public static final double kDownD = 0;
+
+        public static final double iZone = 0.3;
+        public static final double fGain = 0.00019231;
+      }
+
+      public static class SetPoints {
+        public static final double scoreHighCone = 0;
+        public static final double scoreMiddleCone = 0;
+
+        public static final double scoreHighCube = 0;
+        public static final double scoreMiddleCube = 0;
+
+        public static final double scoreFloor = 0;
+
         public static final double home = 0;
-        public static final double top = 0;
+        public static final double top = Constants.ElbowConstants.SoftLimits.forwardSoftLimit;
+        public static final double bottom = Constants.ElbowConstants.SoftLimits.reverseSoftLimit;
+
+        public static final double deadband = 1.5;
+      }
+
+      public static class SoftLimits {
+        public static final double forwardSoftLimit = 23.4;
+        public static final double reverseSoftLimit = -39.1;
       }
     }
 
     public static class WristConstants {
       public static class PID {
-        public static final double kP = 0;
+        public static final double kP = 0.096155;
         public static final double kI = 0;
         public static final double kD = 0;
 
         public static final int iZone = 0;
-        public static final double fGain = 0;
+        public static final double fGain = 0.00019231;
       }
 
       public static class SetPoints {
+        public static final double scoreHighCone = 0;
+        public static final double scoreMiddleCone = 0;
+
+        public static final double scoreHighCube = 0;
+        public static final double scoreMiddleCube = 0;
+
+        public static final double scoreFloor = 0;
+
         public static final double home = 0;
-        public static final double top = 0;
-        public static final double bottom = 0;
+        public static final double top = Constants.WristConstants.SoftLimits.forwardSoftLimit;
+        public static final double bottom = Constants.WristConstants.SoftLimits.reverseSoftLimit;
+
+        public static final double deadband = 1.5;
+      }
+
+      public static class SoftLimits {
+        public static final double forwardSoftLimit = 0.0;
+        public static final double reverseSoftLimit = -103.0;
       }
     }
 

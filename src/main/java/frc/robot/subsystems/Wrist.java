@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,14 +16,26 @@ import frc.robot.Constants;
 public class Wrist extends SubsystemBase {
 
   // Motors
-  public CANSparkMax wristPivot = new CANSparkMax(10, MotorType.kBrushless);
+  public CANSparkMax wristMotor = new CANSparkMax(11, MotorType.kBrushless);
   
   // Gets PID Controller and Encoder for wrist
-  private SparkMaxPIDController pidController = wristPivot.getPIDController();
-  public RelativeEncoder wristEncoder = wristPivot.getEncoder();
+  private SparkMaxPIDController pidController = wristMotor.getPIDController();
+  public RelativeEncoder wristEncoder = wristMotor.getEncoder();
 
   // Creates a new Wrist.
   public Wrist() {
+    wristMotor.restoreFactoryDefaults();
+    wristMotor.clearFaults();
+
+    wristMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    wristMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+    wristMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.WristConstants.SoftLimits.forwardSoftLimit);
+    wristMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.WristConstants.SoftLimits.reverseSoftLimit);
+
+    wristMotor.setInverted(false);
+    pidController.setFeedbackDevice(wristEncoder);
+
     setPid();
   }
 
@@ -45,6 +58,18 @@ public class Wrist extends SubsystemBase {
 
   public void setPosition(double targetPosition) {
     pidController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
+  }
+
+  public double getWristCurrent() {
+    return wristMotor.getOutputCurrent();
+  }
+
+  public void setWristPO(double voltage) {
+    wristMotor.set(voltage);
+  }
+
+  public double getWristMotorVelocity() {
+    return wristEncoder.getVelocity();
   }
 
 }
