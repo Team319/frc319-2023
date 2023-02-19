@@ -83,14 +83,14 @@ public final class Constants {
         public static final double scoreFloor = 0;
         
         public static final double home = 0.75;
-        public static final double top = 65.0;
+        public static final double top = 55.0;
         public static final double middle = 35.0;
 
         public static final double deadband = 1.5;
       }
 
       public static class SoftLimits {
-        public static final double forwardSoftLimit = 65.0;
+        public static final double forwardSoftLimit = 55.0;
         public static final double reverseSoftLimit = 0.75;
       }
     }
@@ -154,7 +154,7 @@ public final class Constants {
         public static final double top = Constants.WristConstants.SoftLimits.forwardSoftLimit;
         public static final double bottom = Constants.WristConstants.SoftLimits.reverseSoftLimit;
 
-        public static final double deadband = 1.5;
+        public static final double deadband = 0.5;
       }
 
       public static class SoftLimits {
@@ -177,5 +177,6 @@ public final class Constants {
   
     public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
   }
 }

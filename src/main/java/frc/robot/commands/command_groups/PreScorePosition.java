@@ -5,7 +5,6 @@
 package frc.robot.commands.command_groups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.collector.SetCollectorVoltage;
 import frc.robot.commands.elbow.ElbowGoToPosition;
 import frc.robot.commands.elevator.SetElevatorPosition;
 import frc.robot.commands.wrist.WristGoToPosition;
@@ -13,15 +12,16 @@ import frc.robot.commands.wrist.WristGoToPosition;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class FloorCollect extends SequentialCommandGroup {
-  /** Creates a new FloorCollect. */
-  public FloorCollect() {
+public class PreScorePosition extends SequentialCommandGroup {
+  /** Creates a new PreScorePosition. */
+  public PreScorePosition() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SetElevatorPosition(11.8), 
-      new ElbowGoToPosition(0),
-      new WristGoToPosition(-91)
+      new ElbowWristGoHome(),
+      new SetElevatorPosition(19), 
+      new ElbowGoToPosition(22),
+      new WristGoToPosition(-35)
     );
   }
 }

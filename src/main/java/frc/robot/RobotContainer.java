@@ -16,6 +16,12 @@ import frc.robot.commands.wrist.WristGoToPosition;
 import frc.robot.subsystems.Limelight;
 import frc.robot.commands.autos.TestPath;
 import frc.robot.commands.collector.SetCollectorVoltage;
+import frc.robot.commands.command_groups.FloorCollect;
+import frc.robot.commands.command_groups.FloorCollectConeStanding;
+import frc.robot.commands.command_groups.FloorCollectConeTipped;
+import frc.robot.commands.command_groups.GoHome;
+import frc.robot.commands.command_groups.PreScorePosition;
+import frc.robot.commands.command_groups.ScoreConeMid;
 import frc.robot.commands.elevator.SetElevatorPosition;
 import frc.robot.commands.elevator.SetElevatorVoltage;
 import edu.wpi.first.math.Pair;
@@ -37,6 +43,9 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
+      private final CommandXboxController m_operatorController =
+      new CommandXboxController(OperatorConstants.kOperatorControllerPort);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -57,11 +66,10 @@ public class RobotContainer {
     //new Trigger(m_exampleSubsystem::exampleCondition)
     //    .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.a().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.APRIL_TAG_MODE));
-    m_driverController.b().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_BOTTOM));
-    m_driverController.x().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_TOP));
+    /* Driver Controllers */
+    //m_driverController.a().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.APRIL_TAG_MODE));
+    //m_driverController.b().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_BOTTOM));
+    //m_driverController.x().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_TOP));
     //m_driverController.y().whileTrue(null);
 
     m_driverController.povUp().whileTrue(new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.top));
@@ -76,7 +84,17 @@ public class RobotContainer {
     m_driverController.leftTrigger().whileFalse(new SetDriveMode(DriveMode.Normal));
     //m_driverController.rightTrigger().whileTrue(null);
     //m_driverController.leftBumper().whileTrue(new WristGoToPosition(-10.0));
-    //m_driverController.rightBumper().whileTrue(new WristGoToPosition(-90.0));
+    m_driverController.rightBumper().whileTrue(new SetCollectorVoltage(0.5));
+    m_driverController.leftBumper().whileTrue(new SetCollectorVoltage(-0.5));
+
+    /* Operator Controllers */
+    m_operatorController.a().whileTrue(new FloorCollect());
+    m_operatorController.x().whileTrue(new FloorCollectConeStanding());
+    m_operatorController.y().whileTrue(new FloorCollectConeTipped());
+    m_operatorController.b().whileTrue(new GoHome());
+
+    m_operatorController.povUp().whileTrue(new PreScorePosition());
+    m_operatorController.povRight().whileTrue(new ScoreConeMid());
   }
 
   /**
