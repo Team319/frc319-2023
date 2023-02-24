@@ -6,11 +6,9 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxRelativeEncoder.Type;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -78,8 +76,8 @@ public class Elevator extends SubsystemBase {
     elevatorLead.enableSoftLimit(SoftLimitDirection.kForward, true);
     elevatorLead.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
-    elevatorLead.setSoftLimit(SoftLimitDirection.kForward, (float)70.0);
-    elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)0.25);
+    elevatorLead.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.ElevatorConstants.SoftLimits.forwardSoftLimit);
+    elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ElevatorConstants.SoftLimits.reverseSoftLimit);
 
     elevatorLead.setInverted(true);
 

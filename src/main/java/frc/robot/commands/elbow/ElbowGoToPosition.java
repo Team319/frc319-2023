@@ -2,26 +2,27 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.autos.elevator;
+package frc.robot.commands.elbow;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.subsystems.Elevator;
+import frc.robot.utils.HelperFunctions;
 
-public class SetElevatorPosition extends CommandBase {
+public class ElbowGoToPosition extends CommandBase {
 
   private double position = 0.0;
-  /** Creates a new SetElevatorPosition. */
-  public SetElevatorPosition(double position) {
-    addRequirements(Robot.elevator);
+  /** Creates a new ElbowGoToPosition. */
+  public ElbowGoToPosition(double position) {
     this.position = position;
+    addRequirements(Robot.elbow);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.elevator.setPosition(position);
+    Robot.elbow.setPosition(position);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,6 +36,6 @@ public class SetElevatorPosition extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return HelperFunctions.deadband(Robot.elbow.getCurrentPosition(), Constants.ElbowConstants.SetPoints.deadband) == 0.0;
   }
 }

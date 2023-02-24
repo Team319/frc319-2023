@@ -5,13 +5,25 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.commands.drivetrain.ResetOdometryAndHeading;
 import frc.robot.commands.drivetrain.SetDriveMode;
+import frc.robot.commands.elbow.ElbowGoToPosition;
+import frc.robot.commands.elbow.SetElbowVoltage;
 import frc.robot.commands.limelight.SwitchingPipelineTest;
+import frc.robot.commands.wrist.SetWristVoltage;
+import frc.robot.commands.wrist.WristGoToPosition;
 import frc.robot.subsystems.Limelight;
 import frc.robot.commands.autos.TestPath;
-import frc.robot.commands.autos.elevator.SetElevatorPosition;
-import frc.robot.commands.autos.elevator.SetElevatorVoltage;
+import frc.robot.commands.collector.SetCollectorVoltage;
+import frc.robot.commands.command_groups.FloorCollect;
+import frc.robot.commands.command_groups.FloorCollectConeStanding;
+import frc.robot.commands.command_groups.FloorCollectConeTipped;
+import frc.robot.commands.command_groups.GoHome;
+import frc.robot.commands.command_groups.PreScorePosition;
+import frc.robot.commands.command_groups.ScoreConeMid;
+import frc.robot.commands.elevator.SetElevatorPosition;
+import frc.robot.commands.elevator.SetElevatorVoltage;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -30,6 +42,9 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+      private final CommandXboxController m_operatorController =
+      new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -51,21 +66,35 @@ public class RobotContainer {
     //new Trigger(m_exampleSubsystem::exampleCondition)
     //    .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.a().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.APRIL_TAG_MODE));
-    m_driverController.b().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_BOTTOM));
-    m_driverController.x().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_TOP));
+    /* Driver Controllers */
+    //m_driverController.a().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.APRIL_TAG_MODE));
+    //m_driverController.b().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_BOTTOM));
+    //m_driverController.x().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_TOP));
     //m_driverController.y().whileTrue(null);
 
-    m_driverController.povUp().whileTrue(new SetElevatorPosition(70.0));
-    m_driverController.povLeft().whileTrue(new SetElevatorPosition(35.0));
-    m_driverController.povDown().whileTrue(new SetElevatorPosition(0.25));
+    m_driverController.povUp().whileTrue(new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.top));
+    m_driverController.povLeft().whileTrue(new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.middle));
+    m_driverController.povDown().whileTrue(new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.home));
 
-    m_driverController.leftTrigger().whileTrue(new SetDriveMode());
+    /*m_driverController.povUp().whileTrue(new SetElevatorVoltage(0.4));
+    m_driverController.povLeft().whileTrue(new SetElevatorVoltage(0.0));
+    m_driverController.povDown().whileTrue(new SetElevatorVoltage(-0.4));*/
+
+    m_driverController.leftTrigger().whileTrue(new SetDriveMode(DriveMode.Limelight));
+    m_driverController.leftTrigger().whileFalse(new SetDriveMode(DriveMode.Normal));
     //m_driverController.rightTrigger().whileTrue(null);
-    //m_driverController.leftBumper().whileTrue(null);
-    //m_driverController.rightBumper().whileTrue(null);
+    //m_driverController.leftBumper().whileTrue(new WristGoToPosition(-10.0));
+    m_driverController.rightBumper().whileTrue(new SetCollectorVoltage(0.5));
+    m_driverController.leftBumper().whileTrue(new SetCollectorVoltage(-0.5));
+
+    /* Operator Controllers */
+    m_operatorController.a().whileTrue(new FloorCollect());
+    m_operatorController.x().whileTrue(new FloorCollectConeStanding());
+    m_operatorController.y().whileTrue(new FloorCollectConeTipped());
+    m_operatorController.b().whileTrue(new GoHome());
+
+    m_operatorController.povUp().whileTrue(new PreScorePosition());
+    m_operatorController.povRight().whileTrue(new ScoreConeMid());
   }
 
   /**
