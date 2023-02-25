@@ -5,7 +5,6 @@
 package frc.robot.commands.command_groups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.elbow.ElbowGoToPosition;
 import frc.robot.commands.elevator.SetElevatorPosition;
 import frc.robot.commands.wrist.WristGoToPosition;
@@ -13,16 +12,16 @@ import frc.robot.commands.wrist.WristGoToPosition;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ScoreConeMid extends SequentialCommandGroup {
+public class ScoreConeHigh extends SequentialCommandGroup {
   /** Creates a new ScoreConeMid. */
-  public ScoreConeMid() {
+  public ScoreConeHigh() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SetElevatorPosition(40.78), 
-      new WaitCommand(0.5),
+      new ElbowWristGoHome(),
+      new SetElevatorPosition(64), 
       new ElbowGoToPosition(0.197700),
-      new WristGoToPosition(-66)
+      new WristGoToPosition(-60)
     );
   }
 }

@@ -5,6 +5,7 @@
 package frc.robot.commands.command_groups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.collector.SetCollectorVoltage;
 import frc.robot.commands.elbow.ElbowGoToPosition;
 import frc.robot.commands.elevator.SetElevatorPosition;
@@ -19,9 +20,9 @@ public class FloorCollectConeStanding extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SetElevatorPosition(13.2), 
-      new WristGoToPosition(-78),
-      new ElbowGoToPosition(0)
+      new MoveWristAndElbow(-60, 0),
+      new WaitCommand(.25),
+      new SetElevatorPosition(10.0)
     );
   }
 }

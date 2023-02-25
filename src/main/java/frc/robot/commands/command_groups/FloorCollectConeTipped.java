@@ -20,8 +20,8 @@ public class FloorCollectConeTipped extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new SetElevatorPosition(19), 
-      new WristGoToPosition(-67),
-      new ElbowGoToPosition(-24)
+      new WristGoToPosition(-63),
+      new ElbowGoToPosition(-0.148682)
     );
   }
 }

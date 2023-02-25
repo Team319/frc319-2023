@@ -20,7 +20,7 @@ public class ElbowWristGoHome extends SequentialCommandGroup {
     addCommands(
       new ElbowGoToPosition(0),
       new WaitCommand(0.5),
-      new WristGoToPosition(0)
+      new WristGoToPosition(-31)
       
     );
   }

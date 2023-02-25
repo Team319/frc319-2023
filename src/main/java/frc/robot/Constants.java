@@ -59,13 +59,13 @@ public final class Constants {
 
     public static class ElevatorConstants {  // Gear Ratio: 5/1(?)
       public static class PID {
-        public static final double kPUp = 0.9;
+        public static final double kPUp = 0.5;
         public static final double kIUp = 0;
-        public static final double kDUp = 0;
+        public static final double kDUp = 1.0;
 
         public static final double kPDown = 0.1;
         public static final double kIDown = 0;
-        public static final double kDDown = 0;
+        public static final double kDDown = 1.0;
 
         public static final int iZone = 0;
         
@@ -90,23 +90,28 @@ public final class Constants {
       }
 
       public static class SoftLimits {
-        public static final double forwardSoftLimit = 55.0;
+        public static final double forwardSoftLimit = 66.0;
         public static final double reverseSoftLimit = 0.75;
+      }
+
+      public static class Currents {
+        public static final int currentMax = 20;
+        public static final int currentThreshold = 0;
       }
     }
 
     public static class ElbowConstants {
       public static class PID {
-        public static final double kUpP = 0.106155;
-        public static final double kUpI = 0.00106155;
+        public static final double kUpP = 5.5;
+        public static final double kUpI = 0.018;
         public static final double kUpD = 0;
 
-        public static final double kDownP = 0.038462;
-        public static final double kDownI = 0;
+        public static final double kDownP = 2.0;
+        public static final double kDownI = 0.018;
         public static final double kDownD = 0;
 
-        public static final double iZone = 0.3;
-        public static final double fGain = 0.00019231;
+        public static final double iZone = 0.005;
+        public static final double fGain = 0.018;
       }
 
       public static class SetPoints {
@@ -118,16 +123,22 @@ public final class Constants {
 
         public static final double scoreFloor = 0;
 
-        public static final double home = 0;
+        public static final double home = 0.0;
         public static final double top = Constants.ElbowConstants.SoftLimits.forwardSoftLimit;
         public static final double bottom = Constants.ElbowConstants.SoftLimits.reverseSoftLimit;
+        public static final double testbottom= -0.174316;
 
         public static final double deadband = 1.5;
       }
 
       public static class SoftLimits {
-        public static final double forwardSoftLimit = 23.4;
-        public static final double reverseSoftLimit = -39.1;
+        public static final double forwardSoftLimit = 0.193970;
+        public static final double reverseSoftLimit = -0.208496;
+      }
+
+      public static class Currents {
+        public static final int currentMax = 20;
+        public static final int currentThreshold = 0;
       }
     }
 
@@ -160,6 +171,19 @@ public final class Constants {
       public static class SoftLimits {
         public static final double forwardSoftLimit = 0.0;
         public static final double reverseSoftLimit = -103.0;
+      }
+
+      public static class Currents {
+        public static final int currentMax = 20;
+        public static final int currentThreshold = 0;
+      }
+    }
+
+    public static class CollectorConstants {
+      
+      public static class Currents {
+        public static final int currentMax = 60;
+        public static final int currentThreshold = 40;
       }
     }
 

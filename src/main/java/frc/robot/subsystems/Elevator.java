@@ -94,4 +94,8 @@ public class Elevator extends SubsystemBase {
     return elevatorLead.getEncoder().getVelocity();
   }
 
+  public double getElevatorCurrent() {
+    return elevatorLead.getOutputCurrent();
+  }
+
 }

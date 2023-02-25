@@ -122,6 +122,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Elevator Position", elevator.getCurrentPosition());
     SmartDashboard.putNumber("Elevator Velocity", elevator.getVelocity());
+    SmartDashboard.putNumber("Elevator Current", elevator.getElevatorCurrent());
     SmartDashboard.putNumber("Elbow Position", elbow.getCurrentPosition());
     SmartDashboard.putNumber("Elbow Current", elbow.getElbowCurrent());
     SmartDashboard.putNumber("Elbow Velocity", elbow.getElbowMotorVelocity());

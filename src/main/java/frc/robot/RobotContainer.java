@@ -16,11 +16,13 @@ import frc.robot.commands.wrist.WristGoToPosition;
 import frc.robot.subsystems.Limelight;
 import frc.robot.commands.autos.TestPath;
 import frc.robot.commands.collector.SetCollectorVoltage;
+import frc.robot.commands.command_groups.ElbowWristGoHome;
 import frc.robot.commands.command_groups.FloorCollect;
 import frc.robot.commands.command_groups.FloorCollectConeStanding;
 import frc.robot.commands.command_groups.FloorCollectConeTipped;
 import frc.robot.commands.command_groups.GoHome;
 import frc.robot.commands.command_groups.PreScorePosition;
+import frc.robot.commands.command_groups.ScoreConeHigh;
 import frc.robot.commands.command_groups.ScoreConeMid;
 import frc.robot.commands.elevator.SetElevatorPosition;
 import frc.robot.commands.elevator.SetElevatorVoltage;
@@ -72,9 +74,10 @@ public class RobotContainer {
     //m_driverController.x().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_TOP));
     //m_driverController.y().whileTrue(null);
 
-    m_driverController.povUp().whileTrue(new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.top));
-    m_driverController.povLeft().whileTrue(new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.middle));
-    m_driverController.povDown().whileTrue(new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.home));
+    m_driverController.povUp().whileTrue(new SetElevatorPosition(14.5));
+    m_driverController.povLeft().whileTrue(new ElbowWristGoHome());
+    m_driverController.povDown().whileTrue(new SetElevatorPosition(0));
+    m_driverController.povRight().whileTrue(new ElbowGoToPosition(Constants.ElbowConstants.SetPoints.testbottom));
 
     /*m_driverController.povUp().whileTrue(new SetElevatorVoltage(0.4));
     m_driverController.povLeft().whileTrue(new SetElevatorVoltage(0.0));
@@ -84,17 +87,17 @@ public class RobotContainer {
     m_driverController.leftTrigger().whileFalse(new SetDriveMode(DriveMode.Normal));
     //m_driverController.rightTrigger().whileTrue(null);
     //m_driverController.leftBumper().whileTrue(new WristGoToPosition(-10.0));
-    m_driverController.rightBumper().whileTrue(new SetCollectorVoltage(0.5));
-    m_driverController.leftBumper().whileTrue(new SetCollectorVoltage(-0.5));
+    m_driverController.rightBumper().whileTrue(new SetCollectorVoltage(0.75));
+    m_driverController.leftBumper().whileTrue(new SetCollectorVoltage(-0.75));
 
     /* Operator Controllers */
-    m_operatorController.a().whileTrue(new FloorCollect());
-    m_operatorController.x().whileTrue(new FloorCollectConeStanding());
-    m_operatorController.y().whileTrue(new FloorCollectConeTipped());
-    m_operatorController.b().whileTrue(new GoHome());
-
+    m_operatorController.a().onTrue(new FloorCollect());
+    m_operatorController.x().onTrue(new FloorCollectConeStanding());
+    m_operatorController.y().onTrue(new FloorCollectConeTipped());
+    m_operatorController.b().onTrue(new GoHome());
     m_operatorController.povUp().whileTrue(new PreScorePosition());
     m_operatorController.povRight().whileTrue(new ScoreConeMid());
+    m_operatorController.povLeft().whileTrue(new ScoreConeHigh());
   }
 
   /**

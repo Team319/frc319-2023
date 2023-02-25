@@ -19,10 +19,8 @@ public class GoHome extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ElbowGoToPosition(0),
-      new WaitCommand(1), 
-      new WristGoToPosition(0),
-      new WaitCommand(1), 
+      new MoveWristAndElbow(-31, 0),
+      new WaitCommand(0.5), 
       new SetElevatorPosition(0)
     );
   }

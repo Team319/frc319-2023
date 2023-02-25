@@ -8,12 +8,15 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Collector extends SubsystemBase {
   
   public CANSparkMax collectorMotor = new CANSparkMax(12, MotorType.kBrushless);
   /** Creates a new Collector. */
-  public Collector() {}
+  public Collector() {
+    collectorSetUp();
+  }
 
   @Override
   public void periodic() {
@@ -26,5 +29,12 @@ public class Collector extends SubsystemBase {
 
   public double getCollectorCurrent() {
     return collectorMotor.getOutputCurrent();
+  }
+
+  public void collectorSetUp() {
+    collectorMotor.restoreFactoryDefaults();
+    collectorMotor.setInverted(true);
+
+    collectorMotor.setSmartCurrentLimit(Constants.CollectorConstants.Currents.currentMax);
   }
 }

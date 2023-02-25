@@ -19,9 +19,9 @@ public class FloorCollect extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SetElevatorPosition(11.8), 
+      new SetElevatorPosition(10.78), 
       new ElbowGoToPosition(0),
-      new WristGoToPosition(-91)
+      new WristGoToPosition(-75)
     );
   }
 }
