@@ -4,8 +4,10 @@
 
 package frc.robot.commands.command_groups;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
 import frc.robot.commands.collector.SetCollectorVoltage;
 import frc.robot.commands.elbow.ElbowGoToPosition;
 import frc.robot.commands.elevator.SetElevatorPosition;
@@ -14,15 +16,15 @@ import frc.robot.commands.wrist.WristGoToPosition;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class FloorCollectConeStanding extends SequentialCommandGroup {
+public class FloorCollectConeStanding extends ParallelCommandGroup {
   /** Creates a new FloorCollectConeStanding. */
   public FloorCollectConeStanding() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new MoveWristAndElbow(-60, 0),
-      new WaitCommand(.25),
-      new SetElevatorPosition(10.0)
+      new MoveWristAndElbow(Constants.WristConstants.SetPoints.collectConeStanding, Constants.ElbowConstants.SetPoints.collectConeStanding),
+      new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.collectStanding),
+      new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltage)
     );
   }
 }

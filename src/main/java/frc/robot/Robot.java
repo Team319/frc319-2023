@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
@@ -26,6 +27,7 @@ import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elbow;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Wrist;
 
@@ -47,6 +49,7 @@ public class Robot extends TimedRobot {
   public static Wrist wrist = new Wrist();
   public static Elbow elbow = new Elbow();
   public static Collector collector = new Collector();
+  public static LEDS leds = new LEDS();
 
   private RobotContainer m_robotContainer;
   public static Trajectory autoTrajectory = new Trajectory();
@@ -91,45 +94,18 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    
-    //SmartDashboard.putNumber("Left Distance", drivetrain.getLeftLeadDriveDistanceMeters());
-    //SmartDashboard.putNumber("Right Distance", drivetrain.getRightLeadDriveDistanceMeters());
-    //SmartDashboard.putNumber("Left Ticks", drivetrain.getLeftLeadDriveDistanceTicks());
-    //SmartDashboard.putNumber("Right Ticks", drivetrain.getRightLeadDriveDistanceTicks());
-
-    //SmartDashboard.putNumber("Pose X", drivetrain.getPose().getX());
-    //SmartDashboard.putNumber("Pose Y", drivetrain.getPose().getY());
-    //SmartDashboard.putNumber("Fused Heading", drivetrain.getHeadingDegrees());
-    
-    //SmartDashboard.putNumber("Left Wheel Speed", drivetrain.getLeftMotorSpeed());
-    //SmartDashboard.putNumber("Right Wheel Speed", drivetrain.getRightMotorSpeed());
-    //SmartDashboard.putNumber("Left Accel", drivetrain.pigeon.getAcc);
-
-    //SmartDashboard.putNumber("Pitch", drivetrain.getPitch());
-    //SmartDashboard.putNumber("Delta Pitch", drivetrain.getDeltaPitch());
-
-    /*
-     *   
-     *   SmartDashboard.putNumber("Pipeline ID", limelight.p);
-    SmartDashboard.putNumber("Target X", limelight.x);
-    SmartDashboard.putNumber("Target Y", limelight.y);
-    SmartDashboard.putNumber("Target V", limelight.v);
-    SmartDashboard.putNumber("LED Mode", limelight.led);
-     */
-
-
-    SmartDashboard.putNumber("Drive Mode", drivetrain.getDriveMode().ordinal());
 
     SmartDashboard.putNumber("Elevator Position", elevator.getCurrentPosition());
     SmartDashboard.putNumber("Elevator Velocity", elevator.getVelocity());
     SmartDashboard.putNumber("Elevator Current", elevator.getElevatorCurrent());
+
     SmartDashboard.putNumber("Elbow Position", elbow.getCurrentPosition());
     SmartDashboard.putNumber("Elbow Current", elbow.getElbowCurrent());
     SmartDashboard.putNumber("Elbow Velocity", elbow.getElbowMotorVelocity());
+
     SmartDashboard.putNumber("Wrist Position", wrist.getCurrentPosition());
     SmartDashboard.putNumber("Wrist Current", wrist.getWristCurrent());
     SmartDashboard.putNumber("Wrist Velocity", wrist.getWristMotorVelocity());
-    SmartDashboard.putNumber("Collector Current", collector.getCollectorCurrent());
 
     drivetrain.setFollowers();
 
@@ -139,6 +115,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
+    Robot.elbow.elbowMotor.setIdleMode(IdleMode.kBrake);
     Robot.drivetrain.setNeutralMode(NeutralMode.Coast);
   }
 
@@ -178,6 +155,7 @@ public class Robot extends TimedRobot {
     drivetrain.zeroOdometry(); //remove later
     Robot.elbow.setPosition(Robot.elbow.getCurrentPosition());
     Robot.wrist.setPosition(Robot.wrist.getCurrentPosition());
+    Robot.elbow.elbowMotor.setIdleMode(IdleMode.kCoast);
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

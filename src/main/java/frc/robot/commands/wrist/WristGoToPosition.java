@@ -35,6 +35,6 @@ public class WristGoToPosition extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return HelperFunctions.deadband(Robot.elbow.getCurrentPosition(), Constants.WristConstants.SetPoints.deadband) == 0.0;
+    return HelperFunctions.deadband(Robot.wrist.getCurrentPosition() - position, Constants.WristConstants.SetPoints.deadband) == 0.0;
   }
 }

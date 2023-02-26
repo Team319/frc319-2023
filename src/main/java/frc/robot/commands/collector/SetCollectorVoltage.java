@@ -12,7 +12,7 @@ public class SetCollectorVoltage extends CommandBase {
   /** Creates a new SetCollectorVoltage. */
 
   private double voltage = 0.0;
-  private int i = 0;
+  private int i;
 
   public SetCollectorVoltage(double voltage) {
     this.voltage = voltage;
@@ -23,6 +23,8 @@ public class SetCollectorVoltage extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    i = 0;
+    Robot.collector.setCollectorCurrentLimit(30);
     Robot.collector.setCollectorPO(voltage);
   }
 
@@ -33,6 +35,7 @@ public class SetCollectorVoltage extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Robot.collector.setCollectorCurrentLimit(15);
     Robot.collector.setCollectorPO(0.1);
   }
 
@@ -41,7 +44,7 @@ public class SetCollectorVoltage extends CommandBase {
   public boolean isFinished() {
     if (Robot.collector.getCollectorCurrent() > Constants.CollectorConstants.Currents.currentThreshold) {
       i++;
-      if (i > 10000) {
+      if (i > 50) {
         return true;
       }
     }

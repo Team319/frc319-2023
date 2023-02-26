@@ -27,20 +27,10 @@ public class Elbow extends SubsystemBase {
 
   /** Creates a new Elbow. */
   public Elbow() {
-    elbowMotor.restoreFactoryDefaults();
-    elbowMotor.clearFaults();
-
-    elbowMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    elbowMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-
-    elbowMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.ElbowConstants.SoftLimits.forwardSoftLimit);
-    elbowMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ElbowConstants.SoftLimits.reverseSoftLimit);
-
-    elbowMotor.setInverted(true);
-
-    setUp();
+    setup();
     setUpPid();
     setDownPid();
+    setSmartMotionParams();
   }
 
   @Override
@@ -83,10 +73,29 @@ public class Elbow extends SubsystemBase {
     pidController.setD(Constants.ElbowConstants.PID.kDownD);
     pidController.setFF(Constants.ElbowConstants.PID.fGain);
   }
+  private void setSmartMotionParams() {
+    pidController.setSmartMotionMaxVelocity(Constants.ElbowConstants.SmartMotionParameters.maxVel, Constants.ElbowConstants.SmartMotionParameters.smartMotionSlot);
+    pidController.setSmartMotionMinOutputVelocity(Constants.ElbowConstants.SmartMotionParameters.minVel, Constants.ElbowConstants.SmartMotionParameters.smartMotionSlot);
+    pidController.setSmartMotionMaxAccel(Constants.ElbowConstants.SmartMotionParameters.maxAccel, Constants.ElbowConstants.SmartMotionParameters.smartMotionSlot);
+    pidController.setSmartMotionAllowedClosedLoopError(Constants.ElbowConstants.SmartMotionParameters.maxErr, Constants.ElbowConstants.SmartMotionParameters.smartMotionSlot);
+  }
 
-  private void setUp() {
+  private void setup() {
+    elbowMotor.restoreFactoryDefaults();
+    elbowMotor.clearFaults();
+
+    elbowMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    elbowMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+    elbowMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.ElbowConstants.SoftLimits.forwardSoftLimit);
+    elbowMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ElbowConstants.SoftLimits.reverseSoftLimit);
+
+    elbowMotor.setInverted(true);
+
     m_AlternateEncoder = elbowMotor.getAlternateEncoder(elbowEncoder, kCPR);
+    
     pidController.setFeedbackDevice(m_AlternateEncoder);
+    pidController.setOutputRange(-1.0, 1.0);
   }
 
   /**
@@ -101,6 +110,11 @@ public class Elbow extends SubsystemBase {
   public void setPosition(double targetPosition) {
     manageMotion(targetPosition);
     pidController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
+  }
+
+  public void setSmartMotionPosition(double targetPosition) {
+    manageMotion(targetPosition);
+    pidController.setReference(targetPosition, CANSparkMax.ControlType.kSmartMotion);
   }
 
   public double getElbowCurrent() {

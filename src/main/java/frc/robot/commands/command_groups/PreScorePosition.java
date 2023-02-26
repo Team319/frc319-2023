@@ -6,6 +6,8 @@ package frc.robot.commands.command_groups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.DriveConstants.DriveMode;
+import frc.robot.commands.drivetrain.SetDriveMode;
 import frc.robot.commands.elbow.ElbowGoToPosition;
 import frc.robot.commands.elevator.SetElevatorPosition;
 import frc.robot.commands.wrist.WristGoToPosition;
@@ -20,7 +22,6 @@ public class PreScorePosition extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new SetElevatorPosition(19), 
-      new WaitCommand(0.5),
       new WristGoToPosition(-33),
       new ElbowGoToPosition(0.197700)
     );

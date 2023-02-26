@@ -24,7 +24,7 @@ public final class Constants {
       These characterization values MUST be determined either experimentally or theoretically
       values for your robot.*/
       public enum DriveMode {
-        Normal, Limelight,
+        Normal, Limelight, Scoring
     }
     
 
@@ -74,13 +74,21 @@ public final class Constants {
       }
 
       public static class SetPoints {
-        public static final double scoreHighCone = 0;
-        public static final double scoreMiddleCone = 0;
+        public static final double scoreHighCone = 64;
+        public static final double scoreMiddleCone = 40.78;
 
         public static final double scoreHighCube = 0;
         public static final double scoreMiddleCube = 0;
         
         public static final double scoreFloor = 0;
+
+        public static final double preScore = 19;
+
+        public static final double collectTipped = 19;
+        public static final double collectStanding = 8;
+        public static final double collectFloor = 10.78;
+        public static final double collectCubeFromLoadStation = 52;
+        public static final double collectConeFromLoadStation = 60;
         
         public static final double home = 0.75;
         public static final double top = 55.0;
@@ -97,6 +105,14 @@ public final class Constants {
       public static class Currents {
         public static final int currentMax = 20;
         public static final int currentThreshold = 0;
+      }
+
+      public static class SmartMotionParameters {
+        public static final int smartMotionSlot = 0;
+        public static final double maxVel = 5200.0;
+        public static final double minVel = 0.0;
+        public static final double maxAccel = 1000.0;
+        public static final double maxErr = 100.0;
       }
     }
 
@@ -115,20 +131,28 @@ public final class Constants {
       }
 
       public static class SetPoints {
-        public static final double scoreHighCone = 0;
-        public static final double scoreMiddleCone = 0;
+        public static final double scoreHighCone = 0.197700;
+        public static final double scoreMiddleCone = 0.197700;
 
-        public static final double scoreHighCube = 0;
-        public static final double scoreMiddleCube = 0;
+        public static final double scoreHighCube = 0.0;
+        public static final double scoreMiddleCube = 0.0;
 
-        public static final double scoreFloor = 0;
+        public static final double scoreFloor = 0.0;
+
+        public static final double preScore = 0.197700;
+
+        public static final double collectConeTipped = -0.148682;
+        public static final double collectConeStanding = 0.0;
+        public static final double collectFloor = 0.0;
+        public static final double collectFromLoadStation = 0.216919;
+
 
         public static final double home = 0.0;
-        public static final double top = Constants.ElbowConstants.SoftLimits.forwardSoftLimit;
-        public static final double bottom = Constants.ElbowConstants.SoftLimits.reverseSoftLimit;
+        public static final double top = 0.193970;
+        public static final double bottom = -0.208496;
         public static final double testbottom= -0.174316;
 
-        public static final double deadband = 1.5;
+        public static final double deadband = 0.05;
       }
 
       public static class SoftLimits {
@@ -139,6 +163,14 @@ public final class Constants {
       public static class Currents {
         public static final int currentMax = 20;
         public static final int currentThreshold = 0;
+      }
+
+      public static class SmartMotionParameters {
+        public static final int smartMotionSlot = 0;
+        public static final double maxVel = 55.0;
+        public static final double minVel = 0.0;
+        public static final double maxAccel = 10.0;
+        public static final double maxErr = 10.0;
       }
     }
 
@@ -153,17 +185,24 @@ public final class Constants {
       }
 
       public static class SetPoints {
-        public static final double scoreHighCone = 0;
-        public static final double scoreMiddleCone = 0;
+        public static final double scoreHighCone = -60;
+        public static final double scoreMiddleCone = -66;
 
         public static final double scoreHighCube = 0;
         public static final double scoreMiddleCube = 0;
 
         public static final double scoreFloor = 0;
 
-        public static final double home = 0;
-        public static final double top = Constants.WristConstants.SoftLimits.forwardSoftLimit;
-        public static final double bottom = Constants.WristConstants.SoftLimits.reverseSoftLimit;
+        public static final double preScore = -33;
+
+        public static final double collectConeTipped = -63;
+        public static final double collectConeStanding = -60;
+        public static final double collectFloor = -75;
+        public static final double collectFromLoadStation = -58;
+
+        public static final double home = -31;
+        public static final double top = 0.0;
+        public static final double bottom = -103.0;
 
         public static final double deadband = 0.5;
       }
@@ -177,13 +216,28 @@ public final class Constants {
         public static final int currentMax = 20;
         public static final int currentThreshold = 0;
       }
+
+      public static class SmartMotionParameters {
+        public static final int smartMotionSlot = 0;
+        public static final double maxVel = 100.0;
+        public static final double minVel = 10.0;
+        public static final double maxAccel = 10.0;
+        public static final double maxErr = 100.0;
+      }
     }
 
     public static class CollectorConstants {
       
       public static class Currents {
-        public static final int currentMax = 60;
-        public static final int currentThreshold = 40;
+        public static final int currentMax = 30;
+        public static final int currentThreshold = 15;
+
+        public static final double collectorVoltage = 0.75;
+      }
+
+      public static class PID {
+        public static final double kP = 0.00019231;
+        public static final double fGain = 0.00019231;
       }
     }
 

@@ -24,8 +24,8 @@ public class Elevator extends SubsystemBase {
   public RelativeEncoder elevatorEncoder = elevatorLead.getEncoder();
   /** Creates a new Elevator. */
   public Elevator() {
-
-    setUp();
+    setup();
+    setSmartMotionParams();
     pidController.setIZone(Constants.ElevatorConstants.PID.iZone);
   }
 
@@ -47,6 +47,14 @@ public class Elevator extends SubsystemBase {
     pidController.setD(Constants.ElevatorConstants.PID.kDDown);
     pidController.setFF(Constants.ElevatorConstants.PID.fGainDown);
   }
+
+  
+  private void setSmartMotionParams() {
+    pidController.setSmartMotionMaxVelocity(Constants.ElevatorConstants.SmartMotionParameters.maxVel, Constants.ElevatorConstants.SmartMotionParameters.smartMotionSlot);
+    pidController.setSmartMotionMinOutputVelocity(Constants.ElevatorConstants.SmartMotionParameters.minVel, Constants.ElevatorConstants.SmartMotionParameters.smartMotionSlot);
+    pidController.setSmartMotionMaxAccel(Constants.ElevatorConstants.SmartMotionParameters.maxAccel, Constants.ElevatorConstants.SmartMotionParameters.smartMotionSlot);
+    pidController.setSmartMotionAllowedClosedLoopError(Constants.ElevatorConstants.SmartMotionParameters.maxErr, Constants.ElevatorConstants.SmartMotionParameters.smartMotionSlot);
+  }
   
   private void manageMotion(double targetPosition) {
     double currentPosition = getCurrentPosition();
@@ -65,8 +73,13 @@ public class Elevator extends SubsystemBase {
     manageMotion(targetPosition);
     pidController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
   }
+  
+  public void setSmartMotionPosition(double targetPosition) {
+    manageMotion(targetPosition);
+    pidController.setReference(targetPosition, CANSparkMax.ControlType.kSmartMotion);
+  }
 
-  public void setUp() {
+  public void setup() {
     elevatorLead.restoreFactoryDefaults();
     elevatorFollow.restoreFactoryDefaults();
 
@@ -80,10 +93,13 @@ public class Elevator extends SubsystemBase {
     elevatorLead.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ElevatorConstants.SoftLimits.reverseSoftLimit);
 
     elevatorLead.setInverted(true);
+    elevatorLead.setSmartCurrentLimit(30);
+    elevatorFollow.setSmartCurrentLimit(30);
 
     elevatorFollow.follow(elevatorLead, true);
 
     pidController.setFeedbackDevice(elevatorEncoder);
+    pidController.setOutputRange(-1.0, 1.0);
   }
 
   public void elevatorVoltage(double voltage) {

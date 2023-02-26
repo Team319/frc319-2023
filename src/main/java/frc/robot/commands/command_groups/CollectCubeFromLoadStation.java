@@ -6,8 +6,7 @@ package frc.robot.commands.command_groups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.Constants.DriveConstants.DriveMode;
-import frc.robot.commands.drivetrain.SetDriveMode;
+import frc.robot.commands.collector.SetCollectorVoltage;
 import frc.robot.commands.elbow.ElbowGoToPosition;
 import frc.robot.commands.elevator.SetElevatorPosition;
 import frc.robot.commands.wrist.WristGoToPosition;
@@ -15,16 +14,16 @@ import frc.robot.commands.wrist.WristGoToPosition;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ScoreConeHigh extends SequentialCommandGroup {
-  /** Creates a new ScoreConeMid. */
-  public ScoreConeHigh() {
+public class CollectCubeFromLoadStation extends SequentialCommandGroup {
+  /** Creates a new CollectCubeFromLoadStation. */
+  public CollectCubeFromLoadStation() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands (
-      new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.scoreHighCone), 
-      new ElbowGoToPosition(Constants.ElbowConstants.SetPoints.scoreHighCone),
-      new WristGoToPosition(Constants.WristConstants.SetPoints.scoreHighCone)
-      //new SetDriveMode(DriveMode.Scoring)
+    addCommands(
+      new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.collectCubeFromLoadStation),
+      new WristGoToPosition(Constants.WristConstants.SetPoints.collectFromLoadStation),
+      new ElbowGoToPosition(Constants.ElbowConstants.SetPoints.collectFromLoadStation),
+      new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltage)
     );
   }
 }
