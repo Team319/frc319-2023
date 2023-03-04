@@ -7,8 +7,8 @@ package frc.robot.commands.command_groups;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
-import frc.robot.commands.elbow.ElbowGoToPosition;
-import frc.robot.commands.wrist.WristGoToPosition;
+import frc.robot.commands.elbow.SetElbowPosition;
+import frc.robot.commands.wrist.SetWristPosition;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -19,9 +19,9 @@ public class ElbowWristGoHome extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ElbowGoToPosition(Constants.ElbowConstants.SetPoints.home),
+      new SetElbowPosition(Constants.ElbowConstants.SetPoints.home),
       new WaitCommand(0.5),
-      new WristGoToPosition(Constants.WristConstants.SetPoints.home)
+      new SetWristPosition(Constants.WristConstants.SetPoints.home)
       
     );
   }

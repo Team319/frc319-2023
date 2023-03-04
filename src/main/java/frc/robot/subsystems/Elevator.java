@@ -24,14 +24,11 @@ public class Elevator extends SubsystemBase {
   public RelativeEncoder elevatorEncoder = elevatorLead.getEncoder();
   /** Creates a new Elevator. */
   public Elevator() {
+
     setup();
     setSmartMotionParams();
     pidController.setIZone(Constants.ElevatorConstants.PID.iZone);
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+    
   }
 
   private void pidUp() {

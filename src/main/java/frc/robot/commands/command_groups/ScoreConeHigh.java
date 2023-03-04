@@ -6,11 +6,9 @@ package frc.robot.commands.command_groups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.Constants.DriveConstants.DriveMode;
-import frc.robot.commands.drivetrain.SetDriveMode;
-import frc.robot.commands.elbow.ElbowGoToPosition;
+import frc.robot.commands.elbow.SetElbowPosition;
 import frc.robot.commands.elevator.SetElevatorPosition;
-import frc.robot.commands.wrist.WristGoToPosition;
+import frc.robot.commands.wrist.SetWristPosition;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -22,8 +20,8 @@ public class ScoreConeHigh extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands (
       new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.scoreHighCone), 
-      new ElbowGoToPosition(Constants.ElbowConstants.SetPoints.scoreHighCone),
-      new WristGoToPosition(Constants.WristConstants.SetPoints.scoreHighCone)
+      new SetElbowPosition(Constants.ElbowConstants.SetPoints.scoreHighCone),
+      new SetWristPosition(Constants.WristConstants.SetPoints.scoreHighCone)
       //new SetDriveMode(DriveMode.Scoring)
     );
   }

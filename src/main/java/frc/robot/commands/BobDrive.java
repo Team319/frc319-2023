@@ -10,7 +10,6 @@ import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.utils.BobDriveHelper;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**

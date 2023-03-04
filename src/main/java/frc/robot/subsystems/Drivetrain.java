@@ -12,7 +12,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.MathUtil;
@@ -20,8 +19,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants;
@@ -52,8 +49,6 @@ public class Drivetrain extends SubsystemBase {
   private static double previousPitch = 0.0;
   private static double deltaPitch = 0.0;
 
-  //DifferentialDrive differentialDrive = new DifferentialDrive(leftLead, rightLead);
-
   /** Creates a new Drivetrain. */
   public Drivetrain() {
 
@@ -62,6 +57,7 @@ public class Drivetrain extends SubsystemBase {
     setDefaultMotorNeutralModes();
     setMotorRampRates();
     setMotorCurrentLimits();
+    setFollowers();
     
 
     //TODO reset encoders

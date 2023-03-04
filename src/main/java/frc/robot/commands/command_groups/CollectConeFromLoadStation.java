@@ -7,9 +7,9 @@ package frc.robot.commands.command_groups;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.collector.SetCollectorVoltage;
-import frc.robot.commands.elbow.ElbowGoToPosition;
+import frc.robot.commands.elbow.SetElbowPosition;
 import frc.robot.commands.elevator.SetElevatorPosition;
-import frc.robot.commands.wrist.WristGoToPosition;
+import frc.robot.commands.wrist.SetWristPosition;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -21,8 +21,8 @@ public class CollectConeFromLoadStation extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.collectConeFromLoadStation),
-      new WristGoToPosition(Constants.WristConstants.SetPoints.collectFromLoadStation),
-      new ElbowGoToPosition(Constants.ElbowConstants.SetPoints.collectFromLoadStation),
+      new SetWristPosition(Constants.WristConstants.SetPoints.collectFromLoadStation),
+      new SetElbowPosition(Constants.ElbowConstants.SetPoints.collectFromLoadStation),
       new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltage)
     );
   }

@@ -8,6 +8,8 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.TargetType;
 
 public class Limelight extends SubsystemBase {
 
@@ -51,7 +53,8 @@ public class Limelight extends SubsystemBase {
   }
 
   public double getX() {
-    return tx.getDouble(0.0);
+    x = tx.getDouble(0.0);
+    return x;
   }
 
   public double getFovX() {
@@ -62,7 +65,37 @@ public class Limelight extends SubsystemBase {
     return getX() / (getFovX() / 2);
   }
 
+  public double getY() {
+    y = ty.getDouble(0.0);
+    return y;
+  }
+
   public void setLedMode(int mode) {
     this.ledMode.setNumber(mode);
+  }
+
+  public double getDistanceToTarget(int target) {
+    double goalHeightInches = 0.0;
+
+    switch(target) {
+      case TargetType.CONE_HIGH:
+        goalHeightInches = Constants.LimelightConstants.highConeTargetHeight;
+        break;
+
+      case TargetType.CONE_MID:
+        goalHeightInches = Constants.LimelightConstants.midConeTargetHeight;
+        break;
+
+      default:
+        goalHeightInches = Constants.LimelightConstants.aprilTagTargetHeight;
+        break;
+      
+    }
+
+    double angleToGoalDegrees = Constants.LimelightConstants.mountAngleDegrees + getY();
+    double angleToGoalRadians = angleToGoalDegrees * (Math.PI / 180.0);
+
+    return (goalHeightInches - Constants.LimelightConstants.LensHeightInches) / Math.tan(angleToGoalRadians);
+
   }
 }

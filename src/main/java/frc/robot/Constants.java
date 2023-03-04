@@ -28,18 +28,18 @@ public final class Constants {
     }
     
 
-      public static final double ksVolts = 0.080151; 
-      public static final double kvVoltSecondsPerMeter = 3.895;
-      public static final double kaVoltSecondsSquaredPerMeter = 0.20594; 
+      public static final double ksVolts = 0.05;//0.019809; 
+      public static final double kvVoltSecondsPerMeter = 1;//2.0594;
+      public static final double kaVoltSecondsSquaredPerMeter = 0.01; 
 
       // Example value only - as above, this must be tuned for your drive!
-      public static final double kPDriveVel = 0.080207;
+      public static final double kPDriveVel = 0.0008;  //Testing : 0.0008;//sysId : 0.9146;
 
-      public static final double kTrackWithMeters = 0.71; // roughly
+      public static final double kTrackWithMeters = 0.64; // roughly
       // DifferentialDrive Kinematics
 
-      public static final double kMaxSpeedMetersPerSecond = 1.5; // was 2.5
-      public static final double kMaxAccerlationMetersPerSecondSquared = 0.5; // was 2.5
+      public static final double kMaxSpeedMetersPerSecond = 4.5; // was 2.5
+      public static final double kMaxAccerlationMetersPerSecondSquared = 1; // was 2.5
 
       // Taken from WPILib Docs - L.S
       // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
@@ -47,8 +47,8 @@ public final class Constants {
       public static final double kRamseteZeta = 0.7;
 
       public static final double encoderTicksPerRev = 2048.0;
-      public static final double wheelRotPerMotorRot = 1.0/10.0;
-      public static final double wheelDiameter = 3.5; //inches
+      public static final double wheelRotPerMotorRot = 1.0/6.25;
+      public static final double wheelDiameter = 4.0; //inches
       public static final double metersPerWheelRot = Units.inchesToMeters(wheelDiameter * Math.PI);
       public static final double metersPerEncoderTick = (1/encoderTicksPerRev) * wheelRotPerMotorRot * metersPerWheelRot;
 
@@ -84,11 +84,11 @@ public final class Constants {
 
         public static final double preScore = 19;
 
-        public static final double collectTipped = 19;
-        public static final double collectStanding = 8;
+        public static final double collectConeTipped = 20.0;
+        public static final double collectStanding = 8.0;
         public static final double collectFloor = 10.78;
-        public static final double collectCubeFromLoadStation = 52;
-        public static final double collectConeFromLoadStation = 60;
+        public static final double collectCubeFromLoadStation = 52.0;
+        public static final double collectConeFromLoadStation = 60.0;
         
         public static final double home = 0.75;
         public static final double top = 55.0;
@@ -139,15 +139,15 @@ public final class Constants {
 
         public static final double scoreFloor = 0.0;
 
-        public static final double preScore = 0.197700;
+        public static final double preScore = 0.152832; //0.197700
 
-        public static final double collectConeTipped = -0.148682;
+        public static final double collectConeTipped = -0.138682;
         public static final double collectConeStanding = 0.0;
         public static final double collectFloor = 0.0;
         public static final double collectFromLoadStation = 0.216919;
 
 
-        public static final double home = 0.0;
+        public static final double home = 0.012;
         public static final double top = 0.193970;
         public static final double bottom = -0.208496;
         public static final double testbottom= -0.174316;
@@ -195,12 +195,12 @@ public final class Constants {
 
         public static final double preScore = -33;
 
-        public static final double collectConeTipped = -63;
+        public static final double collectConeTipped = -58; //-63
         public static final double collectConeStanding = -60;
         public static final double collectFloor = -75;
         public static final double collectFromLoadStation = -58;
 
-        public static final double home = -31;
+        public static final double home = -27;
         public static final double top = 0.0;
         public static final double bottom = -103.0;
 
@@ -248,6 +248,13 @@ public final class Constants {
         public static final int LIMELIGHT_TOP = 2;
       }
       
+      public static final double mountAngleDegrees = 10.0;
+      public static final double LensHeightInches = 21.0; // ish - EKM 3/3/23\
+
+      public static final double highConeTargetHeight = 44.0; 
+      public static final double midConeTargetHeight = 24.0; 
+      public static final double aprilTagTargetHeight = 10.0;
+
       public static final int LED_ON = 3;
       public static final int LED_OFF = 1;
     }
@@ -256,5 +263,12 @@ public final class Constants {
     public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
+  }
+
+  public static class TargetType {
+    public static final int FLOOR = 0;
+    public static final int APRILTAG = 1;
+    public static final int CONE_MID = 2;
+    public static final int CONE_HIGH = 3;
   }
 }

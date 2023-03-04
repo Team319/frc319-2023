@@ -9,10 +9,10 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.utils.HelperFunctions;
 
-public class WristSetSmartPosition extends CommandBase {
+public class SetWristPosition extends CommandBase {
   private double position = 0.0;
-  /** Creates a new WristSetSmartPosition. */
-  public WristSetSmartPosition(double position) {
+  /** Creates a new WristGoToPosition. */
+  public SetWristPosition(double position) {
     this.position = position;
     addRequirements(Robot.wrist);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -21,7 +21,7 @@ public class WristSetSmartPosition extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.wrist.setSmartMotionPosition(position);
+    Robot.wrist.setPosition(position);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,7 +35,6 @@ public class WristSetSmartPosition extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //return HelperFunctions.deadband(Robot.wrist.getCurrentPosition() - position, Constants.WristConstants.SetPoints.deadband) == 0.0;
-    return false;
+    return HelperFunctions.deadband(Robot.wrist.getCurrentPosition() - position, Constants.WristConstants.SetPoints.deadband) == 0.0;
   }
 }

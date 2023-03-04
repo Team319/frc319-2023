@@ -6,21 +6,11 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.DriveConstants.DriveMode;
-import frc.robot.commands.drivetrain.ResetOdometryAndHeading;
 import frc.robot.commands.drivetrain.SetDriveMode;
-import frc.robot.commands.elbow.ElbowGoToPosition;
-import frc.robot.commands.elbow.SetElbowVoltage;
-import frc.robot.commands.limelight.SwitchingPipelineTest;
-import frc.robot.commands.wrist.SetWristVoltage;
-import frc.robot.commands.wrist.WristGoToPosition;
-import frc.robot.commands.wrist.WristSetSmartPosition;
-import frc.robot.subsystems.Limelight;
-import frc.robot.commands.autos.TestPath;
-import frc.robot.commands.collector.SetCollectorVelocity;
+import frc.robot.commands.wrist.SetWristPosition;
 import frc.robot.commands.collector.SetCollectorVoltage;
 import frc.robot.commands.command_groups.CollectConeFromLoadStation;
 import frc.robot.commands.command_groups.CollectCubeFromLoadStation;
-import frc.robot.commands.command_groups.ElbowWristGoHome;
 import frc.robot.commands.command_groups.FloorCollect;
 import frc.robot.commands.command_groups.FloorCollectConeStanding;
 import frc.robot.commands.command_groups.FloorCollectConeTipped;
@@ -30,11 +20,8 @@ import frc.robot.commands.command_groups.ScoreConeHigh;
 import frc.robot.commands.command_groups.ScoreConeMid;
 import frc.robot.commands.command_groups.SpitGamePiece;
 import frc.robot.commands.elevator.ElevatorMoveALittle;
-import frc.robot.commands.elevator.SetElevatorPosition;
-import frc.robot.commands.elevator.SetElevatorVoltage;
 import frc.robot.commands.leds.LEDColor;
 import edu.wpi.first.math.Pair;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -100,6 +87,7 @@ public class RobotContainer {
     m_operatorController.povUp().onTrue(new PreScorePosition());
     m_operatorController.povRight().onTrue(new ScoreConeMid());
     m_operatorController.povLeft().onTrue(new ScoreConeHigh());
+    m_operatorController.povDown().onTrue(new SetWristPosition(Constants.WristConstants.SetPoints.home));
 
     m_operatorController.leftBumper().onTrue(new CollectConeFromLoadStation());
     m_operatorController.leftTrigger().whileTrue(new ElevatorMoveALittle(-4, Constants.CollectorConstants.Currents.collectorVoltage));

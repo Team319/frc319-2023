@@ -20,11 +20,6 @@ public class LEDS extends SubsystemBase {
     m_led.start();
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
   public void colorTest(int rValue, int gValue, int bValue) {
     for (int i = 0; i < m_ledBuffer.getLength(); i++) {
       m_ledBuffer.setRGB(i, rValue, gValue, bValue);

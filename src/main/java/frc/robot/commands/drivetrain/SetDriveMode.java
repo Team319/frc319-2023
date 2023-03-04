@@ -5,7 +5,6 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.Constants.DriveConstants.DriveMode;
 

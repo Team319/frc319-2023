@@ -5,12 +5,8 @@
 package frc.robot.commands.command_groups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.DriveConstants.DriveMode;
-import frc.robot.commands.drivetrain.SetDriveMode;
-import frc.robot.commands.elbow.ElbowGoToPosition;
+import frc.robot.Constants;
 import frc.robot.commands.elevator.SetElevatorPosition;
-import frc.robot.commands.wrist.WristGoToPosition;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -21,9 +17,8 @@ public class GoHome extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new MoveWristAndElbow(-27, 0),
-      new SetElevatorPosition(0)
-      //new SetDriveMode(DriveMode.Normal)
+      new MoveWristAndElbow(Constants.WristConstants.SetPoints.home, Constants.ElbowConstants.SetPoints.home),
+      new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.home)
     );
   }
 }

@@ -24,9 +24,11 @@ public class Wrist extends SubsystemBase {
 
   // Creates a new Wrist.
   public Wrist() {
+
     setup();
     setSmartMotionParams();
     setPid();
+    
   }
 
   @Override
