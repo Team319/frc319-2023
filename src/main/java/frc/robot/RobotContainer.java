@@ -6,26 +6,22 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.DriveConstants.DriveMode;
-import frc.robot.commands.drivetrain.ResetOdometryAndHeading;
 import frc.robot.commands.drivetrain.SetDriveMode;
-import frc.robot.commands.elbow.ElbowGoToPosition;
-import frc.robot.commands.elbow.SetElbowVoltage;
-import frc.robot.commands.limelight.SwitchingPipelineTest;
-import frc.robot.commands.wrist.SetWristVoltage;
-import frc.robot.commands.wrist.WristGoToPosition;
-import frc.robot.subsystems.Limelight;
-import frc.robot.commands.autos.TestPath;
+import frc.robot.commands.wrist.SetWristPosition;
 import frc.robot.commands.collector.SetCollectorVoltage;
+import frc.robot.commands.command_groups.CollectConeFromLoadStation;
+import frc.robot.commands.command_groups.CollectCubeFromLoadStation;
 import frc.robot.commands.command_groups.FloorCollect;
 import frc.robot.commands.command_groups.FloorCollectConeStanding;
 import frc.robot.commands.command_groups.FloorCollectConeTipped;
 import frc.robot.commands.command_groups.GoHome;
 import frc.robot.commands.command_groups.PreScorePosition;
+import frc.robot.commands.command_groups.ScoreConeHigh;
 import frc.robot.commands.command_groups.ScoreConeMid;
-import frc.robot.commands.elevator.SetElevatorPosition;
-import frc.robot.commands.elevator.SetElevatorVoltage;
+import frc.robot.commands.command_groups.SpitGamePiece;
+import frc.robot.commands.elevator.ElevatorMoveALittle;
+import frc.robot.commands.leds.LEDColor;
 import edu.wpi.first.math.Pair;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -67,34 +63,38 @@ public class RobotContainer {
     //    .onTrue(new ExampleCommand(m_exampleSubsystem));
 
     /* Driver Controllers */
-    //m_driverController.a().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.APRIL_TAG_MODE));
-    //m_driverController.b().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_BOTTOM));
+    //m_driverController.a().onTrue(new WristGoToPosition(Constants.WristConstants.SetPoints.scoreHighCone));
+    //m_driverController.b().onTrue(new WristGoToPosition(Constants.WristConstants.SetPoints.bottom));
     //m_driverController.x().whileTrue(new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_TOP));
-    //m_driverController.y().whileTrue(null);
-
-    m_driverController.povUp().whileTrue(new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.top));
-    m_driverController.povLeft().whileTrue(new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.middle));
-    m_driverController.povDown().whileTrue(new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.home));
+    //m_driverController.y().whileTrue(new SetElevatorPosition(19));
 
     /*m_driverController.povUp().whileTrue(new SetElevatorVoltage(0.4));
     m_driverController.povLeft().whileTrue(new SetElevatorVoltage(0.0));
     m_driverController.povDown().whileTrue(new SetElevatorVoltage(-0.4));*/
 
-    m_driverController.leftTrigger().whileTrue(new SetDriveMode(DriveMode.Limelight));
-    m_driverController.leftTrigger().whileFalse(new SetDriveMode(DriveMode.Normal));
-    //m_driverController.rightTrigger().whileTrue(null);
-    //m_driverController.leftBumper().whileTrue(new WristGoToPosition(-10.0));
-    m_driverController.rightBumper().whileTrue(new SetCollectorVoltage(0.5));
-    m_driverController.leftBumper().whileTrue(new SetCollectorVoltage(-0.5));
+    m_driverController.leftTrigger().whileTrue(new SetDriveMode(DriveMode.Scoring));
+    m_driverController.leftTrigger().onFalse(new SetDriveMode(DriveMode.Normal));
+    m_driverController.rightTrigger().whileTrue(new SetCollectorVoltage(-Constants.CollectorConstants.Currents.collectorVoltage));
+    m_driverController.rightBumper().whileTrue(new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltage));
+    //m_driverController.leftBumper().whileTrue(new SetCollectorVoltage(-Constants.CollectorConstants.Currents.collectorVoltage));
 
     /* Operator Controllers */
-    m_operatorController.a().whileTrue(new FloorCollect());
-    m_operatorController.x().whileTrue(new FloorCollectConeStanding());
-    m_operatorController.y().whileTrue(new FloorCollectConeTipped());
-    m_operatorController.b().whileTrue(new GoHome());
+    m_operatorController.a().onTrue(new FloorCollect());
+    m_operatorController.x().onTrue(new FloorCollectConeStanding());
+    m_operatorController.y().onTrue(new FloorCollectConeTipped());
+    m_operatorController.b().onTrue(new GoHome());
 
-    m_operatorController.povUp().whileTrue(new PreScorePosition());
-    m_operatorController.povRight().whileTrue(new ScoreConeMid());
+    m_operatorController.povUp().onTrue(new PreScorePosition());
+    m_operatorController.povRight().onTrue(new ScoreConeMid());
+    m_operatorController.povLeft().onTrue(new ScoreConeHigh());
+    m_operatorController.povDown().onTrue(new SetWristPosition(Constants.WristConstants.SetPoints.home));
+
+    m_operatorController.leftBumper().onTrue(new CollectConeFromLoadStation());
+    m_operatorController.leftTrigger().whileTrue(new ElevatorMoveALittle(-4, Constants.CollectorConstants.Currents.collectorVoltage));
+    m_operatorController.rightBumper().onTrue(new CollectCubeFromLoadStation());
+    m_operatorController.rightTrigger().whileTrue(new ElevatorMoveALittle(4, Constants.CollectorConstants.Currents.collectorVoltage));
+
+    //m_operatorController.leftBumper().whileTrue(new LEDColor(255, 0, 0));
   }
 
   /**

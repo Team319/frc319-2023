@@ -4,8 +4,10 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -18,27 +20,16 @@ public class Elbow extends SubsystemBase {
   public CANSparkMax elbowMotor = new CANSparkMax(10, MotorType.kBrushless);
 
   private SparkMaxPIDController pidController = elbowMotor.getPIDController();
-  public RelativeEncoder elbowEncoder = elbowMotor.getEncoder();
+  public SparkMaxAlternateEncoder.Type elbowEncoder = SparkMaxAlternateEncoder.Type.kQuadrature;
+  private static final int kCPR = 8192;
+  private RelativeEncoder m_AlternateEncoder;
+
   /** Creates a new Elbow. */
   public Elbow() {
-    elbowMotor.restoreFactoryDefaults();
-    elbowMotor.clearFaults();
-
-    elbowMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    elbowMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-
-    elbowMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.ElbowConstants.SoftLimits.forwardSoftLimit);
-    elbowMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ElbowConstants.SoftLimits.reverseSoftLimit);
-
-    elbowMotor.setInverted(true);
-    pidController.setFeedbackDevice(elbowEncoder);
-
+    setup();
     setUpPid();
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+    setDownPid();
+    setSmartMotionParams();
   }
 
   /**
@@ -76,6 +67,30 @@ public class Elbow extends SubsystemBase {
     pidController.setD(Constants.ElbowConstants.PID.kDownD);
     pidController.setFF(Constants.ElbowConstants.PID.fGain);
   }
+  private void setSmartMotionParams() {
+    pidController.setSmartMotionMaxVelocity(Constants.ElbowConstants.SmartMotionParameters.maxVel, Constants.ElbowConstants.SmartMotionParameters.smartMotionSlot);
+    pidController.setSmartMotionMinOutputVelocity(Constants.ElbowConstants.SmartMotionParameters.minVel, Constants.ElbowConstants.SmartMotionParameters.smartMotionSlot);
+    pidController.setSmartMotionMaxAccel(Constants.ElbowConstants.SmartMotionParameters.maxAccel, Constants.ElbowConstants.SmartMotionParameters.smartMotionSlot);
+    pidController.setSmartMotionAllowedClosedLoopError(Constants.ElbowConstants.SmartMotionParameters.maxErr, Constants.ElbowConstants.SmartMotionParameters.smartMotionSlot);
+  }
+
+  private void setup() {
+    elbowMotor.restoreFactoryDefaults();
+    elbowMotor.clearFaults();
+
+    elbowMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    elbowMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+
+    elbowMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.ElbowConstants.SoftLimits.forwardSoftLimit);
+    elbowMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ElbowConstants.SoftLimits.reverseSoftLimit);
+
+    elbowMotor.setInverted(true);
+
+    m_AlternateEncoder = elbowMotor.getAlternateEncoder(elbowEncoder, kCPR);
+    
+    pidController.setFeedbackDevice(m_AlternateEncoder);
+    pidController.setOutputRange(-1.0, 1.0);
+  }
 
   /**
    * Gets the current position of the elbow encoder
@@ -83,12 +98,17 @@ public class Elbow extends SubsystemBase {
    * @return returns position of the elbow encoder
    */
   public double getCurrentPosition() {
-    return this.elbowEncoder.getPosition();
+    return this.m_AlternateEncoder.getPosition();
   }
 
   public void setPosition(double targetPosition) {
     manageMotion(targetPosition);
     pidController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
+  }
+
+  public void setSmartMotionPosition(double targetPosition) {
+    manageMotion(targetPosition);
+    pidController.setReference(targetPosition, CANSparkMax.ControlType.kSmartMotion);
   }
 
   public double getElbowCurrent() {
@@ -100,6 +120,6 @@ public class Elbow extends SubsystemBase {
   }
 
   public double getElbowMotorVelocity() {
-    return elbowEncoder.getVelocity();
+    return m_AlternateEncoder.getVelocity();
   }
 }

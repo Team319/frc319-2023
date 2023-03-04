@@ -2,23 +2,26 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.command_groups;
+package frc.robot.commands.autos;
 
+import java.nio.file.Path;
+
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants;
-import frc.robot.commands.elevator.SetElevatorPosition;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Robot;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class GoHome extends SequentialCommandGroup {
-  /** Creates a new GoHome. */
-  public GoHome() {
+public class MultiPath extends SequentialCommandGroup { 
+
+  /** Creates a new MultiPath. */
+  public MultiPath() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
-      new MoveWristAndElbow(Constants.WristConstants.SetPoints.home, Constants.ElbowConstants.SetPoints.home),
-      new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.home)
-    );
+    addCommands(new TestPath(Robot.Trajectory1), new WaitCommand(10),
+                new TestPath(Robot.Trajectory2), new WaitCommand(10),
+                new TestPath(Robot.Trajectory3));
   }
 }

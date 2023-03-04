@@ -9,11 +9,10 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.utils.HelperFunctions;
 
-public class ElbowGoToPosition extends CommandBase {
-
+public class SetElbowSmartPosition extends CommandBase {
   private double position = 0.0;
-  /** Creates a new ElbowGoToPosition. */
-  public ElbowGoToPosition(double position) {
+  /** Creates a new ElbowSetSmartPosition. */
+  public SetElbowSmartPosition(double position) {
     this.position = position;
     addRequirements(Robot.elbow);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -22,7 +21,7 @@ public class ElbowGoToPosition extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.elbow.setPosition(position);
+    Robot.elbow.setSmartMotionPosition(position);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,6 +35,6 @@ public class ElbowGoToPosition extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return HelperFunctions.deadband(Robot.elbow.getCurrentPosition(), Constants.ElbowConstants.SetPoints.deadband) == 0.0;
+    return HelperFunctions.deadband(Robot.elbow.getCurrentPosition() - position, Constants.ElbowConstants.SetPoints.deadband) == 0.0;
   }
 }

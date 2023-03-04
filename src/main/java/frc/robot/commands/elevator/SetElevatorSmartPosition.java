@@ -9,11 +9,10 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.utils.HelperFunctions;
 
-public class SetElevatorPosition extends CommandBase {
-
+public class SetElevatorSmartPosition extends CommandBase {
   private double position = 0.0;
-  /** Creates a new SetElevatorPosition. */
-  public SetElevatorPosition(double position) {
+  /** Creates a new ElevatorSetSmartPosition. */
+  public SetElevatorSmartPosition(double position) {
     this.position = position;
     addRequirements(Robot.elevator);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -22,13 +21,12 @@ public class SetElevatorPosition extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Robot.elevator.setSmartMotionPosition(position);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    Robot.elevator.setPosition(position);
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override

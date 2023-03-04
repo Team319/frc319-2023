@@ -5,12 +5,14 @@
 package frc.robot.commands.collector;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class SetCollectorVoltage extends CommandBase {
   /** Creates a new SetCollectorVoltage. */
 
   private double voltage = 0.0;
+  private int i;
 
   public SetCollectorVoltage(double voltage) {
     this.voltage = voltage;
@@ -21,6 +23,8 @@ public class SetCollectorVoltage extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    i = 0;
+    Robot.collector.setCollectorCurrentLimit(30);
     Robot.collector.setCollectorPO(voltage);
   }
 
@@ -31,12 +35,19 @@ public class SetCollectorVoltage extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.collector.setCollectorPO(0);
+    Robot.collector.setCollectorCurrentLimit(15);
+    Robot.collector.setCollectorPO(0.1);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (Robot.collector.getCollectorCurrent() > Constants.CollectorConstants.Currents.currentThreshold) {
+      i++;
+      if (i > 50) {
+        return true;
+      }
+    }
     return false;
   }
 }

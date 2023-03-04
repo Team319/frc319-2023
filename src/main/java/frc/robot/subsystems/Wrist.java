@@ -24,6 +24,19 @@ public class Wrist extends SubsystemBase {
 
   // Creates a new Wrist.
   public Wrist() {
+
+    setup();
+    setSmartMotionParams();
+    setPid();
+    
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
+
+  private void setup() {
     wristMotor.restoreFactoryDefaults();
     wristMotor.clearFaults();
 
@@ -34,14 +47,9 @@ public class Wrist extends SubsystemBase {
     wristMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.WristConstants.SoftLimits.reverseSoftLimit);
 
     wristMotor.setInverted(false);
+    
     pidController.setFeedbackDevice(wristEncoder);
-
-    setPid();
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+    pidController.setOutputRange(-1.0, 1.0);
   }
 
   private void setPid() {
@@ -52,12 +60,23 @@ public class Wrist extends SubsystemBase {
     pidController.setFF(Constants.WristConstants.PID.fGain);
   }
 
+  private void setSmartMotionParams() {
+    pidController.setSmartMotionMaxVelocity(Constants.WristConstants.SmartMotionParameters.maxVel, Constants.WristConstants.SmartMotionParameters.smartMotionSlot);
+    pidController.setSmartMotionMinOutputVelocity(Constants.WristConstants.SmartMotionParameters.minVel, Constants.WristConstants.SmartMotionParameters.smartMotionSlot);
+    pidController.setSmartMotionMaxAccel(Constants.WristConstants.SmartMotionParameters.maxAccel, Constants.WristConstants.SmartMotionParameters.smartMotionSlot);
+    pidController.setSmartMotionAllowedClosedLoopError(Constants.WristConstants.SmartMotionParameters.maxErr, Constants.WristConstants.SmartMotionParameters.smartMotionSlot);
+  }
+
   public double getCurrentPosition() {
     return this.wristEncoder.getPosition();
   }
 
   public void setPosition(double targetPosition) {
     pidController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
+  }
+
+  public void setSmartMotionPosition(double targetPosition) {
+    pidController.setReference(targetPosition, CANSparkMax.ControlType.kSmartMotion);
   }
 
   public double getWristCurrent() {

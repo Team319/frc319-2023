@@ -5,20 +5,18 @@
 package frc.robot.commands.command_groups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants;
-import frc.robot.commands.elevator.SetElevatorPosition;
+import frc.robot.commands.collector.SetCollectorVelocity;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class GoHome extends SequentialCommandGroup {
-  /** Creates a new GoHome. */
-  public GoHome() {
+public class SpitGamePiece extends SequentialCommandGroup {
+  /** Creates a new SpitGamePiece. */
+  public SpitGamePiece(double velocity) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new MoveWristAndElbow(Constants.WristConstants.SetPoints.home, Constants.ElbowConstants.SetPoints.home),
-      new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.home)
+      new SetCollectorVelocity(velocity)
     );
   }
 }

@@ -2,41 +2,39 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.elevator;
+package frc.robot.commands.collector;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.utils.HelperFunctions;
 
-public class SetElevatorPosition extends CommandBase {
-
-  private double position = 0.0;
-  /** Creates a new SetElevatorPosition. */
-  public SetElevatorPosition(double position) {
-    this.position = position;
-    addRequirements(Robot.elevator);
+public class SetCollectorVelocity extends CommandBase {
+  private double velocity = 0;
+  /** Creates a new SetCollectorVelocity. */
+  public SetCollectorVelocity(double velocity) {
+    this.velocity = velocity;
+    addRequirements(Robot.collector);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Robot.collector.setCollectorVelocity(velocity);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    Robot.elevator.setPosition(position);
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    Robot.collector.setCollectorVelocity(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return HelperFunctions.deadband(Robot.elevator.getCurrentPosition() - position, Constants.ElevatorConstants.SetPoints.deadband) == 0.0;
+    return false;
   }
 }
