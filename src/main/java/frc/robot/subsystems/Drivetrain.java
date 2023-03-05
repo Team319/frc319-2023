@@ -111,11 +111,6 @@ public class Drivetrain extends SubsystemBase {
     rightFollow2.setNeutralMode(NeutralMode.Coast);
   }
 
-  public void setNeutralMode(NeutralMode neutralMode) {
-		this.leftLead.setNeutralMode(neutralMode);
-		this.rightLead.setNeutralMode(neutralMode);
-	}
-
 
   private void setMotorRampRates() {
 
@@ -138,6 +133,18 @@ public class Drivetrain extends SubsystemBase {
     rightFollow1.configSupplyCurrentLimit(currentLimit);
     rightFollow2.configSupplyCurrentLimit(currentLimit);
   }
+
+  public void setNeutralMode(NeutralMode neutralMode) {
+
+    leftLead.setNeutralMode(neutralMode);
+    leftFollow1.setNeutralMode(neutralMode);
+    leftFollow2.setNeutralMode(neutralMode);
+
+    rightLead.setNeutralMode(neutralMode);
+    rightFollow1.setNeutralMode(neutralMode);
+    rightFollow2.setNeutralMode(neutralMode);
+  }
+
   // Sets left and right controlmodes to left and right
   public void drive(ControlMode controlMode, double left, double right) {
     this.leftLead.set(controlMode, left);

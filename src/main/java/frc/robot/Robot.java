@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.BobDrive;
 import frc.robot.commands.autos.MultiPath;
+import frc.robot.commands.autos.RedRight;
 import frc.robot.commands.autos.TestPath;
 import frc.robot.commands.drivetrain.EngageInAuto;
 import frc.robot.subsystems.Collector;
@@ -51,9 +52,18 @@ public class Robot extends TimedRobot {
   public static LEDS leds = new LEDS();
 
   private RobotContainer m_robotContainer;
+
   public static Trajectory Trajectory1 = new Trajectory();
   public static Trajectory Trajectory2 = new Trajectory();
   public static Trajectory Trajectory3 = new Trajectory();
+
+  public static Trajectory BlueLeft = new Trajectory();
+
+  public static Trajectory RedRightCharge1 = new Trajectory();
+  public static Trajectory RedRightCharge2 = new Trajectory();
+  public static Trajectory RedRightCharge3 = new Trajectory();
+
+  public static Trajectory RedRight = new Trajectory();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -61,15 +71,21 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    //Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
+    Robot.leds.colorTest(0xFF, 0xA5, 0x00);
     Robot.drivetrain.setNeutralMode(NeutralMode.Coast);
     Robot.drivetrain.setDefaultCommand(new BobDrive());
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    String trajectory1JSON = "paths//phase1.wpilib.json";
-    String trajectory2JSON = "paths//phase2.wpilib.json";
-    String trajectory3JSON = "paths//phase3.wpilib.json";
+    String trajectory1JSON = "paths//blueleftcharge1.wpilib.json";
+    String trajectory2JSON = "paths//blueleftcharge2.wpilib.json";
+    String trajectory3JSON = "paths//blueleftcharge3.wpilib.json";
+
+    String RedRightCharge1JSON = "paths//redrightcharge1.wpilib.json";
+    String RedRightCharge2JSON = "paths//redrightcharge2.wpilib.json";
+    //String RedRightCharge3JSON = "paths//redrightcharge3.wpilib.json";
  
     try {
       Path testPath1 = Filesystem.getDeployDirectory().toPath().resolve(trajectory1JSON);
@@ -79,6 +95,18 @@ public class Robot extends TimedRobot {
       Trajectory1 = TrajectoryUtil.fromPathweaverJson(testPath1);
       Trajectory2 = TrajectoryUtil.fromPathweaverJson(testPath2);
       Trajectory3 = TrajectoryUtil.fromPathweaverJson(testPath3);
+
+      //Trajectory BlueLeft = Trajectory1.concatenate(Trajectory2.concatenate(Trajectory3));
+
+      Path RedRightChargePath1 = Filesystem.getDeployDirectory().toPath().resolve(RedRightCharge1JSON);
+      Path RedRightChargePath2 = Filesystem.getDeployDirectory().toPath().resolve(RedRightCharge2JSON);
+      //Path RedRightChargePath3 = Filesystem.getDeployDirectory().toPath().resolve(RedRightCharge3JSON);
+
+      RedRightCharge1 = TrajectoryUtil.fromPathweaverJson(RedRightChargePath1);
+      RedRightCharge2 = TrajectoryUtil.fromPathweaverJson(RedRightChargePath2);
+      //RedRightCharge3 = TrajectoryUtil.fromPathweaverJson(RedRightChargePath3);
+
+      RedRight = RedRightCharge1.concatenate(RedRightCharge2);
     }
 
     catch (IOException ex) {
@@ -104,7 +132,7 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
 
 
-    /*
+    
     SmartDashboard.putNumber("Elevator Position", elevator.getCurrentPosition());
     SmartDashboard.putNumber("Elevator Velocity", elevator.getVelocity());
     SmartDashboard.putNumber("Elevator Current", elevator.getElevatorCurrent());
@@ -122,7 +150,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Heading", drivetrain.getHeadingDegrees());
 
     SmartDashboard.putNumber("Limelight Distance", limelight.getDistanceToTarget(Constants.TargetType.CONE_HIGH));
-   */
+   
     //drivetrain.setFollowers();
 
     CommandScheduler.getInstance().run();
@@ -151,7 +179,7 @@ public class Robot extends TimedRobot {
     //drivetrain.zeroOdometry(); //remove
     // schedule the autonomous command (example)
     //m_autonomousCommand = new DriveToPitch(10);
-    m_autonomousCommand = new TestPath(Trajectory3);//MultiPath();//
+    m_autonomousCommand = new RedRight(); //MultiPath();//MultiPath();//
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }

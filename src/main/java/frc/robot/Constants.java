@@ -27,10 +27,10 @@ public final class Constants {
         Normal, Limelight, Scoring
     }
     
-
-      public static final double ksVolts = 0.05;//0.019809; 
-      public static final double kvVoltSecondsPerMeter = 1;//2.0594;
-      public static final double kaVoltSecondsSquaredPerMeter = 0.01; 
+                                                                      // These values worked
+      public static final double ksVolts = 0.025;                      // 0.05
+      public static final double kvVoltSecondsPerMeter = 0.2;           // 2.0594;
+      public static final double kaVoltSecondsSquaredPerMeter = 0.0002; // 0.01
 
       // Example value only - as above, this must be tuned for your drive!
       public static final double kPDriveVel = 0.0008;  //Testing : 0.0008;//sysId : 0.9146;
@@ -84,9 +84,9 @@ public final class Constants {
 
         public static final double preScore = 19;
 
-        public static final double collectConeTipped = 20.0;
-        public static final double collectStanding = 8.0;
-        public static final double collectFloor = 10.78;
+        public static final double collectConeTipped = 19.0; // was 20
+        public static final double collectStanding = 6.0; // was 8.0
+        public static final double collectFloor = 6.78;  // was 10.78
         public static final double collectCubeFromLoadStation = 52.0;
         public static final double collectConeFromLoadStation = 60.0;
         
@@ -141,8 +141,8 @@ public final class Constants {
 
         public static final double preScore = 0.152832; //0.197700
 
-        public static final double collectConeTipped = -0.138682;
-        public static final double collectConeStanding = 0.0;
+        public static final double collectConeTipped = -0.165;
+        public static final double collectConeStanding = 0.018;
         public static final double collectFloor = 0.0;
         public static final double collectFromLoadStation = 0.216919;
 
@@ -195,8 +195,8 @@ public final class Constants {
 
         public static final double preScore = -33;
 
-        public static final double collectConeTipped = -58; //-63
-        public static final double collectConeStanding = -60;
+        public static final double collectConeTipped = -70; //-63
+        public static final double collectConeStanding = -70.4;
         public static final double collectFloor = -75;
         public static final double collectFromLoadStation = -58;
 

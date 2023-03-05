@@ -5,19 +5,15 @@
 package frc.robot.commands.command_groups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.collector.SetCollectorVelocity;
-import frc.robot.commands.collector.SetCollectorVoltage;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SpitGamePiece extends SequentialCommandGroup {
-  /** Creates a new SpitGamePiece. */
-  public SpitGamePiece(double voltage) {
+public class AutoScoreHigh extends SequentialCommandGroup {
+  /** Creates a new AutoScoreHigh. */
+  public AutoScoreHigh() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(
-      new SetCollectorVoltage(voltage)
-    );
+    addCommands(new GoHome(), new PreScorePosition(), new AutoScoreConeHigh());
   }
 }
