@@ -265,6 +265,7 @@ public final class Constants {
     public static final int kOperatorControllerPort = 1;
   }
 
+  //TODO - Make this an enum
   public static class TargetType {
     public static final int FLOOR = 0;
     public static final int APRILTAG = 1;

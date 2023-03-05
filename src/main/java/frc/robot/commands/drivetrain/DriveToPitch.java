@@ -14,7 +14,7 @@ import frc.robot.utils.DriveSignal;
 public class DriveToPitch extends CommandBase {
   
   double pitchLimit = 0;
-  double moveValue = 0.1;
+  double moveValue = 0.3;
 
   BobDriveHelper helper = new BobDriveHelper();
   DriveSignal driveSignal = helper.cheesyDrive(moveValue, 0, false, false);
