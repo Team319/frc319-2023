@@ -22,6 +22,7 @@ import frc.robot.commands.command_groups.SpitGamePiece;
 import frc.robot.commands.elevator.ElevatorMoveALittle;
 import frc.robot.commands.leds.LEDColor;
 import edu.wpi.first.math.Pair;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -71,6 +72,10 @@ public class RobotContainer {
     /*m_driverController.povUp().whileTrue(new SetElevatorVoltage(0.4));
     m_driverController.povLeft().whileTrue(new SetElevatorVoltage(0.0));
     m_driverController.povDown().whileTrue(new SetElevatorVoltage(-0.4));*/
+
+    //m_driverController.leftBumper().whileTrue(new LEDColor(0, 0, 255));
+    m_driverController.leftBumper().whileTrue( new SetDriveMode(DriveMode.Limelight) );
+    m_driverController.leftBumper().onFalse(new SetDriveMode(DriveMode.Normal));
 
     m_driverController.leftTrigger().whileTrue(new SetDriveMode(DriveMode.Scoring));
     m_driverController.leftTrigger().onFalse(new SetDriveMode(DriveMode.Normal));

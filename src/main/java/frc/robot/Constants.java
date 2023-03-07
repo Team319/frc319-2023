@@ -77,7 +77,7 @@ public final class Constants {
         public static final double scoreHighCone = 64;
         public static final double scoreMiddleCone = 40.78;
 
-        public static final double scoreHighCube = 0;
+        public static final double autoScoreHighCube = 39.0;
         public static final double scoreMiddleCube = 0;
         
         public static final double scoreFloor = 0;
@@ -85,7 +85,7 @@ public final class Constants {
         public static final double preScore = 19;
 
         public static final double collectConeTipped = 19.0; // was 20
-        public static final double collectStanding = 6.0; // was 8.0
+        public static final double collectStanding = 9.0; // was 8.0
         public static final double collectFloor = 6.78;  // was 10.78
         public static final double collectCubeFromLoadStation = 52.0;
         public static final double collectConeFromLoadStation = 60.0;
@@ -134,7 +134,7 @@ public final class Constants {
         public static final double scoreHighCone = 0.197700;
         public static final double scoreMiddleCone = 0.197700;
 
-        public static final double scoreHighCube = 0.0;
+        public static final double autoScoreHighCube = 0.088013;
         public static final double scoreMiddleCube = 0.0;
 
         public static final double scoreFloor = 0.0;
@@ -188,7 +188,7 @@ public final class Constants {
         public static final double scoreHighCone = -60;
         public static final double scoreMiddleCone = -66;
 
-        public static final double scoreHighCube = 0;
+        public static final double autoScoreHighCube = -26;
         public static final double scoreMiddleCube = 0;
 
         public static final double scoreFloor = 0;
@@ -196,7 +196,7 @@ public final class Constants {
         public static final double preScore = -33;
 
         public static final double collectConeTipped = -70; //-63
-        public static final double collectConeStanding = -70.4;
+        public static final double collectConeStanding = -65; // was -70.4;
         public static final double collectFloor = -75;
         public static final double collectFromLoadStation = -58;
 

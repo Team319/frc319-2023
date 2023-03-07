@@ -31,9 +31,10 @@ public class RedRight extends SequentialCommandGroup {
                                 new SpitGamePiece(-1)),
       new PreScorePosition(),
       new ParallelCommandGroup( new TestPath(Robot.RedRight), 
-                                new SequentialCommandGroup(new FloorCollect(), new GoHome() )
+                                new SequentialCommandGroup(new FloorCollect() )
                               ), 
-      new AutoDriveForwardAndEngage()
+                              new ParallelDeadlineGroup(new AutoDriveForwardAndEngage(),new GoHome())
+      
       
     );
   }

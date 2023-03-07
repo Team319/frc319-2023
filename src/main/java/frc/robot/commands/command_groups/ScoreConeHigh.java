@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.elbow.SetElbowPosition;
 import frc.robot.commands.elevator.SetElevatorPosition;
+import frc.robot.commands.limelight.SwitchingPipelineTest;
 import frc.robot.commands.wrist.SetWristPosition;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -21,7 +22,8 @@ public class ScoreConeHigh extends SequentialCommandGroup {
     addCommands (
       new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.scoreHighCone), 
       new SetElbowPosition(Constants.ElbowConstants.SetPoints.scoreHighCone),
-      new SetWristPosition(Constants.WristConstants.SetPoints.scoreHighCone)
+      new SetWristPosition(Constants.WristConstants.SetPoints.scoreHighCone),
+      new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_TOP)
       //new SetDriveMode(DriveMode.Scoring)
     );
   }

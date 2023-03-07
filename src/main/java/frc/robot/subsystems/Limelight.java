@@ -70,6 +70,11 @@ public class Limelight extends SubsystemBase {
     return y;
   }
 
+  public double getV(){
+    v = tv.getDouble(0.0); // should this be a boolean?
+    return v;
+  }
+
   public void setLedMode(int mode) {
     this.ledMode.setNumber(mode);
   }

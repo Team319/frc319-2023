@@ -21,8 +21,9 @@ public class BobDrive extends CommandBase {
 	private double quickTurnThreshold = 0.2;
 	private double deadband = 0.1;
 	private double rotateValue;
+	private double stickModifier;
 	private double moveValue = 0.0;
-	private PIDController limelightRotatePID = new PIDController(0.25, 0.01, 0.0); // TODO: Tune me.
+	private PIDController limelightRotatePID = new PIDController(0.25, 0.08, 0.0); // TODO: Tune me.
 
 	private RobotContainer robotContainer = new RobotContainer();
 	//private PIDController limelightRotatePID = new PIDController(0.25, 0.01, 0.0);
@@ -43,8 +44,14 @@ public class BobDrive extends CommandBase {
 	public void execute() {
 		rotateValue = 0.0;
 		if (Robot.drivetrain.getDriveMode() == DriveMode.Limelight) {
-			rotateValue = -limelightRotatePID.calculate(Robot.limelight.getXProportional());
-			moveValue = HelperFunctions.deadband(robotContainer.getLeftStick().getSecond(), deadband);
+
+			if(Robot.limelight.getV() != 0){
+				stickModifier = HelperFunctions.deadband(robotContainer.getRightStick().getFirst(), deadband) * 0.5;
+				rotateValue = -limelightRotatePID.calculate(Robot.limelight.getXProportional()+ stickModifier ) ;
+			}
+			
+
+			moveValue = HelperFunctions.deadband(robotContainer.getLeftStick().getSecond(), deadband)* 0.4;
 		}
 		else if (Robot.drivetrain.getDriveMode() == DriveMode.Normal) {
 			rotateValue = HelperFunctions.deadband(robotContainer.getRightStick().getFirst(), deadband) * 0.40;

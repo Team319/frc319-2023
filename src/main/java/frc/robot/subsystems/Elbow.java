@@ -90,6 +90,8 @@ public class Elbow extends SubsystemBase {
     
     pidController.setFeedbackDevice(m_AlternateEncoder);
     pidController.setOutputRange(-1.0, 1.0);
+
+    elbowMotor.setSmartCurrentLimit(30);
   }
 
   /**

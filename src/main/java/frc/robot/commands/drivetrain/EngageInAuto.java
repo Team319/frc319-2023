@@ -15,7 +15,7 @@ import frc.robot.utils.HelperFunctions;
 public class EngageInAuto extends CommandBase {
 
   double pitchLimit = 0;
-  double moveValue = 0.1;
+  double moveValue = 0.008;//0.0105
   double levelCount = 0;
   double deadband = 3.0;
 
@@ -37,18 +37,26 @@ public class EngageInAuto extends CommandBase {
   public void execute() {
     if (HelperFunctions.deadband(Robot.drivetrain.getPitch(), deadband) != 0) {
       levelCount = 0;
-      if (HelperFunctions.deadband(Robot.drivetrain.getDeltaPitch(), 0.8) == 0) {
-        driveSignal = helper.cheesyDrive(moveValue, 0, false, false);
-        Robot.drivetrain.drive(ControlMode.PercentOutput, driveSignal);
-      } else {
-        driveSignal = helper.cheesyDrive(0, 0, false, false);
-        Robot.drivetrain.drive(ControlMode.PercentOutput, driveSignal);
-      }
-    } else {
-        levelCount++;
-        driveSignal = helper.cheesyDrive(0, 0, false, false);
-        Robot.drivetrain.drive(ControlMode.PercentOutput, driveSignal);
-    }
+      driveSignal = helper.cheesyDrive(moveValue*Robot.drivetrain.getPitch(), 0, false, false);
+      Robot.drivetrain.drive(ControlMode.PercentOutput, driveSignal);
+      // if (Robot.drivetrain.getPitch() > 5) {
+      //   driveSignal = helper.cheesyDrive(moveValue, 0, false, false);
+      //   Robot.drivetrain.drive(ControlMode.PercentOutput, driveSignal);
+      // }
+      // if (Robot.drivetrain.getPitch() < -8) {
+      //   driveSignal = helper.cheesyDrive(moveValue*-1, 0, false, false);
+      //   Robot.drivetrain.drive(ControlMode.PercentOutput, driveSignal);
+      
+      // } 
+      // else {
+      //   driveSignal = helper.cheesyDrive(0, 0, false, false);
+      //   Robot.drivetrain.drive(ControlMode.PercentOutput, driveSignal);
+      // }
+    // } else {
+    //     levelCount++;
+    //     driveSignal = helper.cheesyDrive(0, 0, false, false);
+    //     Robot.drivetrain.drive(ControlMode.PercentOutput, driveSignal);
+     }
   }
 
   // Called once the command ends or is interrupted.

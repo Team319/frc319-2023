@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.security.Key;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -16,11 +17,18 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.BobDrive;
+import frc.robot.commands.autos.BlueLeft;
+import frc.robot.commands.autos.BlueLeftNoCharge;
+import frc.robot.commands.autos.BlueLeftNoCollect;
 import frc.robot.commands.autos.MultiPath;
 import frc.robot.commands.autos.RedRight;
+import frc.robot.commands.autos.RedRightNoCharge;
+import frc.robot.commands.autos.RedRightNoCollect;
+import frc.robot.commands.autos.TestFollowSplitPaths;
 import frc.robot.commands.autos.TestPath;
 import frc.robot.commands.drivetrain.EngageInAuto;
 import frc.robot.subsystems.Collector;
@@ -30,6 +38,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Wrist;
+import frc.robot.subsystems.LEDS.Section;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -57,13 +66,43 @@ public class Robot extends TimedRobot {
   public static Trajectory Trajectory2 = new Trajectory();
   public static Trajectory Trajectory3 = new Trajectory();
 
-  public static Trajectory BlueLeft = new Trajectory();
-
+  //RedRightCharge
   public static Trajectory RedRightCharge1 = new Trajectory();
   public static Trajectory RedRightCharge2 = new Trajectory();
   public static Trajectory RedRightCharge3 = new Trajectory();
-
+  
   public static Trajectory RedRight = new Trajectory();
+
+  //RedRightNoCharge
+  public static Trajectory RedRightNoCharge1 = new Trajectory();
+  public static Trajectory RedRightNoCharge2 = new Trajectory();
+  public static Trajectory RedRightNoCharge3 = new Trajectory();
+  
+  public static Trajectory RedRightNoChargeFirstPath = new Trajectory();
+  public static Trajectory RedRightNoChargeSecondPath = new Trajectory();
+  
+  // RedRightNoCollect
+  public static Trajectory RedRightNoCollect1 = new Trajectory();
+  
+  public static Trajectory RedRightNoCollect = new Trajectory();
+  
+  // Blue Left Charge
+  public static Trajectory BlueLeftCharge1 = new Trajectory();
+  public static Trajectory BlueLeftCharge2 = new Trajectory();
+
+  public static Trajectory BlueLeft = new Trajectory();
+
+  // Blue Left No Charge
+  public static Trajectory BlueLeftNoCharge1 = new Trajectory();
+  public static Trajectory BlueLeftNoCharge2 = new Trajectory();
+  public static Trajectory BlueLeftNoCharge3 = new Trajectory();
+
+  public static Trajectory BlueLeftNoCharge = new Trajectory();
+
+    // Blue Left No Collect
+    public static Trajectory BlueLeftNoCollect1 = new Trajectory();
+  
+    public static Trajectory BlueLeftNoCollect = new Trajectory();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -79,34 +118,86 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    String trajectory1JSON = "paths//blueleftcharge1.wpilib.json";
-    String trajectory2JSON = "paths//blueleftcharge2.wpilib.json";
-    String trajectory3JSON = "paths//blueleftcharge3.wpilib.json";
-
     String RedRightCharge1JSON = "paths//redrightcharge1.wpilib.json";
     String RedRightCharge2JSON = "paths//redrightcharge2.wpilib.json";
-    //String RedRightCharge3JSON = "paths//redrightcharge3.wpilib.json";
+
+    String RedRightNoCharge1JSON = "paths//redrightnocharge1.wpilib.json";
+    String RedRightNoCharge2JSON = "paths//redrightnocharge2.wpilib.json";
+    String RedRightNoCharge3Json = "paths//redrightnocharge3.wpilib.json";
+
+    String RedRightNoCollect1Json = "paths//redrightnocollect1.wpilib.json";
+
+    String BlueLeftCharge1JSON = "paths//blueleftcharge1.wpilib.json";
+    String BlueLeftCharge2JSON = "paths//blueleftcharge2.wpilib.json";
+
+    String BlueLeftNoCharge1JSON = "paths//blueleftnocharge1.wpilib.json";
+    String BlueLeftNoCharge2JSON = "paths//blueleftnocharge2.wpilib.json";
+    String BlueLeftNoCharge3JSON = "paths//blueleftnocharge3.wpilib.json";
+    
+    String BlueLeftNoCollect1JSON = "paths//blueleftnocollect1.wpilib.json";
  
     try {
-      Path testPath1 = Filesystem.getDeployDirectory().toPath().resolve(trajectory1JSON);
-      Path testPath2 = Filesystem.getDeployDirectory().toPath().resolve(trajectory2JSON);
-      Path testPath3 = Filesystem.getDeployDirectory().toPath().resolve(trajectory3JSON);
 
-      Trajectory1 = TrajectoryUtil.fromPathweaverJson(testPath1);
-      Trajectory2 = TrajectoryUtil.fromPathweaverJson(testPath2);
-      Trajectory3 = TrajectoryUtil.fromPathweaverJson(testPath3);
+      //Blue Left Charge
 
-      //Trajectory BlueLeft = Trajectory1.concatenate(Trajectory2.concatenate(Trajectory3));
+      Path BlueLeftChargePath1 = Filesystem.getDeployDirectory().toPath().resolve(BlueLeftCharge1JSON);
+      Path BlueLeftChargePath2 = Filesystem.getDeployDirectory().toPath().resolve(BlueLeftCharge2JSON);
 
+      BlueLeftCharge1 = TrajectoryUtil.fromPathweaverJson(BlueLeftChargePath1);
+      BlueLeftCharge2 = TrajectoryUtil.fromPathweaverJson(BlueLeftChargePath2);
+
+      BlueLeft = BlueLeftCharge1.concatenate(BlueLeftCharge2);
+
+      //Blue Left No Charge
+
+      Path BlueLeftNoChargePath1 = Filesystem.getDeployDirectory().toPath().resolve(BlueLeftNoCharge1JSON);
+      Path BlueLeftNoChargePath2 = Filesystem.getDeployDirectory().toPath().resolve(BlueLeftNoCharge2JSON);
+      Path BlueLeftNoChargePath3 = Filesystem.getDeployDirectory().toPath().resolve(BlueLeftNoCharge3JSON);
+
+      BlueLeftNoCharge1 = TrajectoryUtil.fromPathweaverJson(BlueLeftNoChargePath1);
+      BlueLeftNoCharge2 = TrajectoryUtil.fromPathweaverJson(BlueLeftNoChargePath2);
+      BlueLeftNoCharge3 = TrajectoryUtil.fromPathweaverJson(BlueLeftNoChargePath3);
+
+      BlueLeftNoCharge = BlueLeftNoCharge1.concatenate(BlueLeftNoCharge2);
+      BlueLeftNoCharge = BlueLeftNoCharge.concatenate(BlueLeftNoCharge3);
+
+      //BlueLeftNoCollect
+      Path BlueLeftNoCollectPath1 = Filesystem.getDeployDirectory().toPath().resolve(BlueLeftNoCollect1JSON);
+
+      BlueLeftNoCollect1 = TrajectoryUtil.fromPathweaverJson(BlueLeftNoCollectPath1);
+
+      BlueLeftNoCollect = BlueLeftNoCollect1;
+
+      //RedRightCharge
       Path RedRightChargePath1 = Filesystem.getDeployDirectory().toPath().resolve(RedRightCharge1JSON);
       Path RedRightChargePath2 = Filesystem.getDeployDirectory().toPath().resolve(RedRightCharge2JSON);
-      //Path RedRightChargePath3 = Filesystem.getDeployDirectory().toPath().resolve(RedRightCharge3JSON);
+      
 
       RedRightCharge1 = TrajectoryUtil.fromPathweaverJson(RedRightChargePath1);
       RedRightCharge2 = TrajectoryUtil.fromPathweaverJson(RedRightChargePath2);
-      //RedRightCharge3 = TrajectoryUtil.fromPathweaverJson(RedRightChargePath3);
+      
 
       RedRight = RedRightCharge1.concatenate(RedRightCharge2);
+
+      //RedRightNoCharge
+      Path RedRightNoChargePath1 = Filesystem.getDeployDirectory().toPath().resolve(RedRightNoCharge1JSON);
+      Path RedRightNoChargePath2 = Filesystem.getDeployDirectory().toPath().resolve(RedRightNoCharge2JSON);
+      Path RedRightNoChargePath3 = Filesystem.getDeployDirectory().toPath().resolve(RedRightNoCharge3Json);
+
+      RedRightNoCharge1 = TrajectoryUtil.fromPathweaverJson(RedRightNoChargePath1);
+      RedRightNoCharge2 = TrajectoryUtil.fromPathweaverJson(RedRightNoChargePath2);
+      RedRightNoCharge3 = TrajectoryUtil.fromPathweaverJson(RedRightNoChargePath3);
+
+      RedRightNoChargeFirstPath = RedRightNoCharge1.concatenate(RedRightNoCharge2);
+      RedRightNoChargeFirstPath = RedRightNoChargeFirstPath.concatenate(RedRightNoCharge3);
+
+      //BlueLeftNoCollect
+      Path RedRightNoCollectPath1 = Filesystem.getDeployDirectory().toPath().resolve(RedRightNoCollect1Json);
+
+      RedRightNoCollect1 = TrajectoryUtil.fromPathweaverJson(RedRightNoCollectPath1);
+
+      RedRightNoCollect = RedRightNoCollect1;
+
     }
 
     catch (IOException ex) {
@@ -126,6 +217,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    //Robot.leds.solidRGB(Section.FULL, 0x00, 0x00, 0x00);
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -150,6 +242,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Heading", drivetrain.getHeadingDegrees());
 
     SmartDashboard.putNumber("Limelight Distance", limelight.getDistanceToTarget(Constants.TargetType.CONE_HIGH));
+    SmartDashboard.putNumber("pitch",drivetrain.getPitch());
    
     //drivetrain.setFollowers();
 
@@ -179,7 +272,7 @@ public class Robot extends TimedRobot {
     //drivetrain.zeroOdometry(); //remove
     // schedule the autonomous command (example)
     //m_autonomousCommand = new DriveToPitch(10);
-    m_autonomousCommand = new RedRight(); //MultiPath();//MultiPath();//
+    m_autonomousCommand = new BlueLeft();//BlueLeftNoCharge();//TestFollowSplitPaths(); //RedRightNoCollect(); //MultiPath();//MultiPath();//
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
