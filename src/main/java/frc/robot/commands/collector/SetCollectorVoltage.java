@@ -37,14 +37,22 @@ public class SetCollectorVoltage extends CommandBase {
   public void end(boolean interrupted) {
     Robot.collector.setCollectorCurrentLimit(15);
     Robot.collector.setCollectorPO(0.1);
+    
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(voltage < 0){
+      Robot.leds.colorTest(0, 0, 255);
+    }
     if (Robot.collector.getCollectorCurrent() > Constants.CollectorConstants.Currents.currentThreshold) {
       i++;
-      if (i > 50) {
+      
+      if (i > 25) {
+        if(voltage > 0 ){
+        Robot.leds.colorTest(255, 30, 0);
+        }
         return true;
       }
     }

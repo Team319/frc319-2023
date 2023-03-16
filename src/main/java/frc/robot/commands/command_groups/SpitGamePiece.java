@@ -5,6 +5,8 @@
 package frc.robot.commands.command_groups;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Robot;
+import frc.robot.Constants.CollectorState;
 import frc.robot.commands.collector.SetCollectorVelocity;
 import frc.robot.commands.collector.SetCollectorVoltage;
 
@@ -19,5 +21,8 @@ public class SpitGamePiece extends SequentialCommandGroup {
     addCommands(
       new SetCollectorVoltage(voltage)
     );
+
+    Robot.collectorState = CollectorState.EMPTY;
+
   }
 }

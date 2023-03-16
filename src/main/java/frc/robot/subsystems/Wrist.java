@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -20,7 +21,11 @@ public class Wrist extends SubsystemBase {
   
   // Gets PID Controller and Encoder for wrist
   private SparkMaxPIDController pidController = wristMotor.getPIDController();
-  public RelativeEncoder wristEncoder = wristMotor.getEncoder();
+  public SparkMaxAlternateEncoder.Type wristEncoder = SparkMaxAlternateEncoder.Type.kQuadrature;
+  private static final int kCPR = 8192;
+  private RelativeEncoder m_AlternateEncoder;
+  
+  //public RelativeEncoder wristEncoder = wristMotor.getEncoder();
 
   // Creates a new Wrist.
   public Wrist() {
@@ -46,9 +51,13 @@ public class Wrist extends SubsystemBase {
     wristMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.WristConstants.SoftLimits.forwardSoftLimit);
     wristMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.WristConstants.SoftLimits.reverseSoftLimit);
 
+    wristMotor.setSmartCurrentLimit(20);
+
     wristMotor.setInverted(false);
     
-    pidController.setFeedbackDevice(wristEncoder);
+
+    m_AlternateEncoder = wristMotor.getAlternateEncoder(wristEncoder,kCPR);
+    pidController.setFeedbackDevice(m_AlternateEncoder);
     pidController.setOutputRange(-1.0, 1.0);
   }
 
@@ -68,7 +77,8 @@ public class Wrist extends SubsystemBase {
   }
 
   public double getCurrentPosition() {
-    return this.wristEncoder.getPosition();
+    //return this.wristEncoder.getPosition();
+    return this.m_AlternateEncoder.getPosition();
   }
 
   public void setPosition(double targetPosition) {
@@ -88,7 +98,8 @@ public class Wrist extends SubsystemBase {
   }
 
   public double getWristMotorVelocity() {
-    return wristEncoder.getVelocity();
+    //return wristEncoder.getVelocity();
+    return m_AlternateEncoder.getVelocity();
   }
 
 }

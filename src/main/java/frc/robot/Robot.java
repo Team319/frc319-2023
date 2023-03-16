@@ -16,15 +16,23 @@ import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.CollectorState;
 import frc.robot.commands.BobDrive;
 import frc.robot.commands.autos.BlueLeft;
 import frc.robot.commands.autos.BlueLeftNoCharge;
 import frc.robot.commands.autos.BlueLeftNoCollect;
+import frc.robot.commands.autos.BlueRight;
+import frc.robot.commands.autos.BlueRightPlaceAndMove;
+import frc.robot.commands.autos.Middle;
 import frc.robot.commands.autos.MultiPath;
+import frc.robot.commands.autos.RedLeft;
+import frc.robot.commands.autos.RedLeftPlaceAndMove;
 import frc.robot.commands.autos.RedRight;
 import frc.robot.commands.autos.RedRightNoCharge;
 import frc.robot.commands.autos.RedRightNoCollect;
@@ -59,6 +67,8 @@ public class Robot extends TimedRobot {
   public static Elbow elbow = new Elbow();
   public static Collector collector = new Collector();
   public static LEDS leds = new LEDS();
+  
+  SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
   private RobotContainer m_robotContainer;
 
@@ -104,14 +114,31 @@ public class Robot extends TimedRobot {
   
     public static Trajectory BlueLeftNoCollect = new Trajectory();
 
+    public static CollectorState collectorState = CollectorState.EMPTY;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
+
+    autoChooser.setDefaultOption("Do Nothing", new WaitCommand(15)); 
+    autoChooser.addOption("Red Left", new RedLeft());
+    autoChooser.addOption("Red Left Place And Move", new RedLeftPlaceAndMove());
+    autoChooser.addOption("Red Right", new RedRight());
+    autoChooser.addOption("Red Right (No Charge)", new RedRightNoCharge());
+    autoChooser.addOption("Red Right (No Collect)", new RedRightNoCollect());
+    autoChooser.addOption("Middle", new Middle());
+    autoChooser.addOption("Blue Left", new BlueLeft());
+    autoChooser.addOption("Blue Left (No Charge)", new BlueLeftNoCharge());
+    autoChooser.addOption("Blue Left (No Collect)", new BlueLeftNoCollect());
+    autoChooser.addOption("Blue Right", new BlueRight());
+    autoChooser.addOption("Blue Right Place And Move", new BlueRightPlaceAndMove());
+
     //Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
-    Robot.leds.colorTest(0xFF, 0xA5, 0x00);
+    Robot.leds.colorTest(255, 30, 0);
+    //Robot.leds.solid(Color.kOrange);
     Robot.drivetrain.setNeutralMode(NeutralMode.Coast);
     Robot.drivetrain.setDefaultCommand(new BobDrive());
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
@@ -223,7 +250,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
 
-
+    //SmartDashboard.putNumber("Collector State", collectorState);
     
     SmartDashboard.putNumber("Elevator Position", elevator.getCurrentPosition());
     SmartDashboard.putNumber("Elevator Velocity", elevator.getVelocity());
@@ -243,17 +270,22 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Limelight Distance", limelight.getDistanceToTarget(Constants.TargetType.CONE_HIGH));
     SmartDashboard.putNumber("pitch",drivetrain.getPitch());
+
+    SmartDashboard.putData(autoChooser);
+    
    
     //drivetrain.setFollowers();
 
     CommandScheduler.getInstance().run();
+    
+    //Robot.leds.strobe(Section.FULL,Color.kOrange, 0.1);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
     Robot.elbow.elbowMotor.setIdleMode(IdleMode.kCoast);
-    Robot.drivetrain.setNeutralMode(NeutralMode.Coast);
+    Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
     Robot.elevator.setPosition(Robot.elevator.getCurrentPosition());
   }
 
@@ -266,13 +298,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
+    collectorState = CollectorState.HOLDING_CONE; // We always hold a cone first
+
     Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
 
-    //m_autonomousCommand = new TestPath(autoTrajectory);
-    //drivetrain.zeroOdometry(); //remove
-    // schedule the autonomous command (example)
-    //m_autonomousCommand = new DriveToPitch(10);
-    m_autonomousCommand = new BlueLeft();//BlueLeftNoCharge();//TestFollowSplitPaths(); //RedRightNoCollect(); //MultiPath();//MultiPath();//
+    m_autonomousCommand = autoChooser.getSelected();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }

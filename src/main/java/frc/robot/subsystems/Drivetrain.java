@@ -140,7 +140,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   private void setMotorCurrentLimits(){
-    SupplyCurrentLimitConfiguration currentLimit = new SupplyCurrentLimitConfiguration(true, 25, 25, 0.0);
+    SupplyCurrentLimitConfiguration currentLimit = new SupplyCurrentLimitConfiguration(true, 20, 20, 0.0);
     leftLead.configSupplyCurrentLimit(currentLimit);
     leftFollow1.configSupplyCurrentLimit(currentLimit);
     leftFollow2.configSupplyCurrentLimit(currentLimit);

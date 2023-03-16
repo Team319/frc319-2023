@@ -4,6 +4,9 @@
 
 package frc.robot.commands.autos;
 
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -21,17 +24,29 @@ import frc.robot.commands.command_groups.SpitGamePiece;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class BlueLeftNoCollect extends SequentialCommandGroup {
+
+  Trajectory blueLeftNoCollect1 = Robot.drivetrain.loadTrajectoryFromFile("blueleftnocollect1");
+
+
   /** Creates a new RedRight. */
   public BlueLeftNoCollect() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      new InstantCommand(
+        () -> {
+
+      }),
       new AutoScoreHigh(),
       new ParallelDeadlineGroup(new WaitCommand(0.25), 
                                 new SpitGamePiece(-1)),
       new PreScorePosition(),
-      new ParallelCommandGroup( new TestPath(Robot.BlueLeftNoCollect) ) 
-                              //new ParallelDeadlineGroup(new AutoDriveForwardAndEngage())
+
+      Commands.parallel(
+        new InstantCommand(()->Robot.drivetrain.resetOdometry(blueLeftNoCollect1.getInitialPose())),
+        Robot.drivetrain.createCommandForTrajectory(blueLeftNoCollect1, false)),
+        
+      new ParallelDeadlineGroup(new AutoDriveForwardAndEngage())
       
       
     );

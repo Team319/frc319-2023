@@ -72,7 +72,7 @@ public class RedRightNoCharge extends SequentialCommandGroup {
         
         Commands.parallel(
           Robot.drivetrain.createCommandForTrajectory(redRightNoCharge2, false), 
-          Commands.sequence(new FloorCollect(),
+          Commands.sequence( Commands.race( new WaitCommand(2.5) , new FloorCollect()),
                             new PreScorePosition(), 
                             new AutoScoreCubeHigh()                            
           )

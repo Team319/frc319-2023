@@ -59,7 +59,7 @@ public class BlueLeft extends SequentialCommandGroup {
       
           )
       ),
-      Commands.parallel( Robot.drivetrain.createCommandForTrajectory(blueLeftCharge2, false), 
+      Commands.parallel(Robot.drivetrain.createCommandForTrajectory(blueLeftCharge2, false), 
                               Commands.sequence( 
                                 Commands.race(new WaitCommand(1), new FloorCollect())
                               )

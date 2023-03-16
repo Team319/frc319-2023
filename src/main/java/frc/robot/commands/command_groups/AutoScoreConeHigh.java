@@ -19,7 +19,7 @@ public class AutoScoreConeHigh extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.scoreHighCone - 6), 
+      new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.scoreHighCone - 6),
       new SetElbowPosition(Constants.ElbowConstants.SetPoints.scoreHighCone),
       new SetWristPosition(Constants.WristConstants.SetPoints.scoreHighCone)
     );
