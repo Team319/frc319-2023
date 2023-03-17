@@ -18,6 +18,8 @@ public class Collector extends SubsystemBase {
 
   private SparkMaxPIDController pidController = collectorMotor.getPIDController();
   public RelativeEncoder collectorEncoder = collectorMotor.getEncoder();
+
+  private boolean holdingCube = false;
   
   /** Creates a new Collector. */
   public Collector() {
@@ -45,6 +47,7 @@ public class Collector extends SubsystemBase {
 
     collectorMotor.setClosedLoopRampRate(0.125);
     collectorMotor.setOpenLoopRampRate(0.125);
+    
     collectorMotor.setSmartCurrentLimit(Constants.CollectorConstants.Currents.currentMax);
   }
 
@@ -58,5 +61,13 @@ public class Collector extends SubsystemBase {
 
   public double getCollectorVelocity() {
     return collectorEncoder.getVelocity();
+  }
+
+  public boolean getHoldingCube() {
+    return holdingCube;
+  }
+
+  public void setHoldingCube(boolean holdingCube) {
+    this.holdingCube = holdingCube;
   }
 }

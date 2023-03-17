@@ -7,6 +7,9 @@
 
 package frc.robot.subsystems;
 
+import java.io.IOException;
+import java.nio.file.Paths;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -15,13 +18,26 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.math.trajectory.TrajectoryUtil.TrajectorySerializationException;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DriveConstants.DriveMode;
 import frc.robot.commands.BobDrive;
 import frc.robot.utils.DriveSignal;
@@ -111,11 +127,6 @@ public class Drivetrain extends SubsystemBase {
     rightFollow2.setNeutralMode(NeutralMode.Coast);
   }
 
-  public void setNeutralMode(NeutralMode neutralMode) {
-		this.leftLead.setNeutralMode(neutralMode);
-		this.rightLead.setNeutralMode(neutralMode);
-	}
-
 
   private void setMotorRampRates() {
 
@@ -129,7 +140,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   private void setMotorCurrentLimits(){
-    SupplyCurrentLimitConfiguration currentLimit = new SupplyCurrentLimitConfiguration(true, 25, 25, 0.0);
+    SupplyCurrentLimitConfiguration currentLimit = new SupplyCurrentLimitConfiguration(true, 20, 20, 0.0);
     leftLead.configSupplyCurrentLimit(currentLimit);
     leftFollow1.configSupplyCurrentLimit(currentLimit);
     leftFollow2.configSupplyCurrentLimit(currentLimit);
@@ -138,6 +149,18 @@ public class Drivetrain extends SubsystemBase {
     rightFollow1.configSupplyCurrentLimit(currentLimit);
     rightFollow2.configSupplyCurrentLimit(currentLimit);
   }
+
+  public void setNeutralMode(NeutralMode neutralMode) {
+
+    leftLead.setNeutralMode(neutralMode);
+    leftFollow1.setNeutralMode(neutralMode);
+    leftFollow2.setNeutralMode(neutralMode);
+
+    rightLead.setNeutralMode(neutralMode);
+    rightFollow1.setNeutralMode(neutralMode);
+    rightFollow2.setNeutralMode(neutralMode);
+  }
+
   // Sets left and right controlmodes to left and right
   public void drive(ControlMode controlMode, double left, double right) {
     this.leftLead.set(controlMode, left);
@@ -260,6 +283,49 @@ public class Drivetrain extends SubsystemBase {
     rightFollow1.setSelectedSensorPosition(0);
     rightFollow2.setSelectedSensorPosition(0);
   }
+  public Pose2d getCurrentPose(){
+    return odometry.getPoseMeters();
+  }
+  public Command createCommandForTrajectory(Trajectory trajectory, Boolean initPose){
+    //velocitysetup(); They have this all it does is reset their encoders and set the PID values for the DT
+    RamseteCommand ramseteCommand = new RamseteCommand(
+      trajectory,
+      this::getCurrentPose,
+       new RamseteController(DriveConstants.kRamseteB, DriveConstants.kRamseteZeta),
+       new SimpleMotorFeedforward(
+                DriveConstants.ksVolts,
+                DriveConstants.kvVoltSecondsPerMeter,
+                DriveConstants.kaVoltSecondsSquaredPerMeter),
+        DriveConstants.kDriveKinematics,
+        this::getWheelSpeeds,
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        new PIDController(DriveConstants.kPDriveVel, 0, 0), 
+        this::tankDriveVolts, 
+        this);
+
+        if (initPose){
+          var reset = new InstantCommand(()->this.resetOdometry(trajectory.getInitialPose()));
+          return reset.andThen(()->this.tankDriveVolts(0, 0));
+        }
+        else{
+          return ramseteCommand.andThen(()->this.tankDriveVolts(0, 0));
+        }
+
+  }
+
+
+public Trajectory loadTrajectoryFromFile(String filename){
+  try{
+    return loadTrajectory(filename);
+  }catch ( IOException e ){
+    DriverStation.reportError("Failed to load Auto Trajectory " + filename, false);
+    return new Trajectory();
+  }
+}
+
+protected static Trajectory loadTrajectory(String trajectoryName) throws IOException{
+  return TrajectoryUtil.fromPathweaverJson(Filesystem.getDeployDirectory().toPath().resolve(Paths.get("output", trajectoryName+".wpilib.json")));
+}
 
 }
 

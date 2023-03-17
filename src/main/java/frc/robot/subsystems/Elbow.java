@@ -84,6 +84,8 @@ public class Elbow extends SubsystemBase {
     elbowMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.ElbowConstants.SoftLimits.forwardSoftLimit);
     elbowMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ElbowConstants.SoftLimits.reverseSoftLimit);
 
+    elbowMotor.setSmartCurrentLimit(20);
+
     elbowMotor.setInverted(true);
 
     m_AlternateEncoder = elbowMotor.getAlternateEncoder(elbowEncoder, kCPR);

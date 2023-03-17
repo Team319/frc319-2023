@@ -4,20 +4,55 @@
 
 package frc.robot.subsystems;
 
+import java.sql.Driver;
+
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utils.VirtualSubsystem;
 
-public class LEDS extends SubsystemBase {
-  public AddressableLED m_led = new AddressableLED(9);
-  public AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(60);
+public class LEDS extends VirtualSubsystem {
+  private static LEDS instance; 
+
+  public static LEDS getInstance(){
+    if(instance == null){
+      instance = new LEDS();
+    }
+    return instance;
+  }
+  private static final int length = 117;
+
+  public final AddressableLED m_led;
+  public final AddressableLEDBuffer m_ledBuffer;
+
+  private Alliance alliance = Alliance.Invalid;
 
   
   /** Creates a new LEDS. */
   public LEDS() {
-    m_led.setLength(m_ledBuffer.getLength());
+    m_led = new AddressableLED(0);
+    m_ledBuffer = new AddressableLEDBuffer(length);
+    m_led.setLength(length);
     m_led.setData(m_ledBuffer);
     m_led.start();
+  }
+
+  public void periodic(){
+
+    // if(DriverStation.isFMSAttached()){
+    //   alliance = DriverStation.getAlliance();
+    // }
+
+    //Select LED Mode
+    solid(Color.kRed);
+    //strobe(Section.FULL,Color.kBlue, 0.1);
+
   }
 
   public void colorTest(int rValue, int gValue, int bValue) {
@@ -27,4 +62,49 @@ public class LEDS extends SubsystemBase {
 
     m_led.setData(m_ledBuffer);
   }
+
+  public void solid(Color color){
+    for (int i = 1; i < length; i++){
+      m_ledBuffer.setLED(i, color);
+    }
+  }
+
+  public void strobe(Section section, Color color, double durration){
+    boolean on = ((Timer.getFPGATimestamp() % durration)/durration) > .5;
+    solid(on ? color : color.kBlack);
+  }
+
+  public void solidRGB(Section section, int r, int g, int b){
+    for (int i = section.start(); i < section.end(); i++){
+      m_ledBuffer.setRGB(i, r, g, b );
+    }
+  }
+
+  public static enum Section {
+    STATIC,
+    SHOULDER,
+    FULL,
+    STATIC_LOW,
+    STATIC_MID,
+    STATIC_HIGH;
+  
+
+  private int start(){
+    switch(this) {
+      case STATIC:
+        return 0;
+      default:
+        return 0;
+    }
+  }
+
+  private int end(){
+    switch(this) {
+      default:
+        return length;
+    }
+  }
+
+  }
+
 }

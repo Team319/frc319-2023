@@ -6,6 +6,7 @@ package frc.robot.commands.autos;
 
 import java.nio.file.Path;
 
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -18,10 +19,9 @@ public class MultiPath extends SequentialCommandGroup {
 
   /** Creates a new MultiPath. */
   public MultiPath() {
+
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new TestPath(Robot.Trajectory1), new WaitCommand(10),
-                new TestPath(Robot.Trajectory2), new WaitCommand(10),
-                new TestPath(Robot.Trajectory3));
+    addCommands(new TestPath(Robot.RedRight));
   }
 }

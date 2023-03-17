@@ -27,10 +27,10 @@ public final class Constants {
         Normal, Limelight, Scoring
     }
     
-
-      public static final double ksVolts = 0.05;//0.019809; 
-      public static final double kvVoltSecondsPerMeter = 1;//2.0594;
-      public static final double kaVoltSecondsSquaredPerMeter = 0.01; 
+                                                                      // These values worked
+      public static final double ksVolts = 0.025;                      // 0.05
+      public static final double kvVoltSecondsPerMeter = 0.2;           // 2.0594;
+      public static final double kaVoltSecondsSquaredPerMeter = 0.0002; // 0.01
 
       // Example value only - as above, this must be tuned for your drive!
       public static final double kPDriveVel = 0.0008;  //Testing : 0.0008;//sysId : 0.9146;
@@ -77,18 +77,20 @@ public final class Constants {
         public static final double scoreHighCone = 64;
         public static final double scoreMiddleCone = 40.78;
 
-        public static final double scoreHighCube = 0;
+        public static final double autoScoreHighCube = 39.0;
         public static final double scoreMiddleCube = 0;
         
         public static final double scoreFloor = 0;
 
         public static final double preScore = 19;
 
-        public static final double collectConeTipped = 20.0;
-        public static final double collectStanding = 8.0;
-        public static final double collectFloor = 10.78;
+        public static final double collectConeTipped = 19.0; // was 20
+        public static final double collectStanding = 9.0; // was 8.0
+        public static final double collectFloor = 6.78;  // was 10.78
+        public static final double coneSlide = 9.12;
+        public static final double coneSingleLoadingStation = 0.0;
         public static final double collectCubeFromLoadStation = 52.0;
-        public static final double collectConeFromLoadStation = 60.0;
+        public static final double collectConeFromLoadStation = 58.0;
         
         public static final double home = 0.75;
         public static final double top = 55.0;
@@ -134,16 +136,18 @@ public final class Constants {
         public static final double scoreHighCone = 0.197700;
         public static final double scoreMiddleCone = 0.197700;
 
-        public static final double scoreHighCube = 0.0;
+        public static final double autoScoreHighCube = 0.088013;
         public static final double scoreMiddleCube = 0.0;
 
         public static final double scoreFloor = 0.0;
 
         public static final double preScore = 0.152832; //0.197700
 
-        public static final double collectConeTipped = -0.138682;
-        public static final double collectConeStanding = 0.0;
+        public static final double collectConeTipped = -0.165;
+        public static final double collectConeStanding = 0.018;
         public static final double collectFloor = 0.0;
+        public static final double coneSlide = 0.066;
+        public static final double coneSingleLoadingStation = 0.0;
         public static final double collectFromLoadStation = 0.216919;
 
 
@@ -176,40 +180,44 @@ public final class Constants {
 
     public static class WristConstants {
       public static class PID {
-        public static final double kP = 0.096155;
-        public static final double kI = 0;
+        public static final double kP = 5.5;//0.096155;
+        public static final double kI = 0.018;//0;
         public static final double kD = 0;
 
-        public static final int iZone = 0;
-        public static final double fGain = 0.00019231;
+        public static final double iZone = 0.005;//0;
+        public static final double fGain = 0.018;//0.00019231;
       }
 
       public static class SetPoints {
-        public static final double scoreHighCone = -60;
-        public static final double scoreMiddleCone = -66;
+        public static final double scoreHighCone = -0.565;//-60;
+        public static final double scoreMiddleCone = -0.565; // we may need to msake this more negative //-66;
 
-        public static final double scoreHighCube = 0;
-        public static final double scoreMiddleCube = 0;
+        public static final double autoScoreHighCube = -0.283; //-26;
+        //public static final double scoreMiddleCube = 0;
 
-        public static final double scoreFloor = 0;
+        //public static final double scoreFloor = 0;
 
-        public static final double preScore = -33;
+        public static final double preScore = -0.283; //-33;
 
-        public static final double collectConeTipped = -58; //-63
-        public static final double collectConeStanding = -60;
-        public static final double collectFloor = -75;
-        public static final double collectFromLoadStation = -58;
+        public static final double collectConeTipped = -0.2; //-70; //-63
+        public static final double collectConeStanding = -0.42; //-65; // was -70.4;
+        public static final double coneSlide = -0.191;
+        public static final double collectFloor = -0.38;// -75;
+        public static final double coneSingleLoadingStation = 0.0;
+        public static final double collectFromLoadStation = -0.54;//-58;
 
-        public static final double home = -27;
-        public static final double top = 0.0;
-        public static final double bottom = -103.0;
+        public static final double home = -0.19;//-27;
+        //public static final double top = 0.0;
+        public static final double bottom = -0.6;
 
-        public static final double deadband = 0.5;
+        public static final double deadband = 0.03;
       }
 
       public static class SoftLimits {
-        public static final double forwardSoftLimit = 0.0;
-        public static final double reverseSoftLimit = -103.0;
+        public static final double forwardSoftLimit = -0.001;
+        public static final double reverseSoftLimit = -0.65;
+        //public static final double forwardSoftLimit = 0.0;
+        //public static final double reverseSoftLimit = -103.0;
       }
 
       public static class Currents {
@@ -229,7 +237,7 @@ public final class Constants {
     public static class CollectorConstants {
       
       public static class Currents {
-        public static final int currentMax = 30;
+        public static final int currentMax = 20;
         public static final int currentThreshold = 15;
 
         public static final double collectorVoltage = 0.75;
@@ -272,4 +280,9 @@ public final class Constants {
     public static final int CONE_MID = 2;
     public static final int CONE_HIGH = 3;
   }
+
+  public enum CollectorState {
+    EMPTY, HOLDING_CUBE, HOLDING_CONE
+}
+
 }

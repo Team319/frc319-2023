@@ -6,6 +6,8 @@ package frc.robot.commands.command_groups;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.Constants.CollectorState;
 import frc.robot.commands.collector.SetCollectorVoltage;
 import frc.robot.commands.elbow.SetElbowPosition;
 import frc.robot.commands.elevator.SetElevatorPosition;
@@ -25,5 +27,8 @@ public class FloorCollectConeTipped extends ParallelCommandGroup {
       new SetElbowPosition(Constants.ElbowConstants.SetPoints.collectConeTipped),
       new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltage)
     );
+
+    Robot.collectorState = CollectorState.HOLDING_CONE;
+    
   }
 }

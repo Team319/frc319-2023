@@ -18,7 +18,7 @@ public class LEDColor extends CommandBase {
     this.rValue = rValue;
     this.gValue = gValue;
     this.bValue = bValue;
-    addRequirements(Robot.leds);
+    //addRequirements(Robot.leds);
   }
 
   // Called when the command is initially scheduled.
