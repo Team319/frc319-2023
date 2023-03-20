@@ -40,16 +40,16 @@ public class BlueRight extends SequentialCommandGroup {
       new InstantCommand(
         () -> {
         }),
-      new AutoScoreHigh(),
+      /*new AutoScoreHigh(),
   
       new ParallelDeadlineGroup(new WaitCommand(0.25), 
-                                new SpitGamePiece(-1)),
+                                new SpitGamePiece(-1)),*/
 
       Commands.parallel(
         new InstantCommand(()->Robot.drivetrain.resetOdometry(blueRightCharge1.getInitialPose())),
-        Robot.drivetrain.createCommandForTrajectory(blueRightCharge1, false),
+        Robot.drivetrain.createCommandForTrajectory(blueRightCharge1, false)
         
-        Commands.sequence(
+        /*Commands.sequence(
           new PreScorePosition(),
           Commands.parallel(
               new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.collectFloor), 
@@ -57,16 +57,16 @@ public class BlueRight extends SequentialCommandGroup {
               new SetWristPosition(Constants.WristConstants.SetPoints.collectFloor)
             )
       
-          )
+          )*/
       ),
-      Commands.parallel(Robot.drivetrain.createCommandForTrajectory(blueRightCharge2, false), 
-                              Commands.sequence( 
+      Commands.parallel(Robot.drivetrain.createCommandForTrajectory(blueRightCharge2, false)
+                              /*Commands.sequence( 
                                 Commands.race(new WaitCommand(1), new FloorCollect())
-                              )
+                              )*/
 
-      ),
+      )
 
-      new ParallelCommandGroup(new AutoDriveForwardAndEngage(),new GoHome())
+      //new ParallelCommandGroup(new AutoDriveForwardAndEngage(),new GoHome())
 
     );
   }

@@ -30,14 +30,14 @@ public class RedLeftPlaceAndMove extends SequentialCommandGroup {
       new InstantCommand(
         () -> {
         }),
-      new AutoScoreHigh(),
+      /*new AutoScoreHigh(),
       new ParallelDeadlineGroup(new WaitCommand(0.25), 
-                                  new SpitGamePiece(-1)),
+                                  new SpitGamePiece(-1)),*/
       Commands.parallel(
       new InstantCommand(() -> Robot.drivetrain.resetOdometry(redLeftPlaceAndMove.getInitialPose()))),
-                                Robot.drivetrain.createCommandForTrajectory(redLeftPlaceAndMove, false),
-                                new GoHome());
+                                Robot.drivetrain.createCommandForTrajectory(redLeftPlaceAndMove, false)
+                                //new GoHome());
                   
-    
+    );
   }
 }

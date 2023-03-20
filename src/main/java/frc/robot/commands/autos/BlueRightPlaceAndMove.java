@@ -30,13 +30,14 @@ public class BlueRightPlaceAndMove extends SequentialCommandGroup {
       new InstantCommand(
         () -> {
         }),
-      new AutoScoreHigh(),
+      /*new AutoScoreHigh(),
       new ParallelDeadlineGroup(new WaitCommand(0.25), 
-                                new SpitGamePiece(-1)),
+                                new SpitGamePiece(-1)),*/
 
       Commands.parallel(
         new InstantCommand(() -> Robot.drivetrain.resetOdometry(blueRightPlaceAndMove.getInitialPose()))),
-        Robot.drivetrain.createCommandForTrajectory(blueRightPlaceAndMove, false),
-        new GoHome());
-      }
+        Robot.drivetrain.createCommandForTrajectory(blueRightPlaceAndMove, false)
+        //new GoHome());
+    );
+  }
 }

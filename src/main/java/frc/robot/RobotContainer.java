@@ -23,6 +23,7 @@ import frc.robot.commands.command_groups.ScoreConeMid;
 import frc.robot.commands.command_groups.SmartScoreHigh;
 import frc.robot.commands.command_groups.SpitGamePiece;
 import frc.robot.commands.elevator.ElevatorMoveALittle;
+import frc.robot.commands.elevator.SetElevatorVoltage;
 import frc.robot.commands.leds.LEDColor;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -69,7 +70,10 @@ public class RobotContainer {
     m_driverController.leftBumper().whileTrue( new SetDriveMode(DriveMode.Limelight) );
     m_driverController.leftBumper().onFalse(new SetDriveMode(DriveMode.Normal));
 
-    m_driverController.povUp().onTrue(new CollectConeFromLoadStation());
+
+    /* NEEDS TO HAVE ITS SETPOINT UPDATED */
+    //m_driverController.povUp().onTrue(new CollectConeFromLoadStation());
+    /* NEEDS TO HAVE ITS SETPOINT UPDATED */
 
     m_driverController.leftTrigger().whileTrue(new SetDriveMode(DriveMode.Scoring));
     m_driverController.leftTrigger().onFalse(new SetDriveMode(DriveMode.Normal));
@@ -77,19 +81,33 @@ public class RobotContainer {
     m_driverController.rightBumper().whileTrue(new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltage));
     
     /* Operator Controllers */
+
+    /* NEED TO HAVE THEIR SETPOINTS UPDATED 
+    
+    
+   
+    
+
+    
+    
+    
+    m_operatorController.povDown().onTrue(new SetWristPosition(Constants.WristConstants.SetPoints.home));
+    m_operatorController.rightBumper().onTrue(new CollectConeSingleLoadingStation());
+    NEED TO HAVE THEIR SETPOINTS UPDATED */
+
+    /* ALREADY UPDATED */
     m_operatorController.a().onTrue(new FloorCollect());
     m_operatorController.x().onTrue(new FloorCollectConeStanding());
     m_operatorController.y().onTrue(new FloorCollectConeTipped());
     m_operatorController.b().onTrue(new GoHome());
 
-    m_operatorController.povUp().onTrue(new PreScorePosition());
     m_operatorController.povRight().onTrue(new ScoreConeMid());
     m_operatorController.povLeft().onTrue(new ScoreConeHigh());
-    m_operatorController.povDown().onTrue(new SetWristPosition(Constants.WristConstants.SetPoints.home));
+    m_operatorController.povUp().onTrue(new PreScorePosition());
+    /* ALREADY UPDATED */
 
     //m_operatorController.leftBumper().onTrue(new CollectConeFromLoadStation());
     m_operatorController.leftTrigger().whileTrue(new ElevatorMoveALittle(-4, Constants.CollectorConstants.Currents.collectorVoltage));
-    m_operatorController.rightBumper().onTrue(new CollectConeSingleLoadingStation());
     m_operatorController.rightTrigger().whileTrue(new ElevatorMoveALittle(4, Constants.CollectorConstants.Currents.collectorVoltage));
     m_operatorController.back().onTrue(new LEDColor(255, 187, 0));//yellow
     m_operatorController.start().onTrue(new LEDColor(255, 0, 255));//purple

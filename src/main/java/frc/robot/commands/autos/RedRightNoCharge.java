@@ -53,39 +53,39 @@ public class RedRightNoCharge extends SequentialCommandGroup {
       new InstantCommand(
         () -> {
         }),
-        new AutoScoreHigh(),
+        /*new AutoScoreHigh(),
         new ParallelDeadlineGroup(new WaitCommand(0.25), 
-                                  new SpitGamePiece(-1)),
+                                  new SpitGamePiece(-1)),*/
         Commands.parallel(
           new InstantCommand(()->Robot.drivetrain.resetOdometry(redRightNoCharge1.getInitialPose())),
-          Robot.drivetrain.createCommandForTrajectory(redRightNoCharge1, false),
-          Commands.sequence(
+          Robot.drivetrain.createCommandForTrajectory(redRightNoCharge1, false)
+          /*Commands.sequence(
             new PreScorePosition(),
             Commands.parallel(
               new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.collectFloor), 
               new SetElbowPosition(Constants.ElbowConstants.SetPoints.collectFloor),
               new SetWristPosition(Constants.WristConstants.SetPoints.collectFloor)
             )
-          )
+          )*/
           
         ),
         
         Commands.parallel(
-          Robot.drivetrain.createCommandForTrajectory(redRightNoCharge2, false), 
-          Commands.sequence( Commands.race( new WaitCommand(2.5) , new FloorCollect()),
+          Robot.drivetrain.createCommandForTrajectory(redRightNoCharge2, false) 
+          /*Commands.sequence( Commands.race( new WaitCommand(2.5) , new FloorCollect()),
                             new PreScorePosition(), 
                             new AutoScoreCubeHigh()                            
-          )
+          )*/
         ),
 
-        new SetAutoCollectorVoltage(-1),
+        //new SetAutoCollectorVoltage(-1),
 
         Commands.parallel(
-        Robot.drivetrain.createCommandForTrajectory(redRightNoCharge3, false), 
-        Commands.sequence(
+        Robot.drivetrain.createCommandForTrajectory(redRightNoCharge3, false) 
+        /*Commands.sequence(
           new PreScorePosition(),
           new FloorCollectConeStanding()
-        )   
+        )*/
         )
 
         //Commands.sequence(new TestPath2(Robot.RedRightNoChargeSecondPath))

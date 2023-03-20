@@ -25,17 +25,21 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.CollectorState;
 import frc.robot.commands.BobDrive;
 import frc.robot.commands.autos.BlueLeft;
+import frc.robot.commands.autos.BlueLeft2AndCharge;
 import frc.robot.commands.autos.BlueLeftNoCharge;
 import frc.robot.commands.autos.BlueLeftNoCollect;
 import frc.robot.commands.autos.BlueRight;
+import frc.robot.commands.autos.BlueRightNoCharge;
 import frc.robot.commands.autos.BlueRightPlaceAndMove;
 import frc.robot.commands.autos.Middle;
 import frc.robot.commands.autos.MultiPath;
 import frc.robot.commands.autos.RedLeft;
 import frc.robot.commands.autos.RedLeftPlaceAndMove;
 import frc.robot.commands.autos.RedRight;
+import frc.robot.commands.autos.RedRight2AndCharge;
 import frc.robot.commands.autos.RedRightNoCharge;
 import frc.robot.commands.autos.RedRightNoCollect;
+import frc.robot.commands.autos.TestBlueLeft;
 import frc.robot.commands.autos.TestFollowSplitPaths;
 import frc.robot.commands.autos.TestPath;
 import frc.robot.commands.drivetrain.EngageInAuto;
@@ -69,6 +73,7 @@ public class Robot extends TimedRobot {
   public static LEDS leds = new LEDS();
   
   SendableChooser<Command> autoChooser = new SendableChooser<Command>();
+  SendableChooser<Command> testAutoChooser = new SendableChooser<Command>();
 
   private RobotContainer m_robotContainer;
 
@@ -126,14 +131,17 @@ public class Robot extends TimedRobot {
     autoChooser.setDefaultOption("Do Nothing", new WaitCommand(15)); 
     autoChooser.addOption("Red Left", new RedLeft());
     autoChooser.addOption("Red Left Place And Move", new RedLeftPlaceAndMove());
-    autoChooser.addOption("Red Right", new RedRight());
+    autoChooser.addOption("Red Right (score 1 then engage)", new RedRight());
+    autoChooser.addOption("Red Right (score 2 then engage)", new RedRight2AndCharge());
     autoChooser.addOption("Red Right (No Charge)", new RedRightNoCharge());
     autoChooser.addOption("Red Right (No Collect)", new RedRightNoCollect());
     autoChooser.addOption("Middle", new Middle());
-    autoChooser.addOption("Blue Left", new BlueLeft());
+    autoChooser.addOption("Blue Left (score 1 then engage)", new BlueLeft());
+    autoChooser.addOption("Blue LEft (score 2 then engage)", new BlueLeft2AndCharge());
     autoChooser.addOption("Blue Left (No Charge)", new BlueLeftNoCharge());
     autoChooser.addOption("Blue Left (No Collect)", new BlueLeftNoCollect());
     autoChooser.addOption("Blue Right", new BlueRight());
+    autoChooser.addOption("Blue Right (No Charge)", new BlueRightNoCharge());
     autoChooser.addOption("Blue Right Place And Move", new BlueRightPlaceAndMove());
 
     //Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
@@ -272,6 +280,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("pitch",drivetrain.getPitch());
 
     SmartDashboard.putData(autoChooser);
+    SmartDashboard.putData(testAutoChooser);
     
    
     //drivetrain.setFollowers();

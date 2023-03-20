@@ -36,16 +36,16 @@ public class RedRightNoCollect extends SequentialCommandGroup {
         () -> {
 
       }),
-      new AutoScoreHigh(),
+      /*new AutoScoreHigh(),
       new ParallelDeadlineGroup(new WaitCommand(0.25), 
                                 new SpitGamePiece(-1)),
-      new PreScorePosition(),
+      new PreScorePosition(),*/
       
       Commands.parallel(
         new InstantCommand(()->Robot.drivetrain.resetOdometry(redRightNoCollect1.getInitialPose())),
-        Robot.drivetrain.createCommandForTrajectory(redRightNoCollect1, false)),
+        Robot.drivetrain.createCommandForTrajectory(redRightNoCollect1, false))
 
-      new ParallelDeadlineGroup(new AutoDriveForwardAndEngage())
+      //new ParallelDeadlineGroup(new AutoDriveForwardAndEngage())
       
       
     );

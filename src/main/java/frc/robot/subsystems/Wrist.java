@@ -4,13 +4,17 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.EncoderType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -56,7 +60,7 @@ public class Wrist extends SubsystemBase {
     wristMotor.setInverted(false);
     
 
-    m_AlternateEncoder = wristMotor.getAlternateEncoder(wristEncoder,kCPR);
+    m_AlternateEncoder = wristMotor.getAlternateEncoder(wristEncoder, kCPR);
     pidController.setFeedbackDevice(m_AlternateEncoder);
     pidController.setOutputRange(-1.0, 1.0);
   }

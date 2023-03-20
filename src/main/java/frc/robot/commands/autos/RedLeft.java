@@ -39,16 +39,16 @@ public class RedLeft extends SequentialCommandGroup {
       new InstantCommand(
         () -> {
         }),
-      new AutoScoreHigh(),
+      /*new AutoScoreHigh(),
   
       new ParallelDeadlineGroup(new WaitCommand(0.25), 
-                                new SpitGamePiece(-1)),
+                                new SpitGamePiece(-1)),*/
 
       Commands.parallel(
         new InstantCommand(()->Robot.drivetrain.resetOdometry(redLeftCharge1.getInitialPose())),
-        Robot.drivetrain.createCommandForTrajectory(redLeftCharge1, false),
+        Robot.drivetrain.createCommandForTrajectory(redLeftCharge1, false)
         
-        Commands.sequence(
+        /*Commands.sequence(
           new PreScorePosition(),
           Commands.parallel(
               new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.collectFloor), 
@@ -56,12 +56,12 @@ public class RedLeft extends SequentialCommandGroup {
               new SetWristPosition(Constants.WristConstants.SetPoints.collectFloor)
             )
       
-          )
+          )*/
       ),
-      Commands.parallel(Robot.drivetrain.createCommandForTrajectory(redLeftCharge2, false), 
-                              Commands.sequence( 
+      Commands.parallel(Robot.drivetrain.createCommandForTrajectory(redLeftCharge2, false) 
+                              /*Commands.sequence( 
                                 Commands.race(new WaitCommand(1.25), new FloorCollect())
-                              )
+                              )*/
 
       )
 

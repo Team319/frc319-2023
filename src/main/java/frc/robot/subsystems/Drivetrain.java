@@ -47,13 +47,13 @@ public class Drivetrain extends SubsystemBase {
   private DriveMode drivemode = Constants.DriveConstants.DriveMode.Normal;
 
   // Motors
-  public TalonFX leftLead = new TalonFX(1);
-  public TalonFX leftFollow1 = new TalonFX(2);
-  public TalonFX leftFollow2 = new TalonFX(3);
+  public TalonFX leftLead = new TalonFX(4);
+  public TalonFX leftFollow1 = new TalonFX(5);
+  public TalonFX leftFollow2 = new TalonFX(6);
 
-  public TalonFX rightLead = new TalonFX(4);
-  public TalonFX rightFollow1 = new TalonFX(5);
-  public TalonFX rightFollow2 = new TalonFX(6);
+  public TalonFX rightLead = new TalonFX(1);
+  public TalonFX rightFollow1 = new TalonFX(2);
+  public TalonFX rightFollow2 = new TalonFX(3);
 
   public WPI_Pigeon2 pigeon = new WPI_Pigeon2(7);
 
@@ -106,13 +106,16 @@ public class Drivetrain extends SubsystemBase {
 
   private void setMotorInversions() {
     
-    leftLead.setInverted(false);
-    leftFollow1.setInverted(false);
-    leftFollow2.setInverted(false);
+    boolean right = true;
+    boolean left = false;
 
-    rightLead.setInverted(true);
-    rightFollow1.setInverted(true);
-    rightFollow2.setInverted(true);
+    leftLead.setInverted(left);
+    leftFollow1.setInverted(left);
+    leftFollow2.setInverted(left);
+
+    rightLead.setInverted(right);
+    rightFollow1.setInverted(right);
+    rightFollow2.setInverted(right);
   }
 
   // Unsure if we should remove this. - L.S
