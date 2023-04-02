@@ -22,12 +22,25 @@ public class SetDriveMode extends CommandBase {
   @Override
   public void initialize() {
     Robot.drivetrain.setDriveMode(drivemode);
-    if (drivemode == DriveMode.Normal || drivemode == DriveMode.Scoring) {
+    if (drivemode == DriveMode.Scoring) {
       Robot.limelight.setLedMode(1);
-      Robot.limelight.setPipeline(Constants.LimelightConstants.Modes.LIMELIGHT_TOP);
+      Robot.limelight.setLedModeCollect(1);
+      //Robot.limelight.setPipeline(Constants.LimelightConstants.Modes.LIMELIGHT_TOP);
+    }
+    else if (drivemode == DriveMode.Limelight) {
+      if (Robot.limelight.getPipeline() == 1 || Robot.limelight.getPipeline() == 2) {
+        Robot.limelight.setLedMode(3);
+        Robot.limelight.setLedModeCollect(1); 
+      }
+      else {
+        Robot.limelight.setLedMode(1);
+        Robot.limelight.setLedModeCollect(1); 
+      }
     }
     else {
-      Robot.limelight.setLedMode(3);
+      Robot.limelight.setLedMode(1);
+      Robot.limelight.setLedModeCollect(1);
+
     }
   }
 

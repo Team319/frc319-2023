@@ -35,60 +35,41 @@ import frc.robot.commands.wrist.SetWristPosition;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class RedRightNoCharge extends SequentialCommandGroup {
+public class RedLeftNoCharge extends SequentialCommandGroup {
   /** Creates a new RedRight. */
-  private Command runFirstPath(){
-    return Commands.sequence(new TestPath(Robot.RedRightNoChargeFirstPath));
-  }
 
-  Trajectory redRightNoCharge1 = Robot.drivetrain.loadTrajectoryFromFile("redrightnocharge1");
-  Trajectory redRightNoCharge2 = Robot.drivetrain.loadTrajectoryFromFile("redrightnocharge2");
-  Trajectory redRightNoCharge3 = Robot.drivetrain.loadTrajectoryFromFile("redrightnocharge3");
+  Trajectory redLeftNoCharge1 = Robot.drivetrain.loadTrajectoryFromFile("redleftnocharge1");
+  Trajectory redLeftNoCharge2 = Robot.drivetrain.loadTrajectoryFromFile("redleftnocharge2");
+  Trajectory redLeftNoCharge3 = Robot.drivetrain.loadTrajectoryFromFile("redleftnocharge3");
 
-  public RedRightNoCharge() {
+
+  public RedLeftNoCharge() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
     addCommands(
       new InstantCommand(
-        () -> {
-        }),
-        /*new AutoScoreHigh(),
-        new ParallelDeadlineGroup(new WaitCommand(0.25), 
-                                  new SpitGamePiece(-1)),*/
-        Commands.parallel(
-          new InstantCommand(()->Robot.drivetrain.resetOdometry(redRightNoCharge1.getInitialPose())),
-          Robot.drivetrain.createCommandForTrajectory(redRightNoCharge1, false)
-          /*Commands.sequence(
-            new PreScorePosition(),
-            Commands.parallel(
-              new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.collectFloor), 
-              new SetElbowPosition(Constants.ElbowConstants.SetPoints.collectFloor),
-              new SetWristPosition(Constants.WristConstants.SetPoints.collectFloor)
-            )
-          )*/
-          
-        ),
+        () -> {}
+      ),
         
-        Commands.parallel(
-          Robot.drivetrain.createCommandForTrajectory(redRightNoCharge2, false) 
-          /*Commands.sequence( Commands.race( new WaitCommand(2.5) , new FloorCollect()),
-                            new PreScorePosition(), 
-                            new AutoScoreCubeHigh()                            
-          )*/
-        ),
+      new AutoScoreConeHigh(),
+      new ParallelDeadlineGroup(new WaitCommand(0.25), 
+                                new SpitGamePiece(-1)),
+      Commands.parallel(
+        new InstantCommand(()->Robot.drivetrain.resetOdometry(redLeftNoCharge1.getInitialPose())),
+        Robot.drivetrain.createCommandForTrajectory(redLeftNoCharge1, false),
+        Commands.race(new WaitCommand(3.5), new FloorCollect())),
+        
+      Commands.sequence(
+        Commands.parallel(Robot.drivetrain.createCommandForTrajectory(redLeftNoCharge2, false),
+                        new GoHome()),
+                        new AutoScoreCubeHigh(),
+                        new SetAutoCollectorVoltage(-1)),
+      new GoHome(),
+      Commands.parallel(Robot.drivetrain.createCommandForTrajectory(redLeftNoCharge3, false),
+      Commands.race(new WaitCommand(3.5), new FloorCollectConeStanding())
+      )
 
-        //new SetAutoCollectorVoltage(-1),
-
-        Commands.parallel(
-        Robot.drivetrain.createCommandForTrajectory(redRightNoCharge3, false) 
-        /*Commands.sequence(
-          new PreScorePosition(),
-          new FloorCollectConeStanding()
-        )*/
-        )
-
-        //Commands.sequence(new TestPath2(Robot.RedRightNoChargeSecondPath))
     );
   }
 }

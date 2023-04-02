@@ -16,7 +16,7 @@ public class Limelight extends SubsystemBase {
   private static double fovX = 54.0;
   private static double fovY = 41.0;
 
-  public NetworkTable defaultTable = NetworkTableInstance.getDefault().getTable("limelight");
+  public NetworkTable defaultTable = NetworkTableInstance.getDefault().getTable("limelight-score");
   public NetworkTableEntry tx = defaultTable.getEntry("tx");
   public NetworkTableEntry ty = defaultTable.getEntry("ty");
   public NetworkTableEntry tv = defaultTable.getEntry("tv");
@@ -24,11 +24,24 @@ public class Limelight extends SubsystemBase {
   public NetworkTableEntry ledMode = defaultTable.getEntry("ledMode");
   //public NetworkTableEntry stream = defaultTable.getEntry("stream");
 
+  public NetworkTable collectTable = NetworkTableInstance.getDefault().getTable("limelight-collect");
+  public NetworkTableEntry c_tx = collectTable.getEntry("tx");
+  public NetworkTableEntry c_ty = collectTable.getEntry("ty");
+  public NetworkTableEntry c_tv = collectTable.getEntry("tv");
+  public NetworkTableEntry c_tp = collectTable.getEntry("pipeline");
+  public NetworkTableEntry c_ledMode = collectTable.getEntry("ledMode");
+
   public double p;
   public double x;
   public double y;
   public double v;
   public double led;
+
+  public double p_collect;
+  public double x_collect;
+  public double y_collect;
+  public double v_collect;
+  public double led_collect;
 
   /** Creates a new Limelight. */
   public Limelight() {
@@ -50,11 +63,29 @@ public class Limelight extends SubsystemBase {
 
   public void setPipeline(int pipelineId) {
     defaultTable.getEntry("pipeline").setInteger(pipelineId);
+    collectTable.getEntry("pipeline").setInteger(pipelineId);
+
+    p = pipelineId;
+  }
+
+  public double getPipeline() {
+    p = tp.getDouble(-1.0);
+    return p;
+  }
+
+  public double getPipelineCollect() {
+    p = c_tp.getDouble(-1.0);
+    return p;
   }
 
   public double getX() {
     x = tx.getDouble(0.0);
     return x;
+  }
+
+  public double getXCollect() {
+    x_collect = c_tx.getDouble(0.0);
+    return x_collect;
   }
 
   public double getFovX() {
@@ -64,9 +95,18 @@ public class Limelight extends SubsystemBase {
   public double getXProportional() {
     return getX() / (getFovX() / 2);
   }
+  
+  public double getXProportionalCollect() {
+    return getXCollect() / (getFovX() / 2);
+  }
 
   public double getY() {
     y = ty.getDouble(0.0);
+    return y;
+  }
+
+  public double getYCollect() {
+    y = c_ty.getDouble(0.0);
     return y;
   }
 
@@ -75,8 +115,18 @@ public class Limelight extends SubsystemBase {
     return v;
   }
 
+  public double getVCollect(){
+    v = c_tv.getDouble(0.0); // should this be a boolean?
+    return v;
+  }
+
   public void setLedMode(int mode) {
     this.ledMode.setNumber(mode);
+   // this.c_ledMode.setNumber(mode);
+  }
+
+  public void setLedModeCollect(int mode) {
+    this.c_ledMode.setNumber(mode);
   }
 
   public double getDistanceToTarget(int target) {

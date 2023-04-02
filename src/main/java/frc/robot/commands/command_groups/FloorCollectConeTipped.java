@@ -11,6 +11,7 @@ import frc.robot.Constants.CollectorState;
 import frc.robot.commands.collector.SetCollectorVoltage;
 import frc.robot.commands.elbow.SetElbowPosition;
 import frc.robot.commands.elevator.SetElevatorPosition;
+import frc.robot.commands.limelight.SwitchingPipelineTest;
 import frc.robot.commands.wrist.SetWristPosition;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -25,7 +26,8 @@ public class FloorCollectConeTipped extends ParallelCommandGroup {
       new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.collectConeTipped), 
       new SetWristPosition(Constants.WristConstants.SetPoints.collectConeTipped),
       new SetElbowPosition(Constants.ElbowConstants.SetPoints.collectConeTipped),
-      new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltage)
+      new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltageTipped),
+      new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_BOTTOM)
     );
 
     Robot.collectorState = CollectorState.HOLDING_CONE;

@@ -7,8 +7,19 @@ package frc.robot.commands.autos;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
+import frc.robot.commands.collector.SetAutoCollectorVoltage;
+import frc.robot.commands.command_groups.AutoScoreConeHigh;
+import frc.robot.commands.command_groups.AutoScoreCubeHigh;
+import frc.robot.commands.command_groups.AutoScoreHigh;
+import frc.robot.commands.command_groups.FloorCollect;
+import frc.robot.commands.command_groups.GoHome;
+import frc.robot.commands.command_groups.PreScorePosition;
+import frc.robot.commands.command_groups.SpitGamePiece;
+import frc.robot.commands.drivetrain.DriveToPitch;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -27,38 +38,33 @@ public class RedRight2AndCharge extends SequentialCommandGroup {
       new InstantCommand(
       () -> {
       }),
-      /*new AutoScoreHigh(),
+      new AutoScoreConeHigh(),
         new ParallelDeadlineGroup(new WaitCommand(0.25), 
-                                  new SpitGamePiece(-1)),*/
+                                  new SpitGamePiece(-0.75)),
       Commands.parallel(
           new InstantCommand(()->Robot.drivetrain.resetOdometry(redRight2AndCharge1.getInitialPose())),
-          Robot.drivetrain.createCommandForTrajectory(redRight2AndCharge1, false)//,
-          /*Commands.sequence(
-            new PreScorePosition(),
-            Commands.parallel(
-              new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.collectFloor), 
-              new SetElbowPosition(Constants.ElbowConstants.SetPoints.collectFloor),
-              new SetWristPosition(Constants.WristConstants.SetPoints.collectFloor)
-            )
-          )*/
+          Robot.drivetrain.createCommandForTrajectory(redRight2AndCharge1, false),
+          Commands.race(new WaitCommand(3.5), new FloorCollect())
           ),
+          
 
           Commands.parallel(
-          Robot.drivetrain.createCommandForTrajectory(redRight2AndCharge2, false)//,
-          /*Commands.sequence( Commands.race( new WaitCommand(2.5) , new FloorCollect()),
-                            new PreScorePosition(), 
-                            new AutoScoreCubeHigh()                            
-          )*/ 
+          Robot.drivetrain.createCommandForTrajectory(redRight2AndCharge2, false),
+          Commands.sequence(new GoHome(), new AutoScoreCubeHigh())
 
         ),
+       
+        new ParallelDeadlineGroup(new WaitCommand(0.25), 
+                                  new SpitGamePiece(-1)),
+        
 
-        //new SetAutoCollectorVoltage(-1),
-
-        Commands.parallel(
-          Robot.drivetrain.createCommandForTrajectory(redRight2AndCharge3, false) 
-
+        Commands.sequence(
+          Commands.parallel(
+            new GoHome(),
+            Robot.drivetrain.createCommandForTrajectory(redRight2AndCharge3, false)
+        ),
+          new AutoDriveForwardAndEngage()
         )
-      
       );
   }
 }

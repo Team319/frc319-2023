@@ -5,15 +5,13 @@
 package frc.robot.commands.command_groups;
 
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.Robot;
-import frc.robot.Constants.CollectorState;
 import frc.robot.commands.collector.SetCollectorState;
 import frc.robot.commands.collector.SetCollectorVoltage;
 import frc.robot.commands.elbow.SetElbowPosition;
 import frc.robot.commands.elevator.SetElevatorPosition;
+import frc.robot.commands.limelight.SwitchingPipelineTest;
 import frc.robot.commands.wrist.SetWristPosition;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -25,13 +23,14 @@ public class FloorCollect extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands (
+      new SwitchingPipelineTest(3),
       Commands.parallel(
         new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.collectFloor), 
         new SetElbowPosition(Constants.ElbowConstants.SetPoints.collectFloor),
         new SetWristPosition(Constants.WristConstants.SetPoints.collectFloor),
         new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltage)),
+        
       
-
       new SetCollectorState(true) 
     );
 

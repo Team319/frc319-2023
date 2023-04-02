@@ -25,6 +25,7 @@ public class LEDStrobe extends CommandBase {
   @Override
   public void initialize() {
     Robot.leds.colorTest(rValue, gValue, bValue);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.

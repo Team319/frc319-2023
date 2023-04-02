@@ -20,7 +20,7 @@ public class SwitchingPipelineTest extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.limelight.setPipeline(pipeline);
+    Robot.limelight.setPipeline(pipeline); // this sets both limelights to use this pipeline!
   }
 
   // Called every time the scheduler runs while the command is scheduled.

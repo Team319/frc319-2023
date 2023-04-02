@@ -23,7 +23,8 @@ public class BobDrive extends CommandBase {
 	private double rotateValue;
 	private double stickModifier;
 	private double moveValue = 0.0;
-	private PIDController limelightRotatePID = new PIDController(0.25, 0.08, 0.0); // TODO: Tune me.
+	private PIDController cubeLimelightRotatePID = new PIDController(0.75, 0.08, 0.0); // TODO: Tune me.
+	private PIDController scoringLimelightRotatePID = new PIDController(0.5, 0.08, 0.0); // TODO: Tune me.
 
 	private RobotContainer robotContainer = new RobotContainer();
 	//private PIDController limelightRotatePID = new PIDController(0.25, 0.01, 0.0);
@@ -45,11 +46,28 @@ public class BobDrive extends CommandBase {
 		rotateValue = 0.0;
 		if (Robot.drivetrain.getDriveMode() == DriveMode.Limelight) {
 
+			// TODO - check which pipeline we're in
+			// If we're in pipeline 3 ( cube ) use the "collect" table results
+			if(Robot.limelight.getPipelineCollect() == 3) {
+				if(Robot.limelight.getVCollect() != 0) {
+					stickModifier = HelperFunctions.deadband(robotContainer.getRightStick().getFirst(), deadband) * 0.5;
+					rotateValue = -cubeLimelightRotatePID.calculate(Robot.limelight.getXProportionalCollect()+ stickModifier );
+				}
+				else {
+					rotateValue = HelperFunctions.deadband(robotContainer.getRightStick().getFirst(), deadband) * 0.20;
+				}
+			}
+			//otherwise use the existing
+			if(Robot.limelight.getPipeline() == 1 || Robot.limelight.getPipeline() == 2  ){
+
+			
 			if(Robot.limelight.getV() != 0){
 				stickModifier = HelperFunctions.deadband(robotContainer.getRightStick().getFirst(), deadband) * 0.5;
-				rotateValue = -limelightRotatePID.calculate(Robot.limelight.getXProportional()+ stickModifier ) ;
+				rotateValue = -scoringLimelightRotatePID.calculate(Robot.limelight.getXProportional()+ stickModifier ) ;
+			} else {
+				rotateValue = HelperFunctions.deadband(robotContainer.getRightStick().getFirst(), deadband) * 0.20;
 			}
-			
+		}
 
 			moveValue = HelperFunctions.deadband(robotContainer.getLeftStick().getSecond(), deadband)* 0.4;
 		}

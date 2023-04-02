@@ -11,6 +11,7 @@ import frc.robot.Constants.CollectorState;
 import frc.robot.commands.collector.SetCollectorVoltage;
 import frc.robot.commands.elbow.SetElbowPosition;
 import frc.robot.commands.elevator.SetElevatorPosition;
+import frc.robot.commands.limelight.SwitchingPipelineTest;
 import frc.robot.commands.wrist.SetWristPosition;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -22,9 +23,9 @@ public class CollectConeSingleLoadingStation extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_BOTTOM),
       new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.coneSlide), 
-      new SetWristPosition(Constants.WristConstants.SetPoints.coneSlide),
-      new SetElbowPosition(Constants.ElbowConstants.SetPoints.coneSlide),
+      new MoveWristAndElbow(Constants.WristConstants.SetPoints.coneSlide, Constants.ElbowConstants.SetPoints.coneSlide),
       new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltage)
     );
 
