@@ -6,7 +6,6 @@ package frc.robot.commands.collector;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.Constants.CollectorState;
 
 public class SetCollectorState extends CommandBase {
   private boolean holdingCube = false;

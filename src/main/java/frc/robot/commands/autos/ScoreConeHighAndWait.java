@@ -4,39 +4,30 @@
 
 package frc.robot.commands.autos;
 
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Robot;
-import frc.robot.commands.command_groups.AutoScoreHigh;
+import frc.robot.commands.command_groups.AutoScoreConeHigh;
 import frc.robot.commands.command_groups.GoHome;
 import frc.robot.commands.command_groups.SpitGamePiece;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class BlueRightPlaceAndMove extends SequentialCommandGroup {
-
-  Trajectory blueRightPlaceAndMove = Robot.drivetrain.loadTrajectoryFromFile("placeandmoveblueright");
-
-  /** Creates a new BlueRightPlaceAndMove. */
-  public BlueRightPlaceAndMove() {
+public class ScoreConeHighAndWait extends SequentialCommandGroup {
+  /** Creates a new ScoreConeHighAndWait. */
+  public ScoreConeHighAndWait() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(
-        () -> {
-        }),
-      new AutoScoreHigh(),
-      new ParallelDeadlineGroup(new WaitCommand(0.25), 
-                                new SpitGamePiece(-1)),
+      () -> {
+      }),
 
-      Commands.parallel(
-        new InstantCommand(() -> Robot.drivetrain.resetOdometry(blueRightPlaceAndMove.getInitialPose()))),
-        Robot.drivetrain.createCommandForTrajectory(blueRightPlaceAndMove, false),
-        new GoHome());
-      }
+      new AutoScoreConeHigh(),
+      new ParallelDeadlineGroup(new WaitCommand(0.25), 
+      new SpitGamePiece(-1),   
+      new GoHome()));
+  }
 }

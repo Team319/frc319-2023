@@ -4,8 +4,10 @@
 
 package frc.robot.commands.command_groups;
 
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.commands.elevator.IsElevatorSafe;
 import frc.robot.commands.elevator.SetElevatorPosition;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -17,8 +19,14 @@ public class GoHome extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new MoveWristAndElbow(Constants.WristConstants.SetPoints.home, Constants.ElbowConstants.SetPoints.home),
-      new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.home)
+      Commands.sequence(
+        Commands.race(
+          new MoveWristAndElbow(Constants.WristConstants.SetPoints.home, Constants.ElbowConstants.SetPoints.home),
+          new IsElevatorSafe()
+        ),
+        new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.home)
+      )
+      
     );
   }
 }

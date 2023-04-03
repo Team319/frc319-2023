@@ -7,7 +7,6 @@ package frc.robot.commands.command_groups;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Robot;
 import frc.robot.Constants.CollectorState;
-import frc.robot.commands.collector.SetCollectorVelocity;
 import frc.robot.commands.collector.SetCollectorVoltage;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more

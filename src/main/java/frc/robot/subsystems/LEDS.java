@@ -80,6 +80,30 @@ public class LEDS extends VirtualSubsystem {
     }
   }
 
+  // Taken from 6328 - L.S
+  // Possilbe strobe?
+  public void wave(Section section, Color c1, Color c2, double cycleLength, double duration) {
+    double x = (1 - ((Timer.getFPGATimestamp() % duration) / duration)) * 2.0 * Math.PI;
+    double xDiffPerLed = (2.0 * Math.PI) / cycleLength;
+    for (int i = 0; i < section.end(); i++) {
+      x += xDiffPerLed;
+      if (i >= section.start()) {
+        double ratio = (Math.pow(Math.sin(x), 0.4) + 1.0) / 2.0;
+        if (Double.isNaN(ratio)) {
+          ratio = (-Math.pow(Math.sin(x + Math.PI), 0.4) + 1.0) / 2.0;
+        }
+        if (Double.isNaN(ratio)) {
+          ratio = 0.5;
+        }
+        double red = (c1.red * (1 - ratio)) + (c2.red * ratio);
+        double green = (c1.green * (1 - ratio)) + (c2.green * ratio);
+        double blue = (c1.blue * (1 - ratio)) + (c2.blue * ratio);
+        m_ledBuffer.setLED(i, new Color(red, green, blue));
+      }
+    }
+  }
+
+
   public static enum Section {
     STATIC,
     SHOULDER,

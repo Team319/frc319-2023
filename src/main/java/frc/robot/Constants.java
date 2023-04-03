@@ -69,30 +69,32 @@ public final class Constants {
 
         public static final int iZone = 0;
         
-        public static final double fGainUp = 0.00019231;
+        public static final double fGainUp = 0.00017544;//0.00019231;
         public static final double fGainDown = 0;
       }
 
       public static class SetPoints {
-        public static final double scoreHighCone = 64;
-        public static final double scoreMiddleCone = 40.78;
+        public static final double scoreHighCone = 65.3;
+        public static final double scoreMiddleCone = 42.0; // 45.0
 
         public static final double autoScoreHighCube = 39.0;
         public static final double scoreMiddleCube = 0;
         
         public static final double scoreFloor = 0;
 
-        public static final double preScore = 19;
+        public static final double preScore = 19.43;
 
-        public static final double collectConeTipped = 19.0; // was 20
-        public static final double collectStanding = 9.0; // was 8.0
-        public static final double collectFloor = 6.78;  // was 10.78
-        public static final double coneSlide = 9.12;
+        public static final double autoStartPosition = 0.0;
+        public static final double autoCollectConeTipped = 0.0;
+        public static final double collectConeTipped = 0.0; // was 20
+        public static final double collectStanding = 0.0; // was 8.0
+        public static final double collectFloor = 0.0;  // was 10.78
+        public static final double coneSlide = 18.285;
         public static final double coneSingleLoadingStation = 0.0;
         public static final double collectCubeFromLoadStation = 52.0;
         public static final double collectConeFromLoadStation = 58.0;
         
-        public static final double home = 0.75;
+        public static final double home = 0.0;
         public static final double top = 55.0;
         public static final double middle = 35.0;
 
@@ -101,7 +103,7 @@ public final class Constants {
 
       public static class SoftLimits {
         public static final double forwardSoftLimit = 66.0;
-        public static final double reverseSoftLimit = 0.75;
+        public static final double reverseSoftLimit = 0.0;
       }
 
       public static class Currents {
@@ -120,11 +122,11 @@ public final class Constants {
 
     public static class ElbowConstants {
       public static class PID {
-        public static final double kUpP = 5.5;
+        public static final double kUpP = 9.5;
         public static final double kUpI = 0.018;
         public static final double kUpD = 0;
 
-        public static final double kDownP = 2.0;
+        public static final double kDownP = 6.5;
         public static final double kDownI = 0.018;
         public static final double kDownD = 0;
 
@@ -133,25 +135,27 @@ public final class Constants {
       }
 
       public static class SetPoints {
-        public static final double scoreHighCone = 0.197700;
-        public static final double scoreMiddleCone = 0.197700;
+        public static final double scoreHighCone = -0.0548;
+        public static final double scoreMiddleCone = -0.0548;
 
         public static final double autoScoreHighCube = 0.088013;
         public static final double scoreMiddleCube = 0.0;
 
         public static final double scoreFloor = 0.0;
 
-        public static final double preScore = 0.152832; //0.197700
+        public static final double preScore = -0.070;
 
-        public static final double collectConeTipped = -0.165;
-        public static final double collectConeStanding = 0.018;
-        public static final double collectFloor = 0.0;
-        public static final double coneSlide = 0.066;
+        public static final double autoStartPosition = 0.0;
+        public static final double autoCollectConeTipped = -0.48;
+        public static final double collectConeTipped = -0.535;
+        public static final double collectConeStanding = -0.451;
+        public static final double collectFloor = -0.468;
+        public static final double coneSlide = -0.486;
         public static final double coneSingleLoadingStation = 0.0;
         public static final double collectFromLoadStation = 0.216919;
 
 
-        public static final double home = 0.012;
+        public static final double home = -0.070;
         public static final double top = 0.193970;
         public static final double bottom = -0.208496;
         public static final double testbottom= -0.174316;
@@ -160,8 +164,8 @@ public final class Constants {
       }
 
       public static class SoftLimits {
-        public static final double forwardSoftLimit = 0.193970;
-        public static final double reverseSoftLimit = -0.208496;
+        public static final double forwardSoftLimit = 0.0;
+        public static final double reverseSoftLimit = -0.6;
       }
 
       public static class Currents {
@@ -180,42 +184,44 @@ public final class Constants {
 
     public static class WristConstants {
       public static class PID {
-        public static final double kP = 5.5;//0.096155;
+        public static final double kP = 10.0;//0.096155;
         public static final double kI = 0.018;//0;
         public static final double kD = 0;
 
-        public static final double iZone = 0.005;//0;
+        public static final double iZone = 0.002;//0;
         public static final double fGain = 0.018;//0.00019231;
       }
 
       public static class SetPoints {
-        public static final double scoreHighCone = -0.565;//-60;
-        public static final double scoreMiddleCone = -0.565; // we may need to msake this more negative //-66;
+        public static final double scoreHighCone = 0.438; //-60;
+        public static final double scoreMiddleCone = 0.438; 
 
         public static final double autoScoreHighCube = -0.283; //-26;
         //public static final double scoreMiddleCube = 0;
 
         //public static final double scoreFloor = 0;
 
-        public static final double preScore = -0.283; //-33;
+        public static final double preScore = 0.263; //-33;
 
-        public static final double collectConeTipped = -0.2; //-70; //-63
-        public static final double collectConeStanding = -0.42; //-65; // was -70.4;
-        public static final double coneSlide = -0.191;
-        public static final double collectFloor = -0.38;// -75;
+        public static final double autoStartPosition = 0.0;
+        public static final double autoCollectConeTipped = 0.198;
+        public static final double collectConeTipped = 0.3220; 
+        public static final double collectConeStanding = 0.215; 
+        public static final double coneSlide = 0.458;
+        public static final double collectFloor = 0.134;
         public static final double coneSingleLoadingStation = 0.0;
         public static final double collectFromLoadStation = -0.54;//-58;
 
-        public static final double home = -0.19;//-27;
+        public static final double home = 0.263;//-27;
         //public static final double top = 0.0;
         public static final double bottom = -0.6;
 
-        public static final double deadband = 0.03;
+        public static final double deadband = 0.005;
       }
 
       public static class SoftLimits {
-        public static final double forwardSoftLimit = -0.001;
-        public static final double reverseSoftLimit = -0.65;
+        public static final double forwardSoftLimit = 0.65;
+        public static final double reverseSoftLimit = 0.0;
         //public static final double forwardSoftLimit = 0.0;
         //public static final double reverseSoftLimit = -103.0;
       }
@@ -241,6 +247,7 @@ public final class Constants {
         public static final int currentThreshold = 15;
 
         public static final double collectorVoltage = 0.75;
+        public static final double collectorVoltageTipped = 0.5;
       }
 
       public static class PID {

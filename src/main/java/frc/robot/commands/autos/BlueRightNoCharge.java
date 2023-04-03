@@ -36,10 +36,6 @@ import frc.robot.commands.wrist.SetWristPosition;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class BlueRightNoCharge extends SequentialCommandGroup {
-  /** Creates a new RedRight. */
-  private Command runFirstPath(){
-    return Commands.sequence(new TestPath(Robot.RedRightNoChargeFirstPath));
-  }
 
   Trajectory blueRightNoCharge1 = Robot.drivetrain.loadTrajectoryFromFile("bluerightnocharge1");
   Trajectory blueRightNoCharge2 = Robot.drivetrain.loadTrajectoryFromFile("bluerightnocharge2");
@@ -52,44 +48,29 @@ public class BlueRightNoCharge extends SequentialCommandGroup {
     Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
     addCommands(
       new InstantCommand(
-        () -> {
-        }),
-        new AutoScoreHigh(),
-        new ParallelDeadlineGroup(new WaitCommand(0.25), 
-                                  new SpitGamePiece(-1)),
-        Commands.parallel(
-          new InstantCommand(()->Robot.drivetrain.resetOdometry(blueRightNoCharge1.getInitialPose())),
-          Robot.drivetrain.createCommandForTrajectory(blueRightNoCharge1, false),
-          Commands.sequence(
-            new PreScorePosition(),
-            Commands.parallel(
-              new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.collectFloor), 
-              new SetElbowPosition(Constants.ElbowConstants.SetPoints.collectFloor),
-              new SetWristPosition(Constants.WristConstants.SetPoints.collectFloor)
-            )
-          )
-          
-        ),
+        () -> {}
+      ),
+
+      new AutoScoreConeHigh(),
+      new ParallelDeadlineGroup(new WaitCommand(0.25), 
+                                new SpitGamePiece(-1)),
+      Commands.parallel(
+        new InstantCommand(()->Robot.drivetrain.resetOdometry(blueRightNoCharge1.getInitialPose())),
+        Robot.drivetrain.createCommandForTrajectory(blueRightNoCharge1, false),
+        //Commands.race(new WaitCommand(3.5), new FloorCollect())
+        new FloorCollect()
+      ),
         
-        Commands.parallel(
-          Robot.drivetrain.createCommandForTrajectory(blueRightNoCharge2, false), 
-          Commands.sequence( Commands.race(new WaitCommand(2.5), new FloorCollect()),
-                            new PreScorePosition(), 
-                            new AutoScoreCubeHigh()                            
-          )
-        ),
+        Commands.sequence(        
+          Commands.parallel(Robot.drivetrain.createCommandForTrajectory(blueRightNoCharge2, false),
+                          new GoHome()),
+                          new AutoScoreCubeHigh(),
+                          new SetAutoCollectorVoltage(-1)),
 
-        new SetAutoCollectorVoltage(-1),
-
-        Commands.parallel(
-        Robot.drivetrain.createCommandForTrajectory(blueRightNoCharge3, false), 
-        Commands.sequence(
-          new PreScorePosition(),
-          new FloorCollectConeStanding()
-        )   
-        )
-
-        //Commands.sequence(new TestPath2(Robot.RedRightNoChargeSecondPath))
+        new GoHome()
+        /*Commands.parallel(Robot.drivetrain.createCommandForTrajectory(blueRightNoCharge3, false),
+        Commands.race(new WaitCommand(3.5), new FloorCollect())
+        )*/
     );
   }
 }

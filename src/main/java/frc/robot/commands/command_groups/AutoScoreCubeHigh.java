@@ -19,9 +19,9 @@ public class AutoScoreCubeHigh extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.autoScoreHighCube), 
-      new SetElbowPosition(Constants.ElbowConstants.SetPoints.autoScoreHighCube),
-      new SetWristPosition(Constants.WristConstants.SetPoints.autoScoreHighCube)
+      new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.scoreHighCone-10),
+      new SetElbowPosition(Constants.ElbowConstants.SetPoints.scoreHighCone),
+      new SetWristPosition(Constants.WristConstants.SetPoints.scoreHighCone)
     );
   }
 }

@@ -24,22 +24,26 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.CollectorState;
 import frc.robot.commands.BobDrive;
-import frc.robot.commands.autos.BlueLeft;
-import frc.robot.commands.autos.BlueLeftNoCharge;
-import frc.robot.commands.autos.BlueLeftNoCollect;
-import frc.robot.commands.autos.BlueRight;
-import frc.robot.commands.autos.BlueRightPlaceAndMove;
+import frc.robot.commands.autos.BlueLeft2AndCharge;
+import frc.robot.commands.autos.BlueLeft3AndEngage;
+import frc.robot.commands.autos.BlueLeft3NoCharge2Cube;
+import frc.robot.commands.autos.BlueLeftScore3Cube2;
+import frc.robot.commands.autos.BlueRightNoCharge;
 import frc.robot.commands.autos.Middle;
 import frc.robot.commands.autos.MultiPath;
-import frc.robot.commands.autos.RedLeft;
-import frc.robot.commands.autos.RedLeftPlaceAndMove;
-import frc.robot.commands.autos.RedRight;
-import frc.robot.commands.autos.RedRightNoCharge;
-import frc.robot.commands.autos.RedRightNoCollect;
+import frc.robot.commands.autos.RedLeftNoCharge;
+import frc.robot.commands.autos.RedRight2AndCharge;
+import frc.robot.commands.autos.RedRight3AndEngage;
+import frc.robot.commands.autos.RedRight3NoCharge;
+import frc.robot.commands.autos.RedRight3NoCharge2Cube;
+import frc.robot.commands.autos.ScoreConeHighAndWait;
+import frc.robot.commands.autos.TestBlueLeft;
 import frc.robot.commands.autos.TestFollowSplitPaths;
 import frc.robot.commands.autos.TestPath;
-import frc.robot.commands.drivetrain.EngageInAuto;
+import frc.robot.commands.command_groups.GoHome;
+import frc.robot.commands.command_groups.GoHomeFast;
 import frc.robot.subsystems.Collector;
+import frc.robot.subsystems.CommandManager;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elbow;
 import frc.robot.subsystems.Elevator;
@@ -69,6 +73,7 @@ public class Robot extends TimedRobot {
   public static LEDS leds = new LEDS();
   
   SendableChooser<Command> autoChooser = new SendableChooser<Command>();
+  SendableChooser<Command> testAutoChooser = new SendableChooser<Command>();
 
   private RobotContainer m_robotContainer;
 
@@ -116,6 +121,9 @@ public class Robot extends TimedRobot {
 
     public static CollectorState collectorState = CollectorState.EMPTY;
 
+
+
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -124,17 +132,29 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     autoChooser.setDefaultOption("Do Nothing", new WaitCommand(15)); 
-    autoChooser.addOption("Red Left", new RedLeft());
-    autoChooser.addOption("Red Left Place And Move", new RedLeftPlaceAndMove());
-    autoChooser.addOption("Red Right", new RedRight());
-    autoChooser.addOption("Red Right (No Charge)", new RedRightNoCharge());
-    autoChooser.addOption("Red Right (No Collect)", new RedRightNoCollect());
-    autoChooser.addOption("Middle", new Middle());
-    autoChooser.addOption("Blue Left", new BlueLeft());
-    autoChooser.addOption("Blue Left (No Charge)", new BlueLeftNoCharge());
-    autoChooser.addOption("Blue Left (No Collect)", new BlueLeftNoCollect());
-    autoChooser.addOption("Blue Right", new BlueRight());
-    autoChooser.addOption("Blue Right Place And Move", new BlueRightPlaceAndMove());
+    //autoChooser.addOption("Red Left", new RedLeft());
+    //autoChooser.addOption("Red Left Place And Move", new RedLeftPlaceAndMove());
+    autoChooser.addOption("Red Left (No Charge)", new RedLeftNoCharge());
+    //autoChooser.addOption("Red Right (score 1 then engage)", new RedRight());
+    autoChooser.addOption("Red Right (score 2 then engage)", new RedRight2AndCharge());
+    autoChooser.addOption("Red Right 2.5 and balance", new RedRight3AndEngage());
+    autoChooser.addOption("Red Right 2 Cube (score 3 no engage)", new RedRight3NoCharge2Cube());
+    //autoChooser.addOption("Red Right (No Charge)", new RedRightNoCharge());
+    //autoChooser.addOption("Red Right (No Collect)", new RedRightNoCollect());
+    //autoChooser.addOption("Middle", new Middle());
+    //autoChooser.addOption("Blue Left (score 1 then engage)", new BlueLeft());
+    autoChooser.addOption("Blue Left (score 2 then engage)", new BlueLeft2AndCharge());
+    //autoChooser.addOption("Blue Left (No Charge)", new BlueLeftNoCharge());
+    //autoChooser.addOption("Blue Left (No Collect)", new BlueLeftNoCollect());
+    autoChooser.addOption("Blue left 3 no charge", new BlueLeft3NoCharge2Cube());
+    autoChooser.addOption("Blue left score 3 mid cube", new BlueLeftScore3Cube2());
+    autoChooser.addOption("Blue Left 2.5 and balance", new BlueLeft3AndEngage());
+    //autoChooser.addOption("Blue Right", new BlueRight());
+    autoChooser.addOption("Blue Right (No Charge)", new BlueRightNoCharge());
+    autoChooser.addOption("TEST Score Cone High", new ScoreConeHighAndWait());
+    //autoChooser.addOption("Blue Right Place And Move", new BlueRightPlaceAndMove());
+    //autoChooser.addOption("Red Right (score 3 no engage)", new RedRight3NoCharge());
+    
 
     //Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
     Robot.leds.colorTest(255, 30, 0);
@@ -272,6 +292,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("pitch",drivetrain.getPitch());
 
     SmartDashboard.putData(autoChooser);
+    SmartDashboard.putData(testAutoChooser);
     
    
     //drivetrain.setFollowers();
@@ -285,7 +306,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     Robot.elbow.elbowMotor.setIdleMode(IdleMode.kCoast);
-    Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
+    Robot.drivetrain.setNeutralMode(NeutralMode.Coast);
     Robot.elevator.setPosition(Robot.elevator.getCurrentPosition());
   }
 

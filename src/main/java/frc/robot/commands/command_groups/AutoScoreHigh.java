@@ -14,6 +14,6 @@ public class AutoScoreHigh extends SequentialCommandGroup {
   public AutoScoreHigh() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new GoHome(), new PreScorePosition(), new AutoScoreConeHigh());
+    addCommands(new PreScorePosition(), new AutoScoreConeHigh());
   }
 }
