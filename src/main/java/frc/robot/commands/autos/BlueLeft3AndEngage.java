@@ -69,7 +69,7 @@ public class BlueLeft3AndEngage extends SequentialCommandGroup {
             )
         )),
         
-        new EngageInAuto()
+        new AutoDriveForwardAndEngage()
 
     );
   }

@@ -20,8 +20,8 @@ public class PreScorePosition extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.preScore), 
-      new SetWristPosition(Constants.WristConstants.SetPoints.preScore),
-      new SetElbowPosition(Constants.ElbowConstants.SetPoints.preScore)
+      new SetWristPosition(Constants.WristConstants.SetPoints.scoreHighCone),
+      new SetElbowPosition(Constants.ElbowConstants.SetPoints.scoreHighCone)
     );
   }
 }

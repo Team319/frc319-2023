@@ -36,6 +36,7 @@ import frc.robot.commands.autos.RedRight2AndCharge;
 import frc.robot.commands.autos.RedRight3AndEngage;
 import frc.robot.commands.autos.RedRight3NoCharge;
 import frc.robot.commands.autos.RedRight3NoCharge2Cube;
+import frc.robot.commands.autos.RedRightScore3Cube2;
 import frc.robot.commands.autos.ScoreConeHighAndWait;
 import frc.robot.commands.autos.TestBlueLeft;
 import frc.robot.commands.autos.TestFollowSplitPaths;
@@ -132,28 +133,17 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     autoChooser.setDefaultOption("Do Nothing", new WaitCommand(15)); 
-    //autoChooser.addOption("Red Left", new RedLeft());
-    //autoChooser.addOption("Red Left Place And Move", new RedLeftPlaceAndMove());
     autoChooser.addOption("Red Left (No Charge)", new RedLeftNoCharge());
-    //autoChooser.addOption("Red Right (score 1 then engage)", new RedRight());
     autoChooser.addOption("Red Right (score 2 then engage)", new RedRight2AndCharge());
     autoChooser.addOption("Red Right 2.5 and balance", new RedRight3AndEngage());
-    autoChooser.addOption("Red Right 2 Cube (score 3 no engage)", new RedRight3NoCharge2Cube());
-    //autoChooser.addOption("Red Right (No Charge)", new RedRightNoCharge());
-    //autoChooser.addOption("Red Right (No Collect)", new RedRightNoCollect());
-    //autoChooser.addOption("Middle", new Middle());
-    //autoChooser.addOption("Blue Left (score 1 then engage)", new BlueLeft());
+    autoChooser.addOption("Red Right 2 Cone (score 3 no engage)", new RedRight3NoCharge2Cube()); // 2 Cones
+    autoChooser.addOption("Red Right score 3 mid cube", new RedRightScore3Cube2()); //TODO: Needs to be created, Red Right 2 Cone Scores 3
     autoChooser.addOption("Blue Left (score 2 then engage)", new BlueLeft2AndCharge());
-    //autoChooser.addOption("Blue Left (No Charge)", new BlueLeftNoCharge());
-    //autoChooser.addOption("Blue Left (No Collect)", new BlueLeftNoCollect());
-    autoChooser.addOption("Blue left 3 no charge", new BlueLeft3NoCharge2Cube());
-    autoChooser.addOption("Blue left score 3 mid cube", new BlueLeftScore3Cube2());
-    autoChooser.addOption("Blue Left 2.5 and balance", new BlueLeft3AndEngage());
-    //autoChooser.addOption("Blue Right", new BlueRight());
-    autoChooser.addOption("Blue Right (No Charge)", new BlueRightNoCharge());
+    autoChooser.addOption("Blue Left 2 Cone (score 3 no engage)", new BlueLeft3NoCharge2Cube()); // 2 Cones
+    autoChooser.addOption("Blue left score 3 mid cube", new BlueLeftScore3Cube2()); // 2 Cubes
+    autoChooser.addOption("Blue Left 2.5 and balance", new BlueLeft3AndEngage()); //
+    autoChooser.addOption("Blue Right (No Charge)", new BlueRightNoCharge()); 
     autoChooser.addOption("TEST Score Cone High", new ScoreConeHighAndWait());
-    //autoChooser.addOption("Blue Right Place And Move", new BlueRightPlaceAndMove());
-    //autoChooser.addOption("Red Right (score 3 no engage)", new RedRight3NoCharge());
     
 
     //Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
@@ -307,7 +297,6 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     Robot.elbow.elbowMotor.setIdleMode(IdleMode.kCoast);
     Robot.drivetrain.setNeutralMode(NeutralMode.Coast);
-    Robot.elevator.setPosition(Robot.elevator.getCurrentPosition());
   }
 
   @Override
@@ -342,6 +331,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     drivetrain.zeroOdometry(); //remove later
+    Robot.elevator.setPosition(Robot.elevator.getCurrentPosition());
     Robot.elbow.setPosition(Robot.elbow.getCurrentPosition());
     Robot.wrist.setPosition(Robot.wrist.getCurrentPosition());
     Robot.elbow.elbowMotor.setIdleMode(IdleMode.kCoast);

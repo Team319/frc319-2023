@@ -59,7 +59,7 @@ public final class Constants {
 
     public static class ElevatorConstants {  // Gear Ratio: 5/1(?)
       public static class PID {
-        public static final double kPUp = 0.5;
+        public static final double kPUp = 1.5;
         public static final double kIUp = 0;
         public static final double kDUp = 1.0;
 
@@ -216,7 +216,7 @@ public final class Constants {
         //public static final double top = 0.0;
         public static final double bottom = -0.6;
 
-        public static final double deadband = 0.005;
+        public static final double deadband = 0.008;
       }
 
       public static class SoftLimits {
@@ -246,7 +246,7 @@ public final class Constants {
         public static final int currentMax = 20;
         public static final int currentThreshold = 15;
 
-        public static final double collectorVoltage = 0.75;
+        public static final double collectorVoltage = 0.90;
         public static final double collectorVoltageTipped = 0.5;
       }
 

@@ -15,7 +15,7 @@ import frc.robot.utils.HelperFunctions;
 public class EngageInAuto extends CommandBase {
 
   double pitchLimit = 0;
-  double moveValue = 0.009;//0.008
+  double moveValue = 0.008;//0.008
   double levelCount = 0;
   double deadband = 3.0;
 
