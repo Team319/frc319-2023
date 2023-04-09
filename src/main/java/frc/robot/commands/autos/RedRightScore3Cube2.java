@@ -11,33 +11,26 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
-import frc.robot.commands.collector.SetAutoCollectorVoltage;
-import frc.robot.commands.command_groups.AutoFloorCollectConeTipped;
 import frc.robot.commands.command_groups.AutoScoreConeHigh;
-import frc.robot.commands.command_groups.AutoScoreCubeHigh;
 import frc.robot.commands.command_groups.AutoScoreCubeMid;
-import frc.robot.commands.command_groups.AutoScoreHigh;
 import frc.robot.commands.command_groups.AutoScoreHighCubeFast;
-import frc.robot.commands.command_groups.AutoScoreMid;
 import frc.robot.commands.command_groups.FloorCollect;
 import frc.robot.commands.command_groups.FloorCollectConeStanding;
-import frc.robot.commands.command_groups.FloorCollectConeTipped;
 import frc.robot.commands.command_groups.GoHome;
-import frc.robot.commands.command_groups.PreScorePosition;
 import frc.robot.commands.command_groups.SpitGamePiece;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class BlueLeft3NoCharge2Cube extends SequentialCommandGroup {
+public class RedRightScore3Cube2 extends SequentialCommandGroup {
 
-  Trajectory blueLeft3Engage1 = Robot.drivetrain.loadTrajectoryFromFile("blueleft2andcharge1");
-  Trajectory blueLeft3Engage2 = Robot.drivetrain.loadTrajectoryFromFile("blueleft2andcharge2");
-  Trajectory blueLeft3NoCharge3 = Robot.drivetrain.loadTrajectoryFromFile("blueleft3gamepiece3");
-  Trajectory blueLeft3NoCharge4 = Robot.drivetrain.loadTrajectoryFromFile("blueleft3gamepiece42cube");
+  Trajectory redRight3Engage1 = Robot.drivetrain.loadTrajectoryFromFile("redright2andcharge1");
+  Trajectory redRight3Engage2 = Robot.drivetrain.loadTrajectoryFromFile("redright2andcharge2");
+  Trajectory redRight3NoCharge3 = Robot.drivetrain.loadTrajectoryFromFile("redright3gamepiece3");
+  Trajectory redRight3NoCharge4 = Robot.drivetrain.loadTrajectoryFromFile("redright3gamepiece42cube");
   
-  /** Creates a new RedRight3NoCharge. */
-  public BlueLeft3NoCharge2Cube() {
+  /** Creates a new BlueLeftScore3Cube2. */
+  public RedRightScore3Cube2() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
@@ -48,21 +41,26 @@ public class BlueLeft3NoCharge2Cube extends SequentialCommandGroup {
       new AutoScoreConeHigh(),
       new ParallelDeadlineGroup(new WaitCommand(0.25), 
                                   new SpitGamePiece(-1)),
+      
       Commands.parallel(
-          new InstantCommand(()->Robot.drivetrain.resetOdometry(blueLeft3Engage1.getInitialPose())),
-          Robot.drivetrain.createCommandForTrajectory(blueLeft3Engage1, false),
-          Commands.race(new WaitCommand(3.5), new FloorCollect())
+        Commands.race(
+          new WaitCommand(3.5), 
+          new FloorCollect()), 
+          Commands.sequence(
+            new WaitCommand(0.125)),
+            new InstantCommand(()->Robot.drivetrain.resetOdometry(redRight3Engage1.getInitialPose())),
+            Robot.drivetrain.createCommandForTrajectory(redRight3Engage1, false)
           ),
-          
 
           Commands.parallel(
-          Robot.drivetrain.createCommandForTrajectory(blueLeft3Engage2, false),
+          Robot.drivetrain.createCommandForTrajectory(redRight3Engage2, false),
           Commands.sequence(
             new GoHome(),
             new AutoScoreHighCubeFast())
 
         ),
        
+        new WaitCommand(0.25),
         new ParallelDeadlineGroup(new WaitCommand(0.25), 
                                   new SpitGamePiece(-1)),
         
@@ -71,18 +69,17 @@ public class BlueLeft3NoCharge2Cube extends SequentialCommandGroup {
         //new SetAutoCollectorVoltage(-1),
         Commands.sequence(
           Commands.parallel(
-            Robot.drivetrain.createCommandForTrajectory(blueLeft3NoCharge3, false),
-            new FloorCollectConeStanding()
+            Robot.drivetrain.createCommandForTrajectory(redRight3NoCharge3, false),
+            new FloorCollect()
             //Commands.race(new WaitCommand(3.25), new FloorCollectConeStanding()) 
         )),
 
           Commands.parallel(
-            Robot.drivetrain.createCommandForTrajectory(blueLeft3NoCharge4, false), 
+            Robot.drivetrain.createCommandForTrajectory(redRight3NoCharge4, false), 
             Commands.sequence(
               new GoHome(),
               new WaitCommand(0.5),
-              new AutoScoreConeHigh()
-              //new PreScorePosition())
+              new AutoScoreCubeMid()
             )),
           
           new ParallelDeadlineGroup(new WaitCommand(0.25), 

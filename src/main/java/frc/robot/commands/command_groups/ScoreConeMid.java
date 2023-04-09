@@ -22,7 +22,6 @@ public class ScoreConeMid extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.scoreMiddleCone), 
-      new WaitCommand(0.5),
       new SetElbowPosition(Constants.ElbowConstants.SetPoints.scoreMiddleCone),
       new SetWristPosition(Constants.WristConstants.SetPoints.scoreMiddleCone),
       new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_BOTTOM)

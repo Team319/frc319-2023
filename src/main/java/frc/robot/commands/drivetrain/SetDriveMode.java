@@ -28,6 +28,7 @@ public class SetDriveMode extends CommandBase {
       //Robot.limelight.setPipeline(Constants.LimelightConstants.Modes.LIMELIGHT_TOP);
     }
     else if (drivemode == DriveMode.Limelight) {
+      Robot.leds.colorTest(255, 0, 0);
       if (Robot.limelight.getPipeline() == 1 || Robot.limelight.getPipeline() == 2) {
         Robot.limelight.setLedMode(3);
         Robot.limelight.setLedModeCollect(1); 
@@ -40,6 +41,7 @@ public class SetDriveMode extends CommandBase {
     else {
       Robot.limelight.setLedMode(1);
       Robot.limelight.setLedModeCollect(1);
+      Robot.leds.colorTest(255, 30, 0);
 
     }
   }

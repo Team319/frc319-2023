@@ -41,21 +41,25 @@ public class BlueLeftScore3Cube2 extends SequentialCommandGroup {
       new AutoScoreConeHigh(),
       new ParallelDeadlineGroup(new WaitCommand(0.25), 
                                   new SpitGamePiece(-1)),
-      Commands.parallel(
-          new InstantCommand(()->Robot.drivetrain.resetOdometry(blueLeft3Engage1.getInitialPose())),
-          Robot.drivetrain.createCommandForTrajectory(blueLeft3Engage1, false),
-          Commands.race(new WaitCommand(3.5), new FloorCollect())
-          ),
-          
 
-          Commands.parallel(
+      Commands.parallel(
+        Commands.race(
+          new WaitCommand(3.5), 
+          new FloorCollect()), 
+          Commands.sequence(
+            new WaitCommand(0.125)),
+            new InstantCommand(()->Robot.drivetrain.resetOdometry(blueLeft3Engage1.getInitialPose())),
+            Robot.drivetrain.createCommandForTrajectory(blueLeft3Engage1, false)
+          ),
+        
+        Commands.parallel(
           Robot.drivetrain.createCommandForTrajectory(blueLeft3Engage2, false),
           Commands.sequence(
             new GoHome(),
             new AutoScoreHighCubeFast())
 
         ),
-       
+        new WaitCommand(0.25),
         new ParallelDeadlineGroup(new WaitCommand(0.25), 
                                   new SpitGamePiece(-1)),
         
@@ -77,9 +81,9 @@ public class BlueLeftScore3Cube2 extends SequentialCommandGroup {
               new AutoScoreCubeMid()
               //new PreScorePosition())
             )),
-          
           new ParallelDeadlineGroup(new WaitCommand(0.25), 
-                                      new SpitGamePiece(-1))
+                                      new SpitGamePiece(-1)),
+          new GoHome()
 
             //,
           // Commands.parallel(
