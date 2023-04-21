@@ -25,7 +25,7 @@ public class CollectConeFromLoadStation extends SequentialCommandGroup {
       new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.collectConeFromLoadStation),
       new SetWristPosition(Constants.WristConstants.SetPoints.collectFromLoadStation),
       new SetElbowPosition(Constants.ElbowConstants.SetPoints.collectFromLoadStation),
-      new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltage)
+      new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltage, 15)
     );
 
     Robot.collectorState = CollectorState.HOLDING_CONE;

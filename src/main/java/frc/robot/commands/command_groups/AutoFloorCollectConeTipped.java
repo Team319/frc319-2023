@@ -25,7 +25,7 @@ public class AutoFloorCollectConeTipped extends ParallelCommandGroup {
       new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.autoCollectConeTipped), 
       new SetWristPosition(Constants.WristConstants.SetPoints.autoCollectConeTipped),
       new SetElbowPosition(Constants.ElbowConstants.SetPoints.autoCollectConeTipped),
-      new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltage)
+      new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltage, 15)
     );
 
     Robot.collectorState = CollectorState.HOLDING_CONE;

@@ -12,10 +12,12 @@ public class SetCollectorVoltage extends CommandBase {
   /** Creates a new SetCollectorVoltage. */
 
   private double voltage = 0.0;
+  private double currentLimit;
   private int i;
 
-  public SetCollectorVoltage(double voltage) {
+  public SetCollectorVoltage(double voltage, double currentLimit) {
     this.voltage = voltage;
+    this.currentLimit = currentLimit;
     addRequirements(Robot.collector);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -46,10 +48,10 @@ public class SetCollectorVoltage extends CommandBase {
     if(voltage < 0){
       Robot.leds.colorTest(0, 0, 255);
     }
-    if (Robot.collector.getCollectorCurrent() > Constants.CollectorConstants.Currents.currentThreshold) {
+    if (Robot.collector.getCollectorCurrent() > currentLimit) {
       i++;
       
-      if (i > 25) {
+      if (i > 10) {
         if(voltage > 0 ){
         Robot.leds.colorTest(255, 30, 0);
         }

@@ -28,7 +28,7 @@ public class FloorCollect extends SequentialCommandGroup {
         new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.collectFloor), 
         new SetElbowPosition(Constants.ElbowConstants.SetPoints.collectFloor),
         new SetWristPosition(Constants.WristConstants.SetPoints.collectFloor),
-        new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltage)),
+        new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltage, 15)),
         
       
       new SetCollectorState(true) 

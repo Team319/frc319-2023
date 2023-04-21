@@ -18,7 +18,7 @@ public class SpitGamePiece extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SetCollectorVoltage(voltage)
+      new SetCollectorVoltage(voltage, 15)
     );
 
     Robot.collectorState = CollectorState.EMPTY;

@@ -26,7 +26,7 @@ public class FloorCollectConeTipped extends ParallelCommandGroup {
       new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.collectConeTipped), 
       new SetWristPosition(Constants.WristConstants.SetPoints.collectConeTipped),
       new SetElbowPosition(Constants.ElbowConstants.SetPoints.collectConeTipped),
-      new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltageTipped),
+      new SetCollectorVoltage(Constants.CollectorConstants.Currents.collectorVoltageTipped, 15),
       new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_BOTTOM)
     );
 

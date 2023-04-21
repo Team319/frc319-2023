@@ -23,7 +23,7 @@ public class FloorCollectConeStanding extends ParallelCommandGroup {
     addCommands(
       new MoveWristAndElbow(Constants.WristConstants.SetPoints.collectConeStanding, Constants.ElbowConstants.SetPoints.collectConeStanding),
       new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.collectStanding),
-      new SetCollectorVoltage(1.0),
+      new SetCollectorVoltage(1.0, 15),
       new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_BOTTOM)
     );
 

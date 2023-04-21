@@ -26,7 +26,7 @@ public class CollectConeSingleLoadingStation extends SequentialCommandGroup {
       new SwitchingPipelineTest(Constants.LimelightConstants.Modes.LIMELIGHT_BOTTOM),
       new SetElevatorPosition(Constants.ElevatorConstants.SetPoints.coneSlide), 
       new MoveWristAndElbow(Constants.WristConstants.SetPoints.coneSlide, Constants.ElbowConstants.SetPoints.coneSlide),
-      new SetCollectorVoltage(1.0)
+      new SetCollectorVoltage(0.75, 15)
     );
 
     Robot.collectorState = CollectorState.HOLDING_CONE;

@@ -56,6 +56,7 @@ public class RedRightScore3Cube2 extends SequentialCommandGroup {
           Robot.drivetrain.createCommandForTrajectory(redRight3Engage2, false),
           Commands.sequence(
             new GoHome(),
+            new WaitCommand(0.25),
             new AutoScoreHighCubeFast())
 
         ),

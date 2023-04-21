@@ -296,7 +296,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     Robot.elbow.elbowMotor.setIdleMode(IdleMode.kCoast);
-    Robot.drivetrain.setNeutralMode(NeutralMode.Coast);
+    Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
   }
 
   @Override

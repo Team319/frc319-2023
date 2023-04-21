@@ -88,8 +88,8 @@ public class RobotContainer {
     m_driverController.leftTrigger().onFalse(new SetDriveMode(DriveMode.Normal));
     
     m_driverController.rightTrigger().onTrue( new SetDriveMode(DriveMode.Normal));
-    m_driverController.rightTrigger().whileTrue(new SetCollectorVoltage(-1.00)); // Collector Voltage Constant
-    m_driverController.rightBumper().whileTrue(new SetCollectorVoltage(1.00));
+    m_driverController.rightTrigger().whileTrue(new SetCollectorVoltage(-1.00, 15)); // Collector Voltage Constant
+    m_driverController.rightBumper().whileTrue(new SetCollectorVoltage(1.00, 15));
 
     
     /* Operator Controllers */

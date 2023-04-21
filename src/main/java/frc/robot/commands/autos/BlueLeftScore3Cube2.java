@@ -47,7 +47,7 @@ public class BlueLeftScore3Cube2 extends SequentialCommandGroup {
           new WaitCommand(3.5), 
           new FloorCollect()), 
           Commands.sequence(
-            new WaitCommand(0.125)),
+            new WaitCommand(0.25)),
             new InstantCommand(()->Robot.drivetrain.resetOdometry(blueLeft3Engage1.getInitialPose())),
             Robot.drivetrain.createCommandForTrajectory(blueLeft3Engage1, false)
           ),
@@ -56,6 +56,7 @@ public class BlueLeftScore3Cube2 extends SequentialCommandGroup {
           Robot.drivetrain.createCommandForTrajectory(blueLeft3Engage2, false),
           Commands.sequence(
             new GoHome(),
+            new WaitCommand(0.125),
             new AutoScoreHighCubeFast())
 
         ),
