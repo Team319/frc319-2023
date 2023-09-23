@@ -28,6 +28,8 @@ public class RedRightScore3Cube2 extends SequentialCommandGroup {
   Trajectory redRight3Engage2 = Robot.drivetrain.loadTrajectoryFromFile("redright2andcharge2");
   Trajectory redRight3NoCharge3 = Robot.drivetrain.loadTrajectoryFromFile("redright3gamepiece3");
   Trajectory redRight3NoCharge4 = Robot.drivetrain.loadTrajectoryFromFile("redright3gamepiece42cube");
+  Trajectory redRight3NoCharge5 = Robot.drivetrain.loadTrajectoryFromFile("driveforwardredright");
+
   
   /** Creates a new BlueLeftScore3Cube2. */
   public RedRightScore3Cube2() {
@@ -63,7 +65,7 @@ public class RedRightScore3Cube2 extends SequentialCommandGroup {
        
         new WaitCommand(0.25),
         new ParallelDeadlineGroup(new WaitCommand(0.25), 
-                                  new SpitGamePiece(-1)),
+                                  new SpitGamePiece(-0.75)),
         
 
 
@@ -84,15 +86,10 @@ public class RedRightScore3Cube2 extends SequentialCommandGroup {
             )),
           
           new ParallelDeadlineGroup(new WaitCommand(0.25), 
-                                      new SpitGamePiece(-1)),
+                                      new SpitGamePiece(-0.25)),
           new GoHome()
 
-            //,
-          // Commands.parallel(
-          //   new PreScorePosition(),
-          //   new ParallelDeadlineGroup(new WaitCommand(0.25), 
-          //                         new SpitGamePiece(-1))
-          // )
+          //Robot.drivetrain.createCommandForTrajectory(redRight3NoCharge5, false)
     );
   }
 }

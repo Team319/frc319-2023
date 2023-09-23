@@ -28,8 +28,8 @@ import frc.robot.commands.wrist.SetWristPosition;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Middle extends SequentialCommandGroup {
 
-  Trajectory middlePath1 = Robot.drivetrain.loadTrajectoryFromFile("bluemiddle1");
-  Trajectory middlePath2 = Robot.drivetrain.loadTrajectoryFromFile("bluemiddle2");
+  //Trajectory middlePath1 = Robot.drivetrain.loadTrajectoryFromFile("bluemiddle1");
+  //Trajectory middlePath2 = Robot.drivetrain.loadTrajectoryFromFile("bluemiddle2");
 
 
 
@@ -44,12 +44,23 @@ public class Middle extends SequentialCommandGroup {
       new AutoScoreHigh(),
   
       new ParallelDeadlineGroup(new WaitCommand(0.25), 
-                                new SpitGamePiece(-1)),
-      Commands.sequence(new GoHome(), 
+                                new SpitGamePiece(-0.75)),
+
+      Commands.sequence(
+                        new GoHome(),
+                        new WaitCommand(0.5), // Let the elevator settle before we start moving untill we see some pitch
+                        new AutoDriveAndEngage() // Dumb mobility over the C.S. and engage again
+                       )
+
+                       // EKM - we can test AutoDriveAndEngage in the pits
+
+
+                       // Backup solution using paths... more risky
+      /*Commands.sequence(new GoHome(), 
                         new InstantCommand(()->Robot.drivetrain.resetOdometry(middlePath1.getInitialPose())),
                         Robot.drivetrain.createCommandForTrajectory(middlePath1, false),
                         Robot.drivetrain.createCommandForTrajectory(middlePath2, false),
-                        new AutoDriveForwardAndEngage())
+                        new AutoDriveForwardAndEngage()) // which way is forward? */
                         
       
      

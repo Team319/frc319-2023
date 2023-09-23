@@ -30,6 +30,7 @@ import frc.robot.commands.autos.BlueLeft3NoCharge2Cube;
 import frc.robot.commands.autos.BlueLeftScore3Cube2;
 import frc.robot.commands.autos.BlueRightNoCharge;
 import frc.robot.commands.autos.Middle;
+import frc.robot.commands.autos.MiddleMobility;
 import frc.robot.commands.autos.MultiPath;
 import frc.robot.commands.autos.RedLeftNoCharge;
 import frc.robot.commands.autos.RedRight2AndCharge;
@@ -144,6 +145,8 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("Blue Left 2.5 and balance", new BlueLeft3AndEngage()); //
     autoChooser.addOption("Blue Right (No Charge)", new BlueRightNoCharge()); 
     autoChooser.addOption("TEST Score Cone High", new ScoreConeHighAndWait());
+    autoChooser.addOption("Middle Score + Engage", new Middle());
+    autoChooser.addOption("Middle Score + Mobility + Engage", new MiddleMobility());
     
 
     //Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
@@ -296,7 +299,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     Robot.elbow.elbowMotor.setIdleMode(IdleMode.kCoast);
-    Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
+    Robot.drivetrain.setNeutralMode(NeutralMode.Brake); // I MUST BE BRAKE BEFORE GOING ON FIELD
   }
 
   @Override

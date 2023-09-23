@@ -26,6 +26,14 @@ public class DriveToPitch extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
+  /** Creates a new DriveToPitch. */
+  public DriveToPitch(double pitch,double moveValue) {
+    addRequirements(Robot.drivetrain);
+    pitchLimit = pitch;
+    this.moveValue = moveValue;
+    driveSignal = helper.cheesyDrive(moveValue, 0, false, false);
+    // Use addRequirements() here to declare subsystem dependencies.
+  }
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {

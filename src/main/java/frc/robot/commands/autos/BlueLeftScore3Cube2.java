@@ -18,6 +18,14 @@ import frc.robot.commands.command_groups.FloorCollect;
 import frc.robot.commands.command_groups.FloorCollectConeStanding;
 import frc.robot.commands.command_groups.GoHome;
 import frc.robot.commands.command_groups.SpitGamePiece;
+import swervelib.SwerveController;
+import swervelib.SwerveDrive;
+import swervelib.math.SwerveKinematics2;
+import swervelib.parser.SwerveControllerConfiguration;
+import swervelib.parser.SwerveDriveConfiguration;
+import swervelib.parser.SwerveParser;
+import swervelib.telemetry.SwerveDriveTelemetry;
+import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -28,6 +36,8 @@ public class BlueLeftScore3Cube2 extends SequentialCommandGroup {
   Trajectory blueLeft3Engage2 = Robot.drivetrain.loadTrajectoryFromFile("blueleft2andcharge2");
   Trajectory blueLeft3NoCharge3 = Robot.drivetrain.loadTrajectoryFromFile("blueleft3gamepiece3");
   Trajectory blueLeft3NoCharge4 = Robot.drivetrain.loadTrajectoryFromFile("blueleft3lastcubemid4");
+  Trajectory blueLeft3NoCharge5 = Robot.drivetrain.loadTrajectoryFromFile("driveforwardblueleft");
+
   
   /** Creates a new BlueLeftScore3Cube2. */
   public BlueLeftScore3Cube2() {
@@ -56,7 +66,7 @@ public class BlueLeftScore3Cube2 extends SequentialCommandGroup {
           Robot.drivetrain.createCommandForTrajectory(blueLeft3Engage2, false),
           Commands.sequence(
             new GoHome(),
-            new WaitCommand(0.125),
+            new WaitCommand(0.25),
             new AutoScoreHighCubeFast())
 
         ),
@@ -86,12 +96,7 @@ public class BlueLeftScore3Cube2 extends SequentialCommandGroup {
                                       new SpitGamePiece(-1)),
           new GoHome()
 
-            //,
-          // Commands.parallel(
-          //   new PreScorePosition(),
-          //   new ParallelDeadlineGroup(new WaitCommand(0.25), 
-          //                         new SpitGamePiece(-1))
-          // )
+          //Robot.drivetrain.createCommandForTrajectory(redRight3NoCharge5, false)
     );
   }
 }

@@ -78,11 +78,12 @@ public class BlueRightNoCharge extends SequentialCommandGroup {
         new WaitCommand(0.25),
         new ParallelDeadlineGroup(
           new WaitCommand(0.25), 
-          new SpitGamePiece(-1)),
+          new SpitGamePiece(-0.75)),
           
-        Commands.parallel(Robot.drivetrain.createCommandForTrajectory(blueRightNoCharge3, false),
-        Commands.race(new WaitCommand(3.5), new FloorCollect())),
+        Commands.parallel(Robot.drivetrain.createCommandForTrajectory(blueRightNoCharge3, false)), 
+        Commands.sequence(new FloorCollect()),
 
+         
         Commands.parallel(
           Robot.drivetrain.createCommandForTrajectory(blueRightNoCharge4, false),
           Commands.sequence(
@@ -92,7 +93,8 @@ public class BlueRightNoCharge extends SequentialCommandGroup {
 
         new ParallelDeadlineGroup(
           new WaitCommand(0.25), 
-          new SpitGamePiece(-1))
+          new SpitGamePiece(-0.25))
+          
     );
   }
 }

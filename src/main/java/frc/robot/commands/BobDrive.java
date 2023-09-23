@@ -72,7 +72,7 @@ public class BobDrive extends CommandBase {
 			moveValue = HelperFunctions.deadband(robotContainer.getLeftStick().getSecond(), deadband)* 0.4;
 		}
 		else if (Robot.drivetrain.getDriveMode() == DriveMode.Normal) {
-			rotateValue = HelperFunctions.deadband(robotContainer.getRightStick().getFirst(), deadband) * 0.40;
+			rotateValue = HelperFunctions.deadband(robotContainer.getRightStick().getFirst(), deadband) * 0.30;
 			moveValue = HelperFunctions.deadband(robotContainer.getLeftStick().getSecond(), deadband);
 		}
 		else if (Robot.drivetrain.getDriveMode() == DriveMode.Scoring) {

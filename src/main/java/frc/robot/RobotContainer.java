@@ -100,7 +100,7 @@ public class RobotContainer {
     NEED TO HAVE THEIR SETPOINTS UPDATED */
 
     /* ALREADY UPDATED */
-    m_operatorController.a().onTrue(new FloorCollect());
+    m_operatorController.a().onTrue(new FloorCollect()); //cube
     m_operatorController.x().onTrue(new FloorCollectConeStanding());
     m_operatorController.y().onTrue(new FloorCollectConeTipped());
     m_operatorController.b().onTrue(new GoHome());

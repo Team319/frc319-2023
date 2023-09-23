@@ -184,7 +184,7 @@ public final class Constants {
 
     public static class WristConstants {
       public static class PID {
-        public static final double kP = 10.0;//0.096155;
+        public static final double kP = 7.0;//0.096155;
         public static final double kI = 0.018;//0;
         public static final double kD = 0;
 

@@ -21,6 +21,7 @@ import frc.robot.commands.collector.SetAutoCollectorVoltage;
 import frc.robot.commands.collector.SetCollectorVoltage;
 import frc.robot.commands.command_groups.AutoScoreConeHigh;
 import frc.robot.commands.command_groups.AutoScoreCubeHigh;
+import frc.robot.commands.command_groups.AutoScoreCubeMid;
 import frc.robot.commands.command_groups.AutoScoreHigh;
 import frc.robot.commands.command_groups.AutoScoreHighCubeFast;
 import frc.robot.commands.command_groups.FloorCollect;
@@ -42,7 +43,7 @@ public class RedLeftNoCharge extends SequentialCommandGroup {
   Trajectory redLeftNoCharge1 = Robot.drivetrain.loadTrajectoryFromFile("redleftnocharge1");
   Trajectory redLeftNoCharge2 = Robot.drivetrain.loadTrajectoryFromFile("redleftnocharge2");
   Trajectory redLeftNoCharge3 = Robot.drivetrain.loadTrajectoryFromFile("redleftnocharge3");
-  //Trajectory redLeftNoCharge4 = Robot.drivetrain.loadTrajectoryFromFile("redleftnocharge4");
+  Trajectory redLeftNoCharge4 = Robot.drivetrain.loadTrajectoryFromFile("redleftnocharge4");
 
 
   public RedLeftNoCharge() {
@@ -82,9 +83,8 @@ public class RedLeftNoCharge extends SequentialCommandGroup {
           new SpitGamePiece(-1)),
           
         Commands.parallel(Robot.drivetrain.createCommandForTrajectory(redLeftNoCharge3, false),
-        Commands.race(new WaitCommand(3.5), new FloorCollect()))
+          Commands.sequence(new FloorCollect())),
 
-        /*
         Commands.parallel(
           Robot.drivetrain.createCommandForTrajectory(redLeftNoCharge4, false),
           Commands.sequence(
@@ -95,9 +95,7 @@ public class RedLeftNoCharge extends SequentialCommandGroup {
         new ParallelDeadlineGroup(
           new WaitCommand(0.25), 
           new SpitGamePiece(-1))
-         */
 
-
-    );
+        );
   }
 }
